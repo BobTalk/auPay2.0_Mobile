@@ -1,0 +1,143 @@
+@font-face {
+  font-family: "iconfont"; /* Project id 4140326 */
+  src: url('iconfont.woff2?t=1692610029278') format('woff2'),
+       url('iconfont.woff?t=1692610029278') format('woff'),
+       url('iconfont.ttf?t=1692610029278') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-xiangyou1:before {
+  content: "\e775";
+}
+
+.icon-icon-arrow-right2:before {
+  content: "\e667";
+}
+
+.icon-chakan:before {
+  content: "\e62b";
+}
+
+.icon-shibai:before {
+  content: "\e64e";
+}
+
+.icon-tuichu:before {
+  content: "\e695";
+}
+
+.icon-zhanghuchongzhi:before {
+  content: "\e613";
+}
+
+.icon-ETH:before {
+  content: "\e639";
+}
+
+.icon-saoyisao:before {
+  content: "\e8b5";
+}
+
+.icon-BTC:before {
+  content: "\e7ec";
+}
+
+.icon-DASH:before {
+  content: "\e7ed";
+}
+
+.icon-USDT:before {
+  content: "\e7f8";
+}
+
+.icon-zhanghuxinxi:before {
+  content: "\e60e";
+}
+
+.icon-lianxiwomen:before {
+  content: "\e637";
+}
+
+.icon-xuanfucaidan:before {
+  content: "\e617";
+}
+
+.icon-biyan:before {
+  content: "\e6c4";
+}
+
+.icon-gonggaopeizhi:before {
+  content: "\e671";
+}
+
+.icon-anquan:before {
+  content: "\e817";
+}
+
+.icon-women:before {
+  content: "\e631";
+}
+
+.icon-jilu:before {
+  content: "\e635";
+}
+
+.icon-chongzhi:before {
+  content: "\e60b";
+}
+
+.icon-top:before {
+  content: "\e602";
+}
+
+.icon-EOS:before {
+  content: "\e626";
+}
+
+.icon-pao:before {
+  content: "\e63d";
+}
+
+.icon-yinsizhengce:before {
+  content: "\100fd";
+}
+
+.icon-xieyiguanli:before {
+  content: "\e604";
+}
+
+.icon-yingyongguanli:before {
+  content: "\e766";
+}
+
+.icon-dui:before {
+  content: "\e63f";
+}
+
+.icon-guanbi:before {
+  content: "\eaf2";
+}
+
+.icon-zichan:before {
+  content: "\e616";
+}
+
+.icon-wode:before {
+  content: "\e630";
+}
+
+.icon-chenggong:before {
+  content: "\e60d";
+}
+
+.icon-shouye:before {
+  content: "\e8c6";
+}
+
