@@ -1,0 +1,32 @@
+.reset_receipt {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 125px;
+  .iconfont {
+    font-size: 60px;
+  }
+  .icon-chenggong {
+    color: #52C41A;
+  }
+  .icon-shibai {
+    color: #E84335;
+  }
+  p {
+    font-family: PingFangSC-Medium-oz;
+    font-size: 17px;
+    color: #333333;
+    text-align: center;
+    font-weight: 500;
+    margin: 15px 0 30px;
+  }
+  .adm-button {
+    width: 155px;
+    height: 46px;
+    background: #1C63FF;
+    border-radius: 16px;
+    font-size: 17px;
+    color: #FFFFFF;
+    border: none;
+  }
+}

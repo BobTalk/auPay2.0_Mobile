@@ -10,7 +10,7 @@ const New = () => {
   const navigate = useNavigate()
   const onFinish = (values: Object) => {
     console.log('登陆提交数据' + values)
-    // navigate('/reset/verify')
+    navigate({ pathname: '/reset/receipt' }, { state: { type: 'success' } })
   }
   return (
     <div className='w login_wrap'>
