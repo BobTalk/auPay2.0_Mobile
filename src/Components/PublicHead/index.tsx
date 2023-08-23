@@ -1,8 +1,10 @@
 import './index.scss'
+import { useNavigate } from 'react-router-dom'
 
 const PublicHead = (props: any) => {
+  const navigate = useNavigate()
   const clickBack = () => {
-    console.log('点击了我呀')
+    navigate(props.back)
   }
   return (
     <div className='public_head'>

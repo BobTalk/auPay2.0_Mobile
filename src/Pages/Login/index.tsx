@@ -8,8 +8,10 @@ import {
   Button,
 } from 'antd-mobile'
 import './index.scss'
+import { Link, useNavigate } from 'react-router-dom'
 const Login = () => {
-  const headData = { title: 'auPay用户登录', back: '' }
+  const headData = { title: 'auPay用户登录', back: '/' }
+  const navigate = useNavigate()
   let codeTimer: any = null
   const [ codeData, setCodeData ] = useState({ timer: null, status: false, time: 60 })
   const formRef: any = useRef(null)
@@ -34,7 +36,7 @@ const Login = () => {
     console.log('登陆提交数据' + value)
   }
   const forget = () => {
-    console.log('忘记密码')
+    navigate('/reset/user')
   }
   return (
     <div className='login_wrap w'>
@@ -74,6 +76,7 @@ const Login = () => {
           </Button>
         </Form.Item>
       </Form>
+      <p className='foo_tips'>还没账号, <Link to='/register'>去注册</Link></p>
     </div>
   )
 }

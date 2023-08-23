@@ -6,9 +6,11 @@ import {
   Form,
   Input,
   Button,
+  Checkbox,
 } from 'antd-mobile'
+import { Link } from 'react-router-dom'
 const Register = () => {
-  const headData = { title: 'auPay用户注册', back: '' }
+  const headData = { title: 'auPay用户注册', back: '/' }
   let codeTimer: any = null
   const [ codeData, setCodeData ] = useState({ timer: null, status: false, time: 60 })
   const formRef: any = useRef(null)
@@ -88,7 +90,11 @@ const Register = () => {
         <Form.Item>
           <p className='login_form_label'>邮箱</p>
           <div className='register_form_flex'>
-            <Form.Item noStyle name='email' rules={[{ type: 'email', message: '请正确输入邮箱' }]}>
+            <Form.Item noStyle name='email'
+              rules={[
+                { required: true, message: '邮箱不能为空' },
+                { type: 'email', message: '请正确输入邮箱' }
+              ]}>
               <Input className='login_form_input' placeholder='请输入邮箱地址' />
             </Form.Item>
             <img onClick={ () => closePassword('email') } className='login_form_close' src={ CloseImg } alt="" />
@@ -107,12 +113,17 @@ const Register = () => {
           </div>
         </Form.Item>
 
+        <Form.Item className='login_form_item' name='checkbox' rules={[{ required: true, message: '请选择同意《auPay用户协议》' }]}>
+          <Checkbox>我同意《auPay用户协议》</Checkbox>
+        </Form.Item>
+
         <Form.Item>
           <Button className='login_form_btn' block type='submit' color='primary'>
             注册
           </Button>
         </Form.Item>
       </Form>
+      <p className='foo_tips'>还没账号, <Link to='/login'>去登录</Link></p>
     </div>
   )
 }

@@ -6,7 +6,11 @@ const Routers = () => {
   const routerDom = (ary: any[]) => {
     return ary.map(item => {
       if (item.children && item.children.length) {
-        routerDom(item.children)
+        return (
+          <Route key={ item.path } { ...item }>
+            { routerDom(item.children) }
+          </Route>
+        )
       } else {
         return <Route key={ item.path } { ...item } />
       }
