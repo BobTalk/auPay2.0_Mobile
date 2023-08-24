@@ -1,6 +1,7 @@
 .home_wrap {
   background-color: #F6F6F6;
   min-height: 100vh;
+  padding-bottom: 88px;
   .home_banner {
     position: relative;
     width: 100%;
@@ -8,7 +9,7 @@
     background: url('~@/Assets/images/home/banner.png') no-repeat;
     background-size: cover;
     padding-top: 13px;
-    margin-bottom: 37.5px;
+    margin-bottom: 47.5px;
     .home_banner_info {
       display: flex;
       align-items: center;
@@ -50,8 +51,11 @@
           line-height: 16px;
           margin-bottom: 8px;
           i {
-            font-size: 14px;
+            font-size: 12px;
             margin-left: 5px;
+          }
+          .icon-biyan {
+            font-size: 20px;
           }
         }
         span {
@@ -61,6 +65,155 @@
           text-align: center;
           font-weight: 700;
           line-height: 26px;
+        }
+      }
+    }
+  }
+  .home_news {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 35px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    padding: 0 10px;
+    p {
+      font-size: 12px;
+      color: #333333;
+      line-height: 35px;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    i {
+      font-size: 14px;
+      margin-left: 23px;
+      flex-grow: 0;
+      flex-shrink: 0;
+    }
+  }
+  .home_notice {
+    padding: 15px;
+    background: #FFFFFF;
+    border-radius: 9px;
+    margin-top: 10px;
+    .home_notice_top {
+      position: relative;
+      width: 100%;
+      height: 90px;
+      background-image: linear-gradient(257deg, #1C63FF 0%, #8671F2 100%);
+      border-radius: 9px;
+      overflow: hidden;
+      padding: 20px 21px;
+      .home_notice_top_i {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        z-index: 2;
+        display: block;
+        opacity: 0.2;
+      }
+      .home_notice_top_i1 {
+        width: 102px;
+        height: 102px;
+        right: 35px;
+        top: -40px;
+      }
+      .home_notice_top_i2 {
+        width: 150px;
+        height: 150px;
+        right: -50px;
+        top: -20px;
+      }
+      p {
+        font-size: 19px;
+        color: #FFFFFF;
+        font-weight: 600;
+        line-height: 26px;
+        margin-bottom: 3.5px;
+      }
+      span {
+        font-size: 12px;
+        color: #FFFFFF;
+        line-height: 17px;
+      }
+    }
+    .home_notice_foo {
+      display: flex;
+      align-items: center;
+      margin-top: 14px;
+      .home_notice_foo_tit {
+        font-family: PingFangSC-Medium-oz;
+        font-size: 14px;
+        color: #222222;
+        font-weight: 500;
+        flex-grow: 0;
+        flex-shrink: 0;
+        margin-right: 10px;
+        i {
+          font-size: 14px;
+        }
+      }
+      .home_notice_swiper {
+        width: calc(100% - 70px);
+        .home_notice_swiper_p {
+          width: 100%;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+      }
+      a {
+        flex-grow: 0;
+        flex-shrink: 0;
+      }
+    }
+  }
+  .currency_list {
+    margin-top: 10px;
+    li {
+      margin-bottom: 10px;
+      background: #FFFFFF;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 15px 12px;
+      .currency_icon {
+        display: flex;
+        align-items: center;
+        img {
+          width: 38px;
+          height: 38px;
+          border-radius: 50%;
+        }
+        i {
+          font-size: 38px;
+          color: red;
+        }
+        p {
+          font-size: 15px;
+          color: #333333;
+          margin-left: 10px;
+        }
+      }
+      .currency_money {
+        p {
+          font-family: DINAlternate-Bold-oz;
+          font-size: 16px;
+          color: #333333;
+          text-align: right;
+          font-weight: 700;
+          margin-bottom: 5px;
+        }
+        span {
+          font-family: DINAlternate-Bold-oz;
+          font-size: 12px;
+          color: #999;
+          text-align: right;
+          font-weight: 700;
+          display: block;
         }
       }
     }
