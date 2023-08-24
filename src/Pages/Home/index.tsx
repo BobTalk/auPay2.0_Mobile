@@ -57,7 +57,7 @@ const Home = () => {
                 <Swiper.Item><p className='home_notice_swiper_p'>公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3</p></Swiper.Item>
               </Swiper>
             </div>
-            <Link to='/'><i className='iconfont icon-xiangyou1' /></Link>
+            <Link to='/notice'><i className='iconfont icon-xiangyou1' /></Link>
           </div>
         </div>
 

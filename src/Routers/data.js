@@ -6,6 +6,7 @@ import ResetVerify from '@/Pages/Reset/Verify'
 import ResetNew from '@/Pages/Reset/New'
 import ResetReceipt from '@/Pages/Reset/Receipt'
 import Home from '@/Pages/Home'
+import Notice from '@/Pages/Notice'
 import { Navigate } from 'react-router-dom'
 
 // 如果需要重定向 咋需要把element换成 <Navigate to={ item.to } />
@@ -19,6 +20,7 @@ const RouteList = [
     { label: '重置密码_回执', path: 'receipt', element: <ResetReceipt/> }
   ] },
   { label: '首页', path: '/', element: <Home/> },
+  { label: '公告', path: 'notice', element: <Notice/> },
 
 ]
 export default RouteList
