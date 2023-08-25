@@ -8,7 +8,9 @@ const PublicHead = (props: any) => {
   }
   return (
     <div className='public_head'>
-      <i onClick={ clickBack } className="iconfont icon-icon-arrow-right2"></i>
+      {
+        props.back && <i onClick={ clickBack } className="iconfont icon-icon-arrow-right2"></i>
+      }
       <p className='public_head_tit'>{ props.title }</p>
     </div>
   )

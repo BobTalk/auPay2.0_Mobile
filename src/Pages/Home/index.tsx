@@ -9,7 +9,7 @@ const Home = () => {
   const [ hide, setHide ] = useState(false)
   const hideMoney = () => { setHide(!hide) }
   return (
-    <div className='home_wrap'>
+    <div className='home_wrap nav_h'>
 
       <div className="home_banner public_w">
         <div className='home_banner_info'>

@@ -1,7 +1,5 @@
 .home_wrap {
-  background-color: #F6F6F6;
-  min-height: 100vh;
-  padding-bottom: 88px;
+  background-color: var(--public_bg);
   .home_banner {
     position: relative;
     width: 100%;
@@ -170,51 +168,52 @@
       }
     }
   }
-  .currency_list {
-    margin-top: 10px;
-    li {
-      margin-bottom: 10px;
-      background: #FFFFFF;
-      border-radius: 9px;
+}
+
+.currency_list {
+  margin-top: 10px;
+  li {
+    margin-bottom: 10px;
+    background: #FFFFFF;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 12px;
+    .currency_icon {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      padding: 15px 12px;
-      .currency_icon {
-        display: flex;
-        align-items: center;
-        img {
-          width: 38px;
-          height: 38px;
-          border-radius: 50%;
-        }
-        i {
-          font-size: 38px;
-          color: red;
-        }
-        p {
-          font-size: 15px;
-          color: #333333;
-          margin-left: 10px;
-        }
+      img {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
       }
-      .currency_money {
-        p {
-          font-family: DINAlternate-Bold-oz;
-          font-size: 16px;
-          color: #333333;
-          text-align: right;
-          font-weight: 700;
-          margin-bottom: 5px;
-        }
-        span {
-          font-family: DINAlternate-Bold-oz;
-          font-size: 12px;
-          color: #999;
-          text-align: right;
-          font-weight: 700;
-          display: block;
-        }
+      i {
+        font-size: 38px;
+        color: red;
+      }
+      p {
+        font-size: 15px;
+        color: #333333;
+        margin-left: 10px;
+      }
+    }
+    .currency_money {
+      p {
+        font-family: DINAlternate-Bold-oz;
+        font-size: 16px;
+        color: #333333;
+        text-align: right;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+      span {
+        font-family: DINAlternate-Bold-oz;
+        font-size: 12px;
+        color: #999;
+        text-align: right;
+        font-weight: 700;
+        display: block;
       }
     }
   }
