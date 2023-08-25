@@ -1,9 +1,14 @@
 import PublicHead from '@/Components/PublicHead'
 import PublicFoo from '@/Components/PublicFoo'
 import './index.scss'
+import { useNavigate } from 'react-router-dom'
 const Assets = () => {
   const headData = { title: '资产', back: '' }
-
+  const navigate = useNavigate()
+  const toDetail = () => {
+    console.log('调转')
+    navigate('/assets/detail?id=123')
+  }
   return (
     <div className='public_w assets_w nav_h'>
       <PublicHead { ...headData } />
@@ -14,7 +19,7 @@ const Assets = () => {
         <span className='assets_banner_record'>最近交易：2020-09-17 09:29:08 充币13USDT-TRC20</span>
       </div>
       <ul className='currency_list'>
-        <li>
+        <li onClick={ toDetail }>
           <div className='currency_icon'>
             <i className="iconfont icon-BTC"></i>
             {/* <img src="" alt="" /> */}
