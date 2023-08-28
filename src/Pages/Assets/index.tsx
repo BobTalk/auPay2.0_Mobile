@@ -6,8 +6,8 @@ const Assets = () => {
   const headData = { title: '资产', back: '' }
   const navigate = useNavigate()
   const toDetail = () => {
-    console.log('调转')
-    navigate('/assets/detail?id=123')
+    // navigate('/assets/detail?id=123')
+    navigate('/assets/detail/123')
   }
   return (
     <div className='public_w assets_w nav_h'>

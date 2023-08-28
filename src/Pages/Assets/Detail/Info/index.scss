@@ -1,0 +1,85 @@
+.assets_info {
+  background-color: #1C63FF;
+  padding: 0 15px;
+  min-height: 100vh;
+  .assets_info_form {
+    background: url('~@/Assets/images/assets/infoBg.png') no-repeat;
+    background-size: 100% 100%;
+    width: 100%;
+    padding: 25px 0 37px;
+    margin-top: 20px;
+    .assets_info_form_head {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: DINAlternate-Bold-oz;
+      font-weight: 700;
+      color: #333333;
+      margin-bottom: 20px;
+      .assets_info_form_head_status {
+        .iconfont {
+          font-size: 45px;
+          &.icon-top { color:#1C63FF; }
+        }
+      }
+      p {
+        font-family: inherit;
+        font-size: 25px;
+        text-align: center;
+        line-height: 29px;
+        margin: 20px 0 4px;
+        .iconfont {
+          font-size: 22px;
+          margin-right: 6px;
+        }
+      }
+      span {
+        font-family: inherit;
+        font-size: 14px;
+        color: #333333;
+        text-align: center;
+        line-height: 19px;
+        display: block;
+      }
+    }
+    .assets_info_form_ul {
+      border-top: 1px dashed #DBDBDB;
+      padding-top: 20px;
+      margin-bottom: 15px;
+      li {
+        font-size: 14px;
+        line-height: 20px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        &:nth-last-child(1) { margin-bottom: 0; }
+        p {
+          color: #999999;
+          width: 70px;
+          margin-right: 15px;
+          flex-grow: 0;
+          flex-shrink: 0;
+        }
+        span {
+          color: #333333;
+          text-align: right;
+          width: 100%;
+          display: block;
+          
+        }
+      }
+      .assets_info_form_li_money {
+        font-family: PingFangSC-Medium-oz;
+        font-size: 16px;
+        font-weight: 500;
+      }
+      .assets_info_form_li_number {
+        font-family: PingFangSC-Medium-oz;
+        color: #1C63FF;
+        font-size: 16px;
+      }
+    }
+  }
+}
