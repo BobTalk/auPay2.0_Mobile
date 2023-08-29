@@ -27,6 +27,7 @@ const Detail = () => {
     return setNavK(k)
   }
   const toInfo = () => { navigate(location.pathname + '/info') }
+  const toDeposit = () => { navigate(location.pathname + '/deposit') }
   return (
     <div>
       <div className="assets_detail_banner public_w">
@@ -39,7 +40,7 @@ const Detail = () => {
           </div>
         </div>
         <div className="assets_detail_banner_foo">
-          <p>充币</p>
+          <p onClick={ toDeposit }>充币</p>
           <p>提币</p>
         </div>
       </div>
