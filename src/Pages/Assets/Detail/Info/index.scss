@@ -21,6 +21,8 @@
         .iconfont {
           font-size: 45px;
           &.icon-top { color:#1C63FF; }
+          &.icon-chenggong { color:#52C41A; }
+          &.icon-shibai { color:#E84335; font-weight: 400; }
         }
       }
       p {
@@ -67,7 +69,16 @@
           text-align: right;
           width: 100%;
           display: block;
-          
+        }
+        .assets_info_form_progress {
+          display: flex;
+          .adm-progress-bar {
+            margin-right: 10px;
+            width: 103px;
+            flex-grow: 0;
+            flex-shrink: 0;
+            // --track-color: '#CDE2FF',
+          }
         }
       }
       .assets_info_form_li_money {
@@ -82,4 +93,11 @@
       }
     }
   }
+}
+.goBrowser {
+  display: block;
+  font-size: 14px;
+  color: #FFFFFF !important;
+  text-align: center;
+  margin-top: 100px;
 }
