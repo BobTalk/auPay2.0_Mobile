@@ -1,0 +1,98 @@
+.assets_detail_record {
+  padding: 0 20px;
+  background-color: white;
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 0;
+    border-bottom: 1px solid #DBDBDB;
+    .assets_detail_record_left {
+      display: flex;
+      align-items: center;
+      img {
+        width: 33px;
+        height: 33px;
+        border-radius: 50%;
+      }
+      .assets_detail_record_left_order {
+        margin-left: 12px;
+        width: 123px;
+        overflow: hidden;
+        p {
+          width: 100%;
+          white-space: nowrap;
+          font-size: 15px;
+          color: #333333;
+          line-height: 21px;
+          margin-bottom: 4px;
+        }
+        span {
+          display: block;
+          width: 100%;
+          white-space: nowrap;
+          font-family: ArialMT;
+          font-size: 12px;
+          color: #999999;
+          line-height: 14px;
+        }
+      }
+    }
+    .assets_detail_record_right {
+      font-family: DINAlternate-Bold-oz;
+      font-weight: 700;
+      width: 103px;
+      overflow: hidden;
+      p {
+        width: 100%;
+        white-space: nowrap;
+        font-family: inherit;
+        font-size: 16px;
+        color: #333333;
+        text-align: right;
+        line-height: 19px;
+        margin-bottom: 5px;
+      }
+      span {
+        width: 100%;
+        white-space: nowrap;
+        display: block;
+        font-family: inherit;
+        font-size: 12px;
+        color: #999999;
+        text-align: right;
+        height: 14px;
+        display: block;
+      }
+    }
+  }
+}
+
+.public_filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 15px;
+  margin-top: 15px;
+  margin-right: -8px;
+  .public_filter_i {
+    min-width: 110px;
+    height: 35px;
+    background: #F6F6F6;
+    border-radius: 4px;
+    padding: 0 8px 0 11px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #333333;
+    margin: 0 8px 5px 0;
+    p {
+      font-size: 13px;
+    }
+    i {
+      font-size: 12px;
+      margin-left: 10px;
+      transform: rotateZ(90deg);
+    }
+  }
+}

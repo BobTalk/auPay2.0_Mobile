@@ -19,15 +19,14 @@ const Detail = () => {
   const navigate = useNavigate()
   const params = useParams()
   useEffect(() => {
-    setId(String(params.id))
-    // 用这个id获取数据
+    setId(String(params.id)) // 用这个id获取数据
   }, [])
   const clickNav = (k: any) => {
-    setNavK(k)
+    if (k === 'record') return navigate(location.pathname + '/record')
+    // 这里还要加上获取数据的操作
+    return setNavK(k)
   }
-  const toInfo = () => {
-    navigate(location.pathname + '/info')
-  }
+  const toInfo = () => { navigate(location.pathname + '/info') }
   return (
     <div>
       <div className="assets_detail_banner public_w">

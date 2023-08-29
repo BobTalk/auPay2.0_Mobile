@@ -10,6 +10,8 @@ import Notice from '@/Pages/Notice'
 import Assets from '@/Pages/Assets'
 import AssetsDetail from '@/Pages/Assets/Detail'
 import AssetsDetailInfo from '@/Pages/Assets/Detail/Info'
+import AssetsDetailRecord from '@/Pages/Assets/Detail/Record'
+import AssetsDetailRecordInfo from '@/Pages/Assets/Detail/Record/Info'
 import { Navigate } from 'react-router-dom'
 
 // 如果需要重定向 咋需要把element换成 <Navigate to={ item.to } />
@@ -27,5 +29,7 @@ const RouteList = [
   { label: '资产', path: 'assets', element: <Assets/> },
   { label: '资产详情', path: 'assets/detail/:id', element: <AssetsDetail/> },
   { label: '资产详情信息', path: 'assets/detail/:id/info', element: <AssetsDetailInfo/> },
+  { label: '资产交易记录', path: 'assets/detail/:id/record', element: <AssetsDetailRecord/> },
+  { label: '资产交易记录详情', path: 'assets/detail/:id/record/info/:id', element: <AssetsDetailRecordInfo/> },
 ]
 export default RouteList
