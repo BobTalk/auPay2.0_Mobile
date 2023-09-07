@@ -2,6 +2,7 @@ import PublicHead from '@/Components/PublicHead'
 import './index.scss'
 import DepositBorder from '@/Assets/images/assets/depositBorder.png'
 import QrImg from '@/Assets/images/test/qr.png'
+import PublicCopy from '@/Components/PublicCopy'
 
 const Deposit = () => {
   const headData = { title: '充币USDT-ERC20', back: 'goBack' }
@@ -22,6 +23,7 @@ const Deposit = () => {
           <img className='assets_deposit_qr_info_border assets_deposit_qr_info_border4' src={ DepositBorder } alt="" />
         </div>
       </div>
+      <PublicCopy info='测试信息'/>
     </div>
   )
 }
