@@ -2,6 +2,8 @@
 .copy-box{
   padding:17px 30px;
   border-radius: 15px;
+  grid-template-columns: 1fr 57px;
+  column-gap: 43px;
 }
 .icon-box{
   display: grid;

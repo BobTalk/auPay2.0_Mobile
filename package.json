@@ -13,7 +13,7 @@
     "@types/node": "^16.18.41",
     "@types/react": "^18.2.20",
     "@types/react-dom": "^18.2.7",
-    "antd-mobile": "^5.32.0",
+    "antd-mobile": "^5.32.2",
     "axios": "^1.4.0",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",

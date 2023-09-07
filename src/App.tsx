@@ -7,7 +7,6 @@ import '@/Style/font.scss'
 import '@/Style/public.scss'
 import '@/Assets/icon/iconfont.css'
 import '@/Assets/ali-icon/iconfont.css'
-
 function App() {
   return (
     <HashRouter>
