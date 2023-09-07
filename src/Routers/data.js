@@ -14,7 +14,7 @@ import AssetsDetailRecord from '@/Pages/Assets/Detail/Record'
 import AssetsDetailRecordInfo from '@/Pages/Assets/Detail/Record/Info'
 import AssetsDetailDeposit from '@/Pages/Assets/Detail/Deposit'
 
-import { Navigate } from 'react-router-dom'
+// import { Navigate } from 'react-router-dom'
 
 // 如果需要重定向 咋需要把element换成 <Navigate to={ item.to } />
 const RouteList = [

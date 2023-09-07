@@ -1,37 +1,44 @@
-import { useEffect, useState } from "react"
-import { useLocation, useNavigate, useParams } from "react-router-dom"
-import PublicHead from '@/Components/PublicHead'
-import './index.scss'
-import DepositImg from '@/Assets/images/assets/deposit.png'
-import DrawImg from '@/Assets/images/assets/draw.png'
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import PublicHead from "@/Components/PublicHead";
+import "./index.scss";
+import DepositImg from "@/Assets/images/assets/deposit.png";
+import DrawImg from "@/Assets/images/assets/draw.png";
 
 const Detail = () => {
-  const headData = { title: 'BTC', back: '/assets', textColor: 'white' }
+  const headData = { title: "BTC", back: "/assets", textColor: "white" };
   const nav = [
-    { label: '全部', value: 'all' },
-    { label: '充币', value: 'deposit' },
-    { label: '提币', value: 'draw' },
-    { label: '交易记录', value: 'record' },
-  ]
-  const [ navK, setNavK ] = useState('all')
-  const [ id, setId ] = useState('')
-  const location = useLocation()
-  const navigate = useNavigate()
-  const params = useParams()
+    { label: "全部", value: "all" },
+    { label: "充币", value: "deposit" },
+    { label: "提币", value: "draw" },
+    { label: "交易记录", value: "record" },
+  ];
+  const [navK, setNavK] = useState("all");
+  // eslint-disable-next-line
+  const [id, setId] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params:any = useParams();
   useEffect(() => {
-    setId(String(params.id)) // 用这个id获取数据
-  }, [])
+    // eslint-disable-next-line
+    setId(params.id ??''); // 用这个id获取数据
+    // eslint-disable-next-line
+  }, []);
   const clickNav = (k: any) => {
-    if (k === 'record') return navigate(location.pathname + '/record')
+    if (k === "record") return navigate(location.pathname + "/record");
     // 这里还要加上获取数据的操作
-    return setNavK(k)
-  }
-  const toInfo = () => { navigate(location.pathname + '/info') }
-  const toDeposit = () => { navigate(location.pathname + '/deposit') }
+    return setNavK(k);
+  };
+  const toInfo = () => {
+    navigate(location.pathname + "/info");
+  };
+  const toDeposit = () => {
+    navigate(location.pathname + "/deposit");
+  };
   return (
     <div>
       <div className="assets_detail_banner public_w">
-        <PublicHead { ...headData } />
+        <PublicHead {...headData} />
         <div className="assets_detail_banner_top">
           <i className="iconfont icon-BTC"></i>
           <div className="assets_detail_banner_top_txt">
@@ -40,22 +47,28 @@ const Detail = () => {
           </div>
         </div>
         <div className="assets_detail_banner_foo">
-          <p onClick={ toDeposit }>充币</p>
+          <p onClick={toDeposit}>充币</p>
           <p>提币</p>
         </div>
       </div>
       <div className="assets_detail_content">
         <ul className="assets_detail_nav">
-          {
-            nav.map(item => {
-              return <li onClick={ () => clickNav(item.value) } key={ item.value } className={ navK === item.value ? 'cur' : '' }>{ item.label }</li>
-            })
-          }
+          {nav.map((item) => {
+            return (
+              <li
+                onClick={() => clickNav(item.value)}
+                key={item.value}
+                className={navK === item.value ? "cur" : ""}
+              >
+                {item.label}
+              </li>
+            );
+          })}
         </ul>
         <ul className="assets_detail_record">
-          <li onClick={ toInfo }>
+          <li onClick={toInfo}>
             <div className="assets_detail_record_left">
-              <img src={ DepositImg } alt="" />
+              <img src={DepositImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -68,7 +81,7 @@ const Detail = () => {
           </li>
           <li>
             <div className="assets_detail_record_left">
-              <img src={ DrawImg } alt="" />
+              <img src={DrawImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -81,7 +94,7 @@ const Detail = () => {
           </li>
           <li>
             <div className="assets_detail_record_left">
-              <img src={ DepositImg } alt="" />
+              <img src={DepositImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -94,7 +107,7 @@ const Detail = () => {
           </li>
           <li>
             <div className="assets_detail_record_left">
-              <img src={ DrawImg } alt="" />
+              <img src={DrawImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -107,7 +120,7 @@ const Detail = () => {
           </li>
           <li>
             <div className="assets_detail_record_left">
-              <img src={ DepositImg } alt="" />
+              <img src={DepositImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -120,7 +133,7 @@ const Detail = () => {
           </li>
           <li>
             <div className="assets_detail_record_left">
-              <img src={ DrawImg } alt="" />
+              <img src={DrawImg} alt="" />
               <div className="assets_detail_record_left_order">
                 <p>payme…9500001</p>
                 <span>2023-06-30 18:17:47</span>
@@ -134,6 +147,6 @@ const Detail = () => {
         </ul>
       </div>
     </div>
-  )
-}
-export default Detail
+  );
+};
+export default Detail;
