@@ -1,7 +1,6 @@
 import { Ellipsis } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
-import { defaultProps } from "antd-mobile/es/components/pull-to-refresh/pull-to-refresh";
 import { useCallback } from "react";
 type propsVali = {
   info: string;
@@ -11,7 +10,8 @@ type propsVali = {
   iconSize?: string;
   iconColor?: string;
   textStyle?: Object;
-  [key: string]: any;
+  style?:Object
+  click:Function
 };
 
 const PublicCopy = (props: propsVali) => {
@@ -26,10 +26,10 @@ const PublicCopy = (props: propsVali) => {
         styleScope["copy-box"],
         "cursor-pointer grid items-center"
       )}
-      style={{ background: props.bgcolor, ...props.textStyle }}
+      style={{ background: props.bgcolor, ...props.style }}
     >
       <Ellipsis
-        style={{ overflowWrap: "anywhere" }}
+        style={{ overflowWrap: "anywhere",...props.textStyle }}
         direction={props.direction}
         rows={props.rows}
         content={props.info}
@@ -51,6 +51,7 @@ PublicCopy.defaultProps = {
   iconSize: "34px",
   iconColor: "#919191",
   textStyle:{},
+  style:{},
   click:()=>{}
 };
 export default PublicCopy;

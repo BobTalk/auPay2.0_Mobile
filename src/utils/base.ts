@@ -1,5 +1,5 @@
 const mergeClassName = (...arg:string[])=>{
-  return arg.join(" ")
+  return arg.join(" ").trim()
 }
 
 export {
