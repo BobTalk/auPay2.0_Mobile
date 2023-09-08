@@ -3,9 +3,20 @@ import PublicInput from "@/Components/PublicInput";
 import PublicSummary from "@/Components/PublicSummary";
 import { Button } from "antd-mobile";
 const DrawMoney = () => {
-  const headInfo = { title: "提币USDT-ERC20", back: "goBack" };
+  const headInfo = {
+    title: "提币USDT-ERC20",
+    back: "goBack",
+    titleStyle: {
+      fontSize: ".34rem",
+      color: "#333",
+      fontWeight: 700,
+    },
+    iconStyle: {
+      fontSize: ".34rem",
+    },
+  };
   return (
-    <div className="mx-[.3rem] mb-[.3rem]">
+    <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
       <PublicHead {...headInfo} />
       <PublicInput
         placeholder="请输入提币地址"
