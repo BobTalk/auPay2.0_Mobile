@@ -1,7 +1,15 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import PublicSummary from "@/Components/PublicSummary";
-import { Button } from "antd-mobile";
+import { Button, Popup } from "antd-mobile";
+import { memo, useState } from "react";
+// 弹窗属性类型
+type PopupCompType = {
+  visible: boolean;
+  cancel: Function;
+  submit: Function;
+};
+// 提币
 const DrawMoney = () => {
   const headInfo = {
     title: "提币USDT-ERC20",
@@ -14,6 +22,16 @@ const DrawMoney = () => {
     iconStyle: {
       fontSize: ".34rem",
     },
+  };
+  const [popupVisible, setPopupVisible] = useState(false);
+  const submitDraw = () => {
+    setPopupVisible(!popupVisible);
+  };
+  const submitPopup = () => {
+    submitDraw();
+  };
+  const cancelPopup = () => {
+    submitDraw();
   };
   return (
     <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
@@ -71,6 +89,7 @@ const DrawMoney = () => {
         </li>
       </ul>
       <Button
+        onClick={submitDraw}
         block
         color="primary"
         className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
@@ -99,9 +118,15 @@ const DrawMoney = () => {
           "请务必确认电脑及浏览器安全，防止信息被篡改或泄露",
         ]}
       />
+      <PopupComp
+        submit={submitPopup}
+        cancel={cancelPopup}
+        visible={popupVisible}
+      />
     </div>
   );
 };
+// 提币地址
 const TopScopeAddr = () => {
   return (
     <div className="flex items-center justify-between text-[.28rem] font-[700] text-[#333] mb-[.17rem]">
@@ -110,6 +135,7 @@ const TopScopeAddr = () => {
     </div>
   );
 };
+// 提币数量
 const TopScopeNum = () => {
   return (
     <div className="flex items-center justify-between text-[.28rem] font-[700] text-[#333] mb-[.17rem]">
@@ -121,6 +147,7 @@ const TopScopeNum = () => {
     </div>
   );
 };
+// 提币数量描述
 const BottomScopeNum = () => {
   return (
     <p className="mt-[.15rem] text-[.24rem] text-[#999]">
@@ -129,4 +156,53 @@ const BottomScopeNum = () => {
     </p>
   );
 };
+// 确认弹窗
+const PopupComp = memo((props: PopupCompType) => {
+  return (
+    <Popup
+      visible={props.visible}
+      onMaskClick={() => {
+        props?.cancel();
+      }}
+      bodyStyle={{
+        borderTopLeftRadius: "8px",
+        borderTopRightRadius: "8px",
+        minHeight: "40vh",
+        padding: ".4rem .3rem .1rem .3rem",
+      }}
+    >
+      <p className="text-[.32rem] text-[#333] font-[700] text-center">
+        密码验证
+      </p>
+      <PublicInput
+        placeholder="请输入资金密码"
+        className="mt-[.25rem]"
+        inputStyle={{
+          height: ".4rem",
+          fontSize: ".28rem",
+        }}
+        top={<p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>}
+      />
+      <PublicInput
+        placeholder="请输入Google验证码"
+        className="mt-[.25rem]"
+        inputStyle={{
+          height: ".4rem",
+          fontSize: ".28rem",
+        }}
+        top={
+          <p className="text-[.28rem] text-[#333] mb-[.16rem]">Google验证码</p>
+        }
+      />
+      <Button
+        onClick={() => props?.submit()}
+        block
+        color="primary"
+        className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+      >
+        确认
+      </Button>
+    </Popup>
+  );
+});
 export default DrawMoney;
