@@ -1,15 +1,15 @@
 
 .copy-box{
-  padding:17px 30px;
-  border-radius: 15px;
-  grid-template-columns: 1fr 57px;
-  column-gap: 43px;
+  padding:.17rem .3rem;
+  border-radius: .15rem;
+  grid-template-columns: 1fr .57rem;
+  column-gap: .43rem;
 }
 .icon-box{
   display: grid;
-  width: 57px;
-  height: 57px;
+  width: .57rem;
+  height: .57rem;
   border: 1px solid #c1c1c1;
   place-items: center;
-  border-radius: 8px;
+  border-radius: .08rem;
 }

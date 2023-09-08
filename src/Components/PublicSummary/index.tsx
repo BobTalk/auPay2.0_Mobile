@@ -47,7 +47,7 @@ PublicSummary.defaultProps = {
     '转入是自动的，USDT-ERC20转账需要整个网络进行确认，达到6个区块确认后您的USDT-ERC20会自动充值到您的账户中',
     '此地址是您的唯一且独自使用的转入地址，您可以同时进行多次充值'
   ],
-  iconSize: "32px",
+  iconSize: ".32rem",
   iconStyle: {},
   titleStyle:{},
   summaryStyle:{},

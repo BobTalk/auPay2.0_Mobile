@@ -4,7 +4,7 @@ import App from './App';
 import './index.css';
 import './tailwind.css'
 import reportWebVitals from './reportWebVitals';
-
+import "./utils/flexible.js";
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

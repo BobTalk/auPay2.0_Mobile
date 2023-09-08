@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
 const resolve = require('resolve');
+const pxtorem = require('postcss-pxtorem');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const InlineChunkHtmlPlugin = require('react-dev-utils/InlineChunkHtmlPlugin');
@@ -147,6 +148,8 @@ module.exports = function (webpackEnv) {
                   // so that it honors browserslist config in package.json
                   // which in turn let's users customize the target behavior as per their needs.
                   'postcss-normalize',
+                  // 新增 pxtorem
+                  // pxtorem({rootValue:75,unitPrecision:3, propList:['*']})
                 ]
               : [
                   'tailwindcss',
@@ -160,6 +163,8 @@ module.exports = function (webpackEnv) {
                       stage: 3,
                     },
                   ],
+                   // 新增 pxtorem
+                  //  pxtorem({rootValue:75,unitPrecision:3, propList:['*']})
                 ],
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,

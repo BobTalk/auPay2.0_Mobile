@@ -48,7 +48,7 @@ PublicCopy.defaultProps = {
   direction: "end",
   info: "",
   bgcolor: "#F6F6F6",
-  iconSize: "34px",
+  iconSize: ".34rem",
   iconColor: "#919191",
   textStyle:{},
   style:{},

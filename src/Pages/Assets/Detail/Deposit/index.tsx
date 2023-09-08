@@ -44,8 +44,15 @@ const Deposit = () => {
         </div>
       </div>
       <PublicCopy
+        textStyle={{
+          fontSize: ".28rem",
+          color: "#333",
+          letterSpacing: 0,
+          textAlign: "justify",
+          fontWeight: 400,
+        }}
         rows={2}
-        style={{ marginTop: "50px" }}
+        style={{ marginTop: ".5rem" }}
         info="TQCNPKq3sLCW6ffsFPd3ZqYyt6HFKNBUTbTQCNPKq3sLCW6ffsFPd3ZqYy"
         click={iconClick}
       />
@@ -54,20 +61,20 @@ const Deposit = () => {
           color: "#2563f5",
         }}
         titleStyle={{
-          fontSize: "32px",
+          fontSize: ".32rem",
           color: "#333",
           letterSpacing: 0,
           fontWeight: 500,
         }}
         summaryStyle={{
-          fontSize: "28px",
+          fontSize: ".28rem",
           color: "#999",
           letterSpacing: 0,
           textAlign: "justify",
-          lineHeight: "38px",
+          lineHeight: ".38rem",
           fontWeight: 400,
         }}
-        style={{ marginTop: "70px" }}
+        style={{ marginTop: ".7rem" }}
       />
     </div>
   );
