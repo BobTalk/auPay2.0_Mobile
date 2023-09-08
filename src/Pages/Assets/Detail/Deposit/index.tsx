@@ -53,7 +53,7 @@ const Deposit = () => {
         }}
         rows={2}
         style={{ marginTop: ".5rem" }}
-        info="TQCNPKq3sLCW6ffsFPd3ZqYyt6HFKNBUTbTQCNPKq3sLCW6ffsFPd3ZqYy"
+        info="TQCNPKq3sLCW6ffsFPd3ZqYyt6HFKNBUTbTQCNPKq3sLCW6ffsFPd3ZqYyFPd3ZqYyFPd3ZqYy"
         click={iconClick}
       />
       <PublicSummary
