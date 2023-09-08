@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
+import styled from "styled-components";
 type propsVolit = {
   top?: any;
   bottom?: any;
@@ -19,6 +20,7 @@ const PublicInput = (props: propsVolit) => {
   const valChange = debounce((val) => {
     props.input?.(val);
   }, 1000);
+  
   return (
     <div
       className={mergeClassName(styleScope["input-module"], props.className)}

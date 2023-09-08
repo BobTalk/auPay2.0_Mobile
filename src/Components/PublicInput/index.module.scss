@@ -3,4 +3,8 @@
   padding: .29rem .24rem;
   box-sizing: border-box;
   background-color: #f6f6f6;
+  :global(.adm-input-element){
+    height: inherit;
+    font-size: inherit;
+  }
 }

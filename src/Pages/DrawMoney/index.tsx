@@ -19,6 +19,10 @@ const DrawMoney = () => {
       <PublicInput
         placeholder="0.00 USDT-ERC20"
         className="mt-[.34rem]"
+        inputStyle={{
+          height: ".4rem",
+          fontSize: ".28rem",
+        }}
         top={<TopScopeNum />}
         bottom={<BottomScopeNum />}
       >
