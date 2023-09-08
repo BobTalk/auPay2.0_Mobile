@@ -8,6 +8,7 @@ type PopupCompType = {
   visible: boolean;
   cancel: Function;
   submit: Function;
+  isSelect?: boolean;
 };
 // 提币
 const DrawMoney = () => {
@@ -24,6 +25,7 @@ const DrawMoney = () => {
     },
   };
   const [popupVisible, setPopupVisible] = useState(false);
+  const [isSelect, setIsSelect] = useState(true);
   const submitDraw = () => {
     setPopupVisible(!popupVisible);
   };
@@ -37,14 +39,17 @@ const DrawMoney = () => {
     <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
       <PublicHead {...headInfo} />
       <PublicInput
-        placeholder="请输入提币地址"
+        placeholder={`请${isSelect ? "选择" : "输入"}提币地址`}
         className="mt-[.25rem]"
+        isSelect={isSelect}
         inputStyle={{
           height: ".4rem",
           fontSize: ".28rem",
         }}
-        top={<TopScopeAddr />}
-      />
+        top={<TopScopeAddr isSelect={isSelect} />}
+      >
+        {isSelect && <i className="iconfont icon-zhankai text-[.26rem]" />}
+      </PublicInput>
       <PublicInput
         placeholder="0.00 USDT-ERC20"
         className="mt-[.34rem]"
@@ -69,16 +74,14 @@ const DrawMoney = () => {
             提币手续费
           </span>
           <span className="text-[.28rem] text-[#666]">
-            <span>3</span>
+            <span>3&ensp;</span>
             <span>USDT-ERC20</span>
           </span>
         </li>
         <li className="flex justify-between items-center mt-[.34rem]">
-          <span className="text-[.28rem] text-[#333] font-[700]">
-            提币手续费
-          </span>
+          <span className="text-[.28rem] text-[#333] font-[700]">到账数量</span>
           <span className="text-[.28rem] text-[#666]">
-            <span>3</span>
+            <span>9&ensp;</span>
             <span>USDT-ERC20</span>
           </span>
         </li>
@@ -119,6 +122,7 @@ const DrawMoney = () => {
         ]}
       />
       <PopupComp
+        isSelect={isSelect}
         submit={submitPopup}
         cancel={cancelPopup}
         visible={popupVisible}
@@ -127,11 +131,11 @@ const DrawMoney = () => {
   );
 };
 // 提币地址
-const TopScopeAddr = () => {
+const TopScopeAddr = (props: { isSelect?: boolean }) => {
   return (
     <div className="flex items-center justify-between text-[.28rem] font-[700] text-[#333] mb-[.17rem]">
-      <p>输入提币地址</p>
-      <i className="text-[.34rem] iconfont icon-saoyisao_huaban" />
+      <p>{`${props.isSelect ? "选择" : "输入"}提币地址`}</p>
+      <i className="text-[.34rem] iconfont icon-saoyisao" />
     </div>
   );
 };
@@ -174,6 +178,7 @@ const PopupComp = memo((props: PopupCompType) => {
       <p className="text-[.32rem] text-[#333] font-[700] text-center">
         密码验证
       </p>
+
       <PublicInput
         placeholder="请输入资金密码"
         className="mt-[.25rem]"
@@ -183,17 +188,21 @@ const PopupComp = memo((props: PopupCompType) => {
         }}
         top={<p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>}
       />
-      <PublicInput
-        placeholder="请输入Google验证码"
-        className="mt-[.25rem]"
-        inputStyle={{
-          height: ".4rem",
-          fontSize: ".28rem",
-        }}
-        top={
-          <p className="text-[.28rem] text-[#333] mb-[.16rem]">Google验证码</p>
-        }
-      />
+      {!props.isSelect && (
+        <PublicInput
+          placeholder="请输入Google验证码"
+          className="mt-[.25rem]"
+          inputStyle={{
+            height: ".4rem",
+            fontSize: ".28rem",
+          }}
+          top={
+            <p className="text-[.28rem] text-[#333] mb-[.16rem]">
+              Google验证码
+            </p>
+          }
+        />
+      )}
       <Button
         onClick={() => props?.submit()}
         block

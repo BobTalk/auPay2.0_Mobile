@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
-import styled from "styled-components";
 type propsVolit = {
   top?: any;
   bottom?: any;
@@ -15,12 +14,18 @@ type propsVolit = {
   inputStyle?: Object;
   input?: Function;
   className: string;
+  isSelect: boolean;
+  inputBoxStyle?:Object;
+  click?: Function
 };
 const PublicInput = (props: propsVolit) => {
   const valChange = debounce((val) => {
     props.input?.(val);
   }, 1000);
-  
+const selectChange = (e:any)=>{
+  e.stopPropagation();
+  props.click?.(e)
+}
   return (
     <div
       className={mergeClassName(styleScope["input-module"], props.className)}
@@ -32,15 +37,30 @@ const PublicInput = (props: propsVolit) => {
           styleScope["input-box"],
           "flex items-center whitespace-nowrap"
         )}
+        style={props.inputBoxStyle}
       >
-        <Input
-          className="mr-[8px]"
-          style={props.inputStyle}
-          placeholder={props.placeholder}
-          value={props.value}
-          onChange={valChange}
-          disabled={props.disabled}
-        />
+        {!props.isSelect ? (
+          <Input
+            className="mr-[8px]"
+            style={props.inputStyle}
+            placeholder={props.placeholder}
+            value={props.value}
+            onChange={valChange}
+            disabled={props.disabled}
+          />
+        ) : (
+          <div className="flex-1 mr-[8px]" onClick={(e)=>selectChange(e)}>
+            {props.value ? (
+              <span style={props.inputStyle} className="text-[#333]">
+                {props.value}
+              </span>
+            ) : (
+              <span style={props.inputStyle} className="text-[#ccc]">
+                {props.placeholder}
+              </span>
+            )}
+          </div>
+        )}
         {props.children}
       </div>
       {props.bottom}
@@ -58,5 +78,8 @@ PublicInput.defaultProps = {
   inputStyle: {},
   input: () => {},
   className: "",
+  isSelect: false,
+  inputBoxStyle:{},
+  click:()=>{}
 };
 export default PublicInput;
