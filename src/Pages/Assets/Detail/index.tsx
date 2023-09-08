@@ -53,10 +53,8 @@ const Detail = () => {
   // 资产数据
   let [capital, setCapital] = useState(ExtractAndRecharge);
   useEffect(() => {
-    // eslint-disable-next-line
     setId(params.id ?? ""); // 用这个id获取数据
-    // eslint-disable-next-line
-  }, []);
+  }, [params]);
   // 充币
   const DepositFn = (): any => {
     const DepositData = ExtractAndRecharge.filter((item) => item.type == 1);
@@ -74,7 +72,7 @@ const Detail = () => {
   const FnMap = new Map([
     ["deposit", DepositFn],
     ["draw", DrawFn],
-    ["all", AllFn]
+    ["all", AllFn],
   ]);
   const clickNav = (k: string) => {
     if (k === "record") return navigate(location.pathname + "/record");
@@ -87,6 +85,9 @@ const Detail = () => {
   const toDeposit = () => {
     navigate(location.pathname + "/deposit");
   };
+  const toDraw = ()=>{
+    navigate('/draw')
+  }
   return (
     <div>
       <div className={styleScope["assets_detail_banner"] + " public_w"}>
@@ -100,7 +101,7 @@ const Detail = () => {
         </div>
         <div className={styleScope["assets_detail_banner_foo"]}>
           <p onClick={toDeposit}>充币</p>
-          <p>提币</p>
+          <p onClick={toDraw}>提币</p>
         </div>
       </div>
       <div className={styleScope["assets_detail_content"]}>
@@ -129,11 +130,15 @@ const OrderItem = (props: any) => {
   let { orderData } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  const toInfo = (crt:ExtractAndRechargeType) => {
-    encrypt(crt.type+'').then(type =>  navigate(location.pathname + `/info?module=${type}`))
+  const toInfo = (crt: ExtractAndRechargeType) => {
+    let type = encrypt(crt.type + "");
+    let currency = encrypt(crt.currency);
+    navigate(location.pathname + `/info`, {
+      state: { module: type, currency },
+    });
   };
   return orderData.map((item: ExtractAndRechargeType) => (
-    <li key={item.id} onClick={()=>toInfo(item)}>
+    <li key={item.id} onClick={() => toInfo(item)}>
       <div className="assets_detail_record_left">
         <img src={item.type == 1 ? DepositImg : DrawImg} alt="" />
         <div className="assets_detail_record_left_order">
