@@ -1,0 +1,11 @@
+.list_box {
+  height: 100vh;
+  background: url('../Assets/images/bg.png') no-repeat;
+  background-size: cover;
+
+  :global(.adm-avatar-fallback) {
+    use{
+      fill: #FFF
+    }
+  }
+}

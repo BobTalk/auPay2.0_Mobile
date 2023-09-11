@@ -1,10 +1,11 @@
 import "./index.scss";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { mergeClassName } from "@/utils/base";
 
-const PublicFoo = () => {
+const PublicFoo = (props: any) => {
   const [curK, setCurK] = useState("/");
-  const clientW = document.documentElement.clientWidth
+  const clientW = document.documentElement.clientWidth;
   const location = useLocation();
   const navigate = useNavigate();
   const navList = [
@@ -19,11 +20,17 @@ const PublicFoo = () => {
     navigate(path);
   };
   return (
-    <div className="footer-nav_box">
+    <div
+      className={mergeClassName(
+        "footer-nav_box",
+        `${clientW > 750 && "left-[50%] translate-x-[-50%]"}`
+      )}
+      style={props.style}
+    >
       <ul
         className="public_foo_nav"
         style={{
-          width: clientW > 750 ? "750px" :`${clientW}px`,
+          width: clientW > 750 ? "750px" : `${clientW}px`,
         }}
       >
         {navList.map((item) => {

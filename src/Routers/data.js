@@ -14,6 +14,7 @@ import AssetsDetailRecord from '@/Pages/Assets/Detail/Record'
 import AssetsDetailRecordInfo from '@/Pages/Assets/Detail/Record/Info'
 import AssetsDetailDeposit from '@/Pages/Assets/Detail/Deposit'
 import DrawMoney from '@/Pages/DrawMoney'
+import MyModule from '@/Pages/My/List'
 
 // import { Navigate } from 'react-router-dom'
 
@@ -41,6 +42,11 @@ const RouteList = [
     label: '提币',
     path: 'draw',
     element: <DrawMoney />
+  },
+  {
+    label: '我的',
+    path: 'my',
+    element: <MyModule />
   }
 ]
 export default RouteList

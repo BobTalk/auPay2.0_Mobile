@@ -58,11 +58,14 @@ const getQueryObject = (url: string): object => {
   })
   return obj
 }
-
+const dataType = (obj:any)=>{
+  return Object.prototype.toString.call(obj).slice(8,-1).toLocaleLowerCase()
+}
 export {
   mergeClassName,
   encrypt,
   decrypt,
   thousands,
-  getQueryObject
+  getQueryObject,
+  dataType
 }
