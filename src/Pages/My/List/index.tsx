@@ -5,13 +5,17 @@ import whiteImg from "../Assets/images/white-menu.png";
 import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
+import { useNavigate } from "react-router-dom";
 const MyList = () => {
+  const navigate = useNavigate();
   const listInfo = [
     {
       id: "1",
       icon: "icon-jilu",
       title: "交易记录",
+      type: "bussion",
       style: {},
+      path: "",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -26,7 +30,9 @@ const MyList = () => {
     {
       id: "2",
       icon: "icon-zhanghuxinxi",
+      path: "accountInfor",
       title: "账户信息",
+      type: "account",
       style: {},
       className: "",
       itemStyle: {
@@ -43,6 +49,7 @@ const MyList = () => {
       id: "3",
       icon: "icon-anquan",
       title: "安全信息",
+      type: "secure",
       style: {},
       className: "",
       itemStyle: {
@@ -59,9 +66,10 @@ const MyList = () => {
   const listInfo1 = [
     {
       id: "11",
-      icon: require('../Assets/images/pact.png'),
+      icon: require("../Assets/images/pact.png"),
       title: "用户协议",
       style: {},
+      type: "agree",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -70,15 +78,16 @@ const MyList = () => {
       itemClass: "",
       imgStyle: {
         width: ".4rem",
-        heigth:'.4rem',
+        heigth: ".4rem",
         marginLeft: ".3rem",
       },
     },
     {
       id: "21",
-      icon: require('../Assets/images/privacy.png'),
+      icon: require("../Assets/images/privacy.png"),
       title: "隐私政策",
       style: {},
+      type: "privacy",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -87,15 +96,16 @@ const MyList = () => {
       itemClass: "",
       imgStyle: {
         width: ".4rem",
-        heigth:'.4rem',
+        heigth: ".4rem",
         marginLeft: ".3rem",
       },
     },
     {
       id: "31",
-      icon: require('../Assets/images/about_us.png'),
+      icon: require("../Assets/images/about_us.png"),
       title: "关于我们",
       style: {},
+      type: "aboutAs",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -104,19 +114,20 @@ const MyList = () => {
       itemClass: "",
       imgStyle: {
         width: ".4rem",
-        heigth:'.4rem',
+        heigth: ".4rem",
         marginLeft: ".3rem",
       },
     },
     {
       id: "41",
-      icon: require('../Assets/images/contact.png'),
+      icon: require("../Assets/images/contact.png"),
       title: "联系我们",
       style: {},
+      type: "linkAs",
       className: "",
       imgStyle: {
         width: ".4rem",
-        heigth:'.4rem',
+        heigth: ".4rem",
         marginLeft: ".3rem",
       },
       itemClass: "",
@@ -127,9 +138,10 @@ const MyList = () => {
     },
     {
       id: "51",
-      icon: require('../Assets/images/Ozfund.png'),
+      icon: require("../Assets/images/Ozfund.png"),
       title: "Ozfund",
       style: {},
+      type: "Ozfund",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -138,7 +150,7 @@ const MyList = () => {
       itemClass: "",
       imgStyle: {
         width: ".4rem",
-        heigth:'.4rem',
+        heigth: ".4rem",
         marginLeft: ".3rem",
       },
     },
@@ -148,6 +160,7 @@ const MyList = () => {
       id: "61",
       icon: "icon-tuichudenglu",
       title: "退出登录",
+      type: "loginOut",
       style: {},
       className: "",
       itemStyle: {
@@ -162,8 +175,10 @@ const MyList = () => {
     },
   ];
   //每一项点击事件
-  const itemClick = (crt: object) => {
+  const itemClick = (crt: any) => {
     console.log(crt, "---");
+    let path = crt?.path;
+    path && navigate(`/my/${path}`);
   };
   return (
     <div
@@ -204,7 +219,9 @@ const MyList = () => {
       <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo} />
       <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo1} />
       <PublicList click={itemClick} className="my-[.3rem]" list={listInfo2} />
-      <PublicFoo style={{position: 'static',visibility:'hidden',overflow:'hidden' }} />
+      <PublicFoo
+        style={{ position: "static", visibility: "hidden", overflow: "hidden" }}
+      />
       <PublicFoo />
     </div>
   );

@@ -7,6 +7,7 @@ interface propsTs {
   textColor?: String; // 颜色 目前只有默认和’white‘两种
   iconStyle?: Object;
   titleStyle?: Object;
+  style?: Object;
 }
 
 const PublicHead = (props: propsTs) => {
@@ -17,6 +18,7 @@ const PublicHead = (props: propsTs) => {
   };
   return (
     <div
+      style={props.style}
       className={
         props.textColor === "white"
           ? "public_head public_head_white"
@@ -39,5 +41,9 @@ const PublicHead = (props: propsTs) => {
 PublicHead.defaultProps = {
   iconStyle: {},
   titleStyle: {},
+  style: {},
+  title: "",
+  back: "",
+  textColor: "",
 };
 export default PublicHead;

@@ -2,6 +2,11 @@
   :global(.adm-list-body) {
     border-top: 0;
     border-bottom: 0;
+    :global(.adm-list-item){
+      &:active:not(.adm-list-item-disabled){
+        background-color: transparent;
+      }
+    }
     :global(.adm-list-item-content-main){
       padding: .26rem 0;
     }
