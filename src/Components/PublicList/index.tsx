@@ -1,6 +1,17 @@
 import { dataType, mergeClassName } from "@/utils/base";
 import { List } from "antd-mobile";
 import styleScope from "./index.module.scss";
+import styled from "styled-components";
+import { ReactNode } from "react";
+const ListComp = styled.div`
+  .adm-list-item-content-arrow {
+    .iconfont {
+      font-size: ${(props: any) => {
+        return props.arrowStyle?.fontSize ?? "1em"
+      }};
+    }
+  }
+`;
 type itemType = {
   icon?: any;
   id: string | number;
@@ -13,14 +24,17 @@ type itemType = {
   imgStyle?: Object;
   imgClass?: string;
   extra?: any;
+  showArrow?: boolean;
 };
 type publicListType = {
   className?: string;
   itemClass?: string;
   itemStyle?: Object;
   style?: Object;
+  arrowComp?: boolean | ReactNode;
   list: Array<itemType>;
   click?: Function;
+  arrowStyle?: Object;
 };
 type listItemType = {
   itemInfo: itemType;
@@ -39,6 +53,8 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
         <ListItem
           click={(crt: listItemType) => props.click?.(crt)}
           key={item.id}
+          arrowStyle={props.arrowStyle}
+          arrowComp={props.arrowComp}
           itemInfo={item}
         />
       ))}
@@ -51,7 +67,7 @@ const ListItem = (props: listItemType) => {
     props.click(crt);
   };
   return (
-    <div className={mergeClassName("flex items-center")}>
+    <ListComp {...props} className={mergeClassName("flex items-center")}>
       {dataType(props.itemInfo.icon) === "object" ? (
         <>{props.itemInfo.icon}</>
       ) : props.itemInfo.icon?.startsWith("icon") ? (
@@ -70,6 +86,8 @@ const ListItem = (props: listItemType) => {
         )
       )}
       <List.Item
+        clickable={false}
+        arrow={props.itemInfo.showArrow ? props.arrowComp : false}
         className={mergeClassName(
           "flex-1",
           `${props.itemInfo.itemClass ?? ""}`
@@ -80,7 +98,7 @@ const ListItem = (props: listItemType) => {
       >
         {props.itemInfo.title}
       </List.Item>
-    </div>
+    </ListComp>
   );
 };
 ListItem.defaultProps = {
@@ -95,13 +113,14 @@ ListItem.defaultProps = {
     iconStyle: {},
     imgStyle: {},
     imgClass: "",
-    extra:<></>
+    extra: <></>,
   },
 };
 PublicList.defaultProps = {
   className: "",
   itemClass: "",
   itemStyle: {},
+  arrowStyle: { fontSize: "1em" },
   style: {},
   click: () => {},
   list: [
@@ -116,6 +135,7 @@ PublicList.defaultProps = {
       iconStyle: {},
       imgStyle: {},
       imgClass: "",
+      showArrow: false,
     },
   ],
 };

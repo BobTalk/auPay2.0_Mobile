@@ -22,6 +22,7 @@ const AccountInformation = () => {
     {
       id: "00",
       title: "头像",
+      showArrow:true,
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -34,6 +35,7 @@ const AccountInformation = () => {
     {
       id: "01",
       title: "昵称",
+      showArrow:true,
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -61,7 +63,7 @@ const AccountInformation = () => {
   return (
     <>
       <PublicHead {...headData} />
-      <PublicList list={listInfo} style={{ padding: "0 .3rem" }} />
+      <PublicList list={listInfo} arrowStyle={{fontSize: '.2rem'}} arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>} style={{ padding: "0 .3rem" }} />
       <PopupComp
         visible={popupVisible}
         click={(rs: boolean) => avatarClickEvent(rs)}
