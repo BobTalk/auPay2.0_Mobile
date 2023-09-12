@@ -1,4 +1,4 @@
-import { Avatar, Card } from "antd-mobile";
+import { Avatar, Card, Popup } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import whiteImg from "../Assets/images/white-menu.png";
@@ -6,6 +6,7 @@ import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
+import { memo, useState } from "react";
 const MyList = () => {
   const navigate = useNavigate();
   const listInfo = [
@@ -174,11 +175,15 @@ const MyList = () => {
       },
     },
   ];
+  const [popupVisible, setPopupVisible] = useState(false);
   //每一项点击事件
   const itemClick = (crt: any) => {
     console.log(crt, "---");
     let path = crt?.path;
     path && navigate(`/my/${path}`);
+  };
+  const signOut = () => {
+    setPopupVisible(!popupVisible);
   };
   return (
     <div
@@ -218,11 +223,12 @@ const MyList = () => {
       </div>
       <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo} />
       <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo1} />
-      <PublicList click={itemClick} className="my-[.3rem]" list={listInfo2} />
+      <PublicList click={signOut} className="my-[.3rem]" list={listInfo2} />
       <PublicFoo
         style={{ position: "static", visibility: "hidden", overflow: "hidden" }}
       />
       <PublicFoo />
+      <PopupComp visible={popupVisible} cancle={() => signOut()} />
     </div>
   );
 };
@@ -236,4 +242,37 @@ const Menu = (props: any) => {
     </div>
   );
 };
+//彈窗組件
+const PopupComp = memo(
+  (props: any) => {
+    return (
+      <Popup
+        visible={props.visible}
+        onMaskClick={() => {
+          props.cancle?.();
+        }}
+        bodyStyle={{
+          borderRadius: ".34rem .34rem 0 0",
+          overflow: "hidden",
+          backgroundColor: "#f6f6f6",
+        }}
+      >
+        <ul>
+          <li onClick={()=>props.click?.()} className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center">
+            退出登录
+          </li>
+          <li
+            onClick={() => props.cancle?.()}
+            className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center mt-[.15rem]"
+          >
+            取消
+          </li>
+        </ul>
+      </Popup>
+    );
+  },
+  (prv, next) => {
+    return prv.visible == next.visible;
+  }
+);
 export default MyList;
