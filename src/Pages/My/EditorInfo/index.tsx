@@ -1,5 +1,7 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
+import { Button } from "antd-mobile";
+import { useState } from "react";
 
 const EditorInfo = () => {
   const headData = {
@@ -13,22 +15,46 @@ const EditorInfo = () => {
       height: "auto",
     },
   };
+  const InputEvent = (val: any) => {
+    setName(val);
+  };
+  const [name, setName] = useState("西尾猫的世界");
   return (
     <>
       <PublicHead {...headData} />
-      编辑用户名
       <PublicInput
-        value="西尾猫的世界"
+        value={name}
+        input={(val: any) => InputEvent(val)}
+        maxLength={12}
         inputBoxStyle={{
           backgroundColor: "#fff",
+          margin: "0 .3rem",
+          paddingRight: 0,
+          paddingLeft: 0,
+          borderBottom: "1px solid #E6E6E6",
+          borderRadius: 0,
         }}
         clearStyle={{
-          width: ".33rem",
-          height: ".33rem",
+          fontSize: ".34rem",
+          color: "#E6E6E6",
         }}
         clearable={true}
         inputClassName="text-[.3rem] text-[#222]"
-      />
+      >
+        <p className="text-[.24rem]">
+          <span className="text-[#1c63ff]">{name.length}</span>
+          <span className="text-[#666]">/12</span>
+        </p>
+      </PublicInput>
+      <div className="px-[.3rem]">
+        <Button
+          block
+          color="primary"
+          className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+        >
+          确定
+        </Button>
+      </div>
     </>
   );
 };

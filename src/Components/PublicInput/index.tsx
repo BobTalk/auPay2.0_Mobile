@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
-import styleComp from "styled-components";
+import { useRef, useState } from "react";
 type propsVolit = {
   top?: any;
   bottom?: any;
@@ -22,23 +22,40 @@ type propsVolit = {
   clearStyle: Object;
   inputClassName?: string;
   click?: Function;
+  maxLength:number|undefined
 };
-const InputComp = styleComp.span`
-  width:100%;
-  .adm-input-clear{
-    svg{
-      width:${(props:any)=>props.clearStyle.width};
-      height:${(props:any)=>props.clearStyle.height};
-    }
-  }
-`;
+// const InputComp = styleComp.span`
+// width:100%;
+// .adm-input-clear{
+//   svg{
+//     width:${(props: any) => props.clearStyle.width};
+//     height:${(props: any) => props.clearStyle.height};
+//   }
+// }
+// `;
 const PublicInput = (props: propsVolit) => {
+  const [isClear, setIsClear] = useState(false);
+  const inputRef: any = useRef();
   const valChange = debounce((val) => {
+    inputRef.current.nativeElement.value = val
+    setIsClear(!!val)
     props.input?.(val);
   }, 1000);
   const selectChange = (e: any) => {
     e.stopPropagation();
     props.click?.(e);
+  };
+  const inputFocus = () => {
+    inputRef.current.nativeElement.value && setIsClear(true);
+  };
+  const inputBlur = () => {
+    setTimeout(() => {
+      setIsClear(false);
+    }, 100);
+  };
+  const clearInput = (e: any) => {
+    e.stopPropagation();
+    inputRef.current.clear();
   };
   return (
     <div
@@ -55,17 +72,18 @@ const PublicInput = (props: propsVolit) => {
         style={props.inputBoxStyle}
       >
         {!props.isSelect ? (
-          <InputComp {...props}>
-            <Input
-              className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
-              style={props.inputStyle}
-              placeholder={props.placeholder}
-              clearable={props.clearable}
-              defaultValue={props.value}
-              onChange={valChange}
-              disabled={props.disabled}
-            />
-          </InputComp>
+          <Input
+            onFocus={inputFocus}
+            onBlur={inputBlur}
+            ref={inputRef}
+            className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
+            style={props.inputStyle}
+            placeholder={props.placeholder}
+            defaultValue={props.value}
+            maxLength={props.maxLength}
+            onChange={valChange}
+            disabled={props.disabled}
+          />
         ) : (
           <div className="flex-1 mr-[8px]" onClick={(e) => selectChange(e)}>
             {props.value ? (
@@ -92,6 +110,13 @@ const PublicInput = (props: propsVolit) => {
           </div>
         )}
         {props.children}
+        {props.clearable && isClear && (
+          <i
+            onClick={(e) => clearInput(e)}
+            style={props.clearStyle}
+            className="iconfont icon-guanbi ml-[.15rem]"
+          />
+        )}
       </div>
       {props.bottom}
     </div>
@@ -114,9 +139,9 @@ PublicInput.defaultProps = {
   inputBoxClassName: "",
   inputClassName: "",
   clearable: false,
+  maxLength:null,
   clearStyle: {
-    width: "1em",
-    height: "1em",
+    fontSize: "1em",
   },
 };
 export default PublicInput;
