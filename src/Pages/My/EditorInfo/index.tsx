@@ -1,10 +1,61 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { InfoType } from "../Enum";
+import { useLocation } from "react-router-dom";
 
 const EditorInfo = () => {
-  const headData = {
+  const typeMap = new Map([
+    [
+      InfoType.phone,
+      function (crt: any) {
+        if (crt.value) {
+          setHeadData({
+            ...headInfo,
+            title: "修改联系方式",
+          });
+        } else {
+          setHeadData({
+            ...headInfo,
+            title: "绑定联系方式",
+          });
+        }
+      },
+    ],
+    [
+      InfoType.eMail,
+      function (crt: any) {
+        console.log(crt);
+      },
+    ],
+    [
+      InfoType.headSculpture,
+      function (crt: any) {
+        console.log(crt);
+      },
+    ],
+    [
+      InfoType.nickName,
+      function (crt: any) {
+        console.log(crt);
+      },
+    ],
+    [
+      InfoType.unit,
+      function (crt: any) {
+        console.log(crt);
+      },
+    ],
+    [
+      InfoType.userName,
+      function (crt: any) {
+        console.log(crt);
+      },
+    ],
+  ]);
+  const { state } = useLocation();
+  const headInfo = {
     title: "编辑昵称",
     back: "goBack",
     titleStyle: { fontSize: ".34rem", color: "#333" },
@@ -15,17 +66,23 @@ const EditorInfo = () => {
       height: "auto",
     },
   };
+  const [headData, setHeadData] = useState(headInfo);
+  useEffect(() => {
+    if (typeMap.has(state.type)) {
+      typeMap.get(state.type)?.(state);
+    }
+  }, []);
   const InputEvent = (val: any) => {
-    setName(val);
+    setValue(val);
   };
-  const [name, setName] = useState("西尾猫的世界");
+  const [value, setValue] = useState(state.value);
   return (
     <>
       <PublicHead {...headData} />
       <PublicInput
-        value={name}
+        value={value}
         input={(val: any) => InputEvent(val)}
-        maxLength={12}
+        maxLength={state.maxLength}
         inputBoxStyle={{
           backgroundColor: "#fff",
           margin: "0 .3rem",
@@ -41,10 +98,12 @@ const EditorInfo = () => {
         clearable={true}
         inputClassName="text-[.3rem] text-[#222]"
       >
-        <p className="text-[.24rem]">
-          <span className="text-[#1c63ff]">{name.length}</span>
-          <span className="text-[#666]">/12</span>
-        </p>
+        {state.maxLength && (
+          <p className="text-[.24rem]">
+            <span className="text-[#1c63ff]">{value.length}</span>
+            <span className="text-[#666]">/12</span>
+          </p>
+        )}
       </PublicInput>
       <div className="px-[.3rem]">
         <Button

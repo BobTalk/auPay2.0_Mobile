@@ -7,7 +7,7 @@ const ListComp = styled.div`
   .adm-list-item-content-arrow {
     .iconfont {
       font-size: ${(props: any) => {
-        return props.arrowStyle?.fontSize ?? "1em"
+        return props.arrowstyle?.fontSize ?? "1em";
       }};
     }
   }
@@ -37,7 +37,7 @@ type publicListType = {
   arrowStyle?: Object;
 };
 type listItemType = {
-  itemInfo: itemType;
+  iteminfo: itemType;
   [key: string]: any;
 };
 const PublicList = (props: Omit<publicListType, "itemInfo">) => {
@@ -51,11 +51,11 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
     >
       {props.list.map((item: any) => (
         <ListItem
-          click={(crt: listItemType) => props.click?.(crt)}
+          onClick={(crt: listItemType) => props.click?.(crt)}
           key={item.id}
-          arrowStyle={props.arrowStyle}
-          arrowComp={props.arrowComp}
-          itemInfo={item}
+          arrowstyle={props.arrowStyle}
+          arrowcomp={props.arrowComp}
+          iteminfo={item}
         />
       ))}
     </List>
@@ -64,45 +64,45 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
 const ListItem = (props: listItemType) => {
   const listItemClick = (event: any, crt: Object) => {
     event.stopPropagation();
-    props.click(crt);
+    props.onClick?.(crt);
   };
   return (
     <ListComp {...props} className={mergeClassName("flex items-center")}>
-      {dataType(props.itemInfo.icon) === "object" ? (
-        <>{props.itemInfo.icon}</>
-      ) : props.itemInfo.icon?.startsWith("icon") ? (
+      {dataType(props.iteminfo?.icon) === "object" ? (
+        <>{props.iteminfo?.icon}</>
+      ) : props.iteminfo?.icon?.startsWith("icon") ? (
         <i
-          style={props.itemInfo?.iconStyle}
-          className={mergeClassName("iconfont", `${props.itemInfo.icon}`)}
+          style={props.iteminfo?.iconStyle}
+          className={mergeClassName("iconfont", `${props.iteminfo?.icon}`)}
         ></i>
       ) : (
-        props.itemInfo.icon && (
+        props.itemInfo?.icon && (
           <img
-            className={props.itemInfo.imgClass}
-            style={props.itemInfo.imgStyle}
-            src={props.itemInfo.icon}
+            className={props.iteminfo.imgClass}
+            style={props.iteminfo.imgStyle}
+            src={props.iteminfo?.icon}
             alt=""
           />
         )
       )}
       <List.Item
         clickable={false}
-        arrow={props.itemInfo.showArrow ? props.arrowComp : false}
+        arrow={props.iteminfo.showArrow ? props.arrowcomp : false}
         className={mergeClassName(
           "flex-1",
-          `${props.itemInfo.itemClass ?? ""}`
+          `${props.iteminfo.itemClass ?? ""}`
         )}
-        style={props.itemInfo.itemStyle}
-        extra={props.itemInfo.extra}
-        onClick={(e) => listItemClick(e, props.itemInfo)}
+        style={props.iteminfo.itemStyle}
+        extra={props.iteminfo.extra}
+        onClick={(e) => listItemClick(e, props.iteminfo)}
       >
-        {props.itemInfo.title}
+        {props.iteminfo.title}
       </List.Item>
     </ListComp>
   );
 };
 ListItem.defaultProps = {
-  itemInfo: {
+  iteminfo: {
     icon: "",
     id: "",
     title: "",

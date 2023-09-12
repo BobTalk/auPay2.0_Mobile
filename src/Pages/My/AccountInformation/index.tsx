@@ -3,7 +3,7 @@ import PublicList from "@/Components/PublicList";
 import { Avatar, Popup } from "antd-mobile";
 import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { InfoType } from "../Enum";
 const AccountInformation = () => {
   const navigator = useNavigate();
   const headData = {
@@ -22,7 +22,9 @@ const AccountInformation = () => {
     {
       id: "00",
       title: "头像",
-      showArrow:true,
+      type:InfoType.headSculpture,
+      showArrow: true,
+      value:'imgUrl',
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -35,7 +37,10 @@ const AccountInformation = () => {
     {
       id: "01",
       title: "昵称",
-      showArrow:true,
+      type:InfoType.nickName,
+      value:'西尾猫的世界',
+      showArrow: true,
+      maxLength: 12,
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -44,26 +49,102 @@ const AccountInformation = () => {
         color: "#222",
       },
       extra: (
-        <span
-          onClick={() => editorInfo()}
-          className="mr-[.15rem] text-[.3rem] text-[#999]"
-        >
+        <span className="mr-[.15rem] text-[.3rem] text-[#999]">
           西尾猫的世界
         </span>
       ),
+    },
+    {
+      id: "05",
+      title: "用户名",
+      showArrow: false,
+      type:InfoType.userName,
+      value:'西尾猫的世界',
+      itemStyle: {
+        padding: ".08rem 0",
+        "--border-inner": 0,
+        borderBottom: "1px solid rgba(230,230,230,1)",
+        fontSize: ".3rem",
+        color: "#222",
+      },
+      extra: (
+        <span className="mr-[.15rem] text-[.3rem] text-[#999]">
+          西尾猫的世界
+        </span>
+      ),
+    },
+    {
+      id: "06",
+      title: "邮箱",
+      type:InfoType.eMail,
+      showArrow: false,
+      value:'12838923834@qq.com',
+      itemStyle: {
+        padding: ".08rem 0",
+        "--border-inner": 0,
+        borderBottom: "1px solid rgba(230,230,230,1)",
+        fontSize: ".3rem",
+        color: "#222",
+      },
+      extra: (
+        <span className="mr-[.15rem] text-[.3rem] text-[#999]">
+          12838923834@qq.com
+        </span>
+      ),
+    },
+    {
+      id: "07",
+      title: "联系方式",
+      type:InfoType.phone,
+      showArrow: true,
+      value:'13193898989',
+      itemStyle: {
+        padding: ".08rem 0",
+        "--border-inner": 0,
+        borderBottom: "1px solid rgba(230,230,230,1)",
+        fontSize: ".3rem",
+        color: "#222",
+      },
+      extra: (
+        <span className="mr-[.15rem] text-[.3rem] text-[#999]">
+          13193898989
+        </span>
+      ),
+    },
+    {
+      id: "08",
+      title: "货币单位",
+      type:InfoType.unit,
+      showArrow: true,
+      value:'CNY',
+      itemStyle: {
+        padding: ".08rem 0",
+        "--border-inner": 0,
+        borderBottom: "1px solid rgba(230,230,230,1)",
+        fontSize: ".3rem",
+        color: "#222",
+      },
+      extra: <span className="mr-[.15rem] text-[.3rem] text-[#999]">CNY</span>,
     },
   ];
   const [popupVisible, setPopupVisible] = useState(false);
   const avatarClickEvent = (rs: boolean) => {
     setPopupVisible(rs);
   };
-  const editorInfo = () => {
-    navigator("/my/editorInfo");
+  const editorInfo = (crt?: any) => {
+    Reflect.deleteProperty(crt, 'extra')
+    crt.showArrow && navigator("/my/editorInfo", { state: crt });
   };
   return (
     <>
       <PublicHead {...headData} />
-      <PublicList list={listInfo} arrowStyle={{fontSize: '.2rem'}} arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>} style={{ padding: "0 .3rem" }} />
+      <PublicList
+        list={listInfo}
+        arrowStyle={{ fontSize: ".2rem" }}
+        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+        style={{ padding: "0 .3rem" }}
+        click={(crt: any) => editorInfo(crt)}
+      />
       <PopupComp
         visible={popupVisible}
         click={(rs: boolean) => avatarClickEvent(rs)}
