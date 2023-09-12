@@ -2,13 +2,15 @@ import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
 import { Avatar, Popup } from "antd-mobile";
 import { memo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AccountInformation = () => {
+  const navigator = useNavigate();
   const headData = {
     title: "账户信息",
     back: "goBack",
     titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem" },
+    iconStyle: { fontSize: ".34rem", left: ".15rem" },
     style: {
       padding: ".32rem 0",
       borderBottom: "1px solid rgba(197,202,208,1)",
@@ -40,7 +42,10 @@ const AccountInformation = () => {
         color: "#222",
       },
       extra: (
-        <span className="mr-[.15rem] text-[.3rem] text-[#999]">
+        <span
+          onClick={() => editorInfo()}
+          className="mr-[.15rem] text-[.3rem] text-[#999]"
+        >
           西尾猫的世界
         </span>
       ),
@@ -49,6 +54,9 @@ const AccountInformation = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const avatarClickEvent = (rs: boolean) => {
     setPopupVisible(rs);
+  };
+  const editorInfo = () => {
+    navigator("/my/editorInfo");
   };
   return (
     <>

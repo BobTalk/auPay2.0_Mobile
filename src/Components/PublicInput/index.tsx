@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
+import styleComp from "styled-components";
 type propsVolit = {
   top?: any;
   bottom?: any;
@@ -15,17 +16,30 @@ type propsVolit = {
   input?: Function;
   className: string;
   isSelect: boolean;
-  inputBoxStyle?:Object;
-  click?: Function
+  clearable: boolean;
+  inputBoxStyle?: Object;
+  inputBoxClassName?: string;
+  clearStyle: Object;
+  inputClassName?: string;
+  click?: Function;
 };
+const InputComp = styleComp.span`
+  width:100%;
+  .adm-input-clear{
+    svg{
+      width:${(props:any)=>props.clearStyle.width};
+      height:${(props:any)=>props.clearStyle.height};
+    }
+  }
+`;
 const PublicInput = (props: propsVolit) => {
   const valChange = debounce((val) => {
     props.input?.(val);
   }, 1000);
-const selectChange = (e:any)=>{
-  e.stopPropagation();
-  props.click?.(e)
-}
+  const selectChange = (e: any) => {
+    e.stopPropagation();
+    props.click?.(e);
+  };
   return (
     <div
       className={mergeClassName(styleScope["input-module"], props.className)}
@@ -35,27 +49,43 @@ const selectChange = (e:any)=>{
       <div
         className={mergeClassName(
           styleScope["input-box"],
-          "flex items-center whitespace-nowrap"
+          "flex items-center whitespace-nowrap",
+          `${props.inputBoxClassName}`
         )}
         style={props.inputBoxStyle}
       >
         {!props.isSelect ? (
-          <Input
-            className="mr-[8px]"
-            style={props.inputStyle}
-            placeholder={props.placeholder}
-            value={props.value}
-            onChange={valChange}
-            disabled={props.disabled}
-          />
+          <InputComp {...props}>
+            <Input
+              className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
+              style={props.inputStyle}
+              placeholder={props.placeholder}
+              clearable={props.clearable}
+              defaultValue={props.value}
+              onChange={valChange}
+              disabled={props.disabled}
+            />
+          </InputComp>
         ) : (
-          <div className="flex-1 mr-[8px]" onClick={(e)=>selectChange(e)}>
+          <div className="flex-1 mr-[8px]" onClick={(e) => selectChange(e)}>
             {props.value ? (
-              <span style={props.inputStyle} className="text-[#333]">
+              <span
+                style={props.inputStyle}
+                className={mergeClassName(
+                  "text-[#333]",
+                  `${props.inputClassName}`
+                )}
+              >
                 {props.value}
               </span>
             ) : (
-              <span style={props.inputStyle} className="text-[#ccc]">
+              <span
+                style={props.inputStyle}
+                className={mergeClassName(
+                  "text-[#ccc]",
+                  `${props.inputClassName}`
+                )}
+              >
                 {props.placeholder}
               </span>
             )}
@@ -79,7 +109,14 @@ PublicInput.defaultProps = {
   input: () => {},
   className: "",
   isSelect: false,
-  inputBoxStyle:{},
-  click:()=>{}
+  inputBoxStyle: {},
+  click: () => {},
+  inputBoxClassName: "",
+  inputClassName: "",
+  clearable: false,
+  clearStyle: {
+    width: "1em",
+    height: "1em",
+  },
 };
 export default PublicInput;
