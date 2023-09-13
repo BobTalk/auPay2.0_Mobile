@@ -3,28 +3,17 @@ import PublicList from "@/Components/PublicList";
 import { Avatar, Popup } from "antd-mobile";
 import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InfoType } from "../Enum";
+import { InfoType, MonetaryUnit } from "../Enum";
+import { mergeClassName } from "@/utils/base";
+import { cloneDeep } from "lodash";
 const AccountInformation = () => {
-  const navigator = useNavigate();
-  const headData = {
-    title: "账户信息",
-    back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem 0",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
-
-  const listInfo = [
+  const ListData = [
     {
       id: "00",
       title: "头像",
-      type:InfoType.headSculpture,
+      type: InfoType.headSculpture,
       showArrow: true,
-      value:'imgUrl',
+      value: "imgUrl",
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -37,8 +26,8 @@ const AccountInformation = () => {
     {
       id: "01",
       title: "昵称",
-      type:InfoType.nickName,
-      value:'西尾猫的世界',
+      type: InfoType.nickName,
+      value: "西尾猫的世界",
       showArrow: true,
       maxLength: 12,
       itemStyle: {
@@ -58,8 +47,8 @@ const AccountInformation = () => {
       id: "05",
       title: "用户名",
       showArrow: false,
-      type:InfoType.userName,
-      value:'西尾猫的世界',
+      type: InfoType.userName,
+      value: "西尾猫的世界",
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -76,9 +65,9 @@ const AccountInformation = () => {
     {
       id: "06",
       title: "邮箱",
-      type:InfoType.eMail,
+      type: InfoType.eMail,
       showArrow: false,
-      value:'12838923834@qq.com',
+      value: "12838923834@qq.com",
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -95,9 +84,9 @@ const AccountInformation = () => {
     {
       id: "07",
       title: "联系方式",
-      type:InfoType.phone,
+      type: InfoType.phone,
       showArrow: true,
-      value:'13193898989',
+      value: "13193898989",
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -114,9 +103,9 @@ const AccountInformation = () => {
     {
       id: "08",
       title: "货币单位",
-      type:InfoType.unit,
+      type: InfoType.unit,
       showArrow: true,
-      value:'CNY',
+      value: "USD",
       itemStyle: {
         padding: ".08rem 0",
         "--border-inner": 0,
@@ -124,20 +113,70 @@ const AccountInformation = () => {
         fontSize: ".3rem",
         color: "#222",
       },
-      extra: <span className="mr-[.15rem] text-[.3rem] text-[#999]">CNY</span>,
+      extra: <span className="mr-[.15rem] text-[.3rem] text-[#999]">USD</span>,
     },
   ];
-  const [popupVisible, setPopupVisible] = useState(false);
+  const MoneyUnit = JSON.parse(JSON.stringify(MonetaryUnit ?? "{}"));
+  let formatData = (crt: any) => {
+    let filterObjIndex = listInfo.findIndex(
+      (item) => item.type == InfoType.unit
+    );
+    listInfo[filterObjIndex].value = crt.value;
+    listInfo[filterObjIndex].extra = (
+      <span className="mr-[.15rem] text-[.3rem] text-[#999]">{crt.value}</span>
+    );
+    setListInfo(() => listInfo);
+    setPopupVisible(() => false);
+  };
+  const EnumMap = new Map([
+    [
+      MoneyUnit["China"],
+      function (crt: any) {
+        formatData(crt);
+      },
+    ],
+    [
+      MoneyUnit["America"],
+      function (crt: any) {
+        formatData(crt);
+      },
+    ],
+  ]);
+  let navigator = useNavigate();
+  const HeadData = {
+    title: "账户信息",
+    back: "goBack",
+    titleStyle: { fontSize: ".34rem", color: "#333" },
+    iconStyle: { fontSize: ".34rem", left: ".15rem" },
+    style: {
+      padding: ".32rem 0",
+      borderBottom: "1px solid rgba(197,202,208,1)",
+      height: "auto",
+    },
+  };
+
+  const [popupVisible, setPopupVisible] = useState<boolean>(false);
+  const [listInfo, setListInfo] = useState<Array<any>>(ListData);
+  const [crtInfo, setCrtInfo] = useState({});
   const avatarClickEvent = (rs: boolean) => {
     setPopupVisible(rs);
   };
   const editorInfo = (crt?: any) => {
-    Reflect.deleteProperty(crt, 'extra')
+    if (InfoType.unit == crt.type) {
+      setCrtInfo(() => crt);
+      setPopupVisible(() => !popupVisible);
+      return;
+    }
+    let crtCopy = cloneDeep(crt);
+    Reflect.deleteProperty(crtCopy, "extra");
     crt.showArrow && navigator("/my/editorInfo", { state: crt });
+  };
+  const itemClickCb = (crt: any) => {
+    EnumMap.get(MoneyUnit[crt["key"]])?.(crt);
   };
   return (
     <>
-      <PublicHead {...headData} />
+      <PublicHead {...HeadData} />
       <PublicList
         list={listInfo}
         arrowStyle={{ fontSize: ".2rem" }}
@@ -146,8 +185,12 @@ const AccountInformation = () => {
         click={(crt: any) => editorInfo(crt)}
       />
       <PopupComp
+        MonetaryUnit={MoneyUnit}
+        crtInfo={crtInfo}
+        InfoType={InfoType}
         visible={popupVisible}
-        click={(rs: boolean) => avatarClickEvent(rs)}
+        cancel={(rs: boolean) => avatarClickEvent(rs)}
+        onClick={(crt: any) => itemClickCb(crt)}
       />
     </>
   );
@@ -155,11 +198,17 @@ const AccountInformation = () => {
 //彈窗組件
 const PopupComp = memo(
   (props: any) => {
+    let { MonetaryUnit: MoneyUnit, crtInfo, InfoType } = props;
+
+    const itemClick = (e: any, key: string) => {
+      e.stopPropagation();
+      props.onClick?.({ key, value: MoneyUnit[key] });
+    };
     return (
       <Popup
         visible={props.visible}
         onMaskClick={() => {
-          props.click?.(false);
+          props.cancel?.(false);
         }}
         bodyStyle={{
           borderRadius: ".34rem .34rem 0 0",
@@ -168,14 +217,40 @@ const PopupComp = memo(
         }}
       >
         <ul>
-          <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center border-b-[1px] border-b-[#dbdbdb]">
-            拍照
-          </li>
-          <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center">
-            从手机相册选择
-          </li>
+          {crtInfo.type == InfoType.unit ? (
+            <>
+              {Object.keys(MoneyUnit).map(
+                (key: string, index: number, arr: Array<any>) => {
+                  return (
+                    <li
+                      onClick={(e) => itemClick(e, key)}
+                      className={mergeClassName(
+                        "grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center border-b-[#dbdbdb]",
+                        `${index + 1 !== arr.length ? "border-b-[1px]" : ""}`
+                      )}
+                      key={key}
+                    >
+                      {MoneyUnit[key]}
+                    </li>
+                  );
+                }
+              )}
+            </>
+          ) : (
+            <>
+              <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center border-b-[1px] border-b-[#dbdbdb]">
+                拍照
+              </li>
+              <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center">
+                从手机相册选择
+              </li>
+            </>
+          )}
           <li
-            onClick={() => props.click?.(false)}
+            onClick={(e) => {
+              e.stopPropagation();
+              props.cancel?.(false);
+            }}
             className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700] place-items-center mt-[.15rem]"
           >
             取消

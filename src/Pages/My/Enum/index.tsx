@@ -16,9 +16,13 @@ enum CountryCode {
   "Vietnam"='84',
   "Burma"='95',
   "Taiwan"='886',
-
+}
+enum MonetaryUnit {
+  "China"="CNY",
+  "America"="USD"
 }
 export {
   InfoType,
-  CountryCode
+  CountryCode,
+  MonetaryUnit
 }
