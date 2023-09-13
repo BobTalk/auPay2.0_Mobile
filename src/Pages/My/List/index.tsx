@@ -14,6 +14,7 @@ const MyList = () => {
       id: "1",
       icon: "icon-jilu",
       title: "交易记录",
+      showArrow: true,
       type: "bussion",
       style: {},
       path: "",
@@ -31,6 +32,7 @@ const MyList = () => {
     {
       id: "2",
       icon: "icon-zhanghuxinxi",
+      showArrow: true,
       path: "accountInfor",
       title: "账户信息",
       type: "account",
@@ -49,6 +51,7 @@ const MyList = () => {
     {
       id: "3",
       icon: "icon-anquan",
+      showArrow: true,
       title: "安全信息",
       type: "secure",
       style: {},
@@ -69,6 +72,7 @@ const MyList = () => {
       id: "11",
       icon: require("../Assets/images/pact.png"),
       title: "用户协议",
+      showArrow: true,
       style: {},
       type: "agree",
       className: "",
@@ -87,6 +91,7 @@ const MyList = () => {
       id: "21",
       icon: require("../Assets/images/privacy.png"),
       title: "隐私政策",
+      showArrow: true,
       style: {},
       type: "privacy",
       className: "",
@@ -105,6 +110,7 @@ const MyList = () => {
       id: "31",
       icon: require("../Assets/images/about_us.png"),
       title: "关于我们",
+      showArrow: true,
       style: {},
       type: "aboutAs",
       className: "",
@@ -123,6 +129,7 @@ const MyList = () => {
       id: "41",
       icon: require("../Assets/images/contact.png"),
       title: "联系我们",
+      showArrow: true,
       style: {},
       type: "linkAs",
       className: "",
@@ -143,6 +150,7 @@ const MyList = () => {
       title: "Ozfund",
       style: {},
       type: "Ozfund",
+      showArrow: true,
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -161,6 +169,7 @@ const MyList = () => {
       id: "61",
       icon: "icon-tuichudenglu",
       title: "退出登录",
+      showArrow: true,
       type: "loginOut",
       style: {},
       className: "",
@@ -221,9 +230,27 @@ const MyList = () => {
           title={<Menu title="应用管理" imgUrl={appmanger} />}
         ></Card>
       </div>
-      <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo} />
-      <PublicList click={itemClick} className="mt-[.3rem]" list={listInfo1} />
-      <PublicList click={signOut} className="my-[.3rem]" list={listInfo2} />
+      <PublicList
+        arrowStyle={{ fontSize: ".2rem" }}
+        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+        click={itemClick}
+        className="mt-[.3rem]"
+        list={listInfo}
+      />
+      <PublicList
+        arrowStyle={{ fontSize: ".2rem" }}
+        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+        click={itemClick}
+        className="mt-[.3rem]"
+        list={listInfo1}
+      />
+      <PublicList
+        arrowStyle={{ fontSize: ".2rem" }}
+        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+        click={signOut}
+        className="my-[.3rem]"
+        list={listInfo2}
+      />
       <PublicFoo
         style={{ position: "static", visibility: "hidden", overflow: "hidden" }}
       />
@@ -258,7 +285,10 @@ const PopupComp = memo(
         }}
       >
         <ul>
-          <li onClick={()=>props.click?.()} className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center">
+          <li
+            onClick={() => props.click?.()}
+            className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center"
+          >
             退出登录
           </li>
           <li

@@ -41,6 +41,7 @@ type listItemType = {
   [key: string]: any;
 };
 const PublicList = (props: Omit<publicListType, "itemInfo">) => {
+  console.log(props.list,'props.list')
   return (
     <List
       className={mergeClassName(
@@ -50,6 +51,7 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
       style={props.style}
     >
       {props.list.map((item: any) => (
+        
         <ListItem
           onClick={(crt: listItemType) => props.click?.(crt)}
           key={item.id}
@@ -76,7 +78,7 @@ const ListItem = (props: listItemType) => {
           className={mergeClassName("iconfont", `${props.iteminfo?.icon}`)}
         ></i>
       ) : (
-        props.itemInfo?.icon && (
+        props.iteminfo?.icon && (
           <img
             className={props.iteminfo.imgClass}
             style={props.iteminfo.imgStyle}
