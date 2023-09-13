@@ -1,8 +1,8 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
-import { Button } from "antd-mobile";
-import { useEffect, useState } from "react";
-import { InfoType } from "../Enum";
+import { Button, Popup } from "antd-mobile";
+import { memo, useCallback, useEffect, useState } from "react";
+import { InfoType, CountryCode } from "../Enum";
 import { useLocation } from "react-router-dom";
 
 const EditorInfo = () => {
@@ -67,15 +67,32 @@ const EditorInfo = () => {
     },
   };
   const [headData, setHeadData] = useState(headInfo);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [defaultCountryCode, setDefaultCountryCode] = useState<any>("China");
+  const [countryCode, setCountryCode] = useState<any>();
   useEffect(() => {
     if (typeMap.has(state.type)) {
       typeMap.get(state.type)?.(state);
     }
   }, []);
+  useEffect(() => {
+    let CountryCodeObj = JSON.parse(JSON.stringify(CountryCode));
+    setCountryCode(CountryCodeObj[defaultCountryCode]);
+  }, [defaultCountryCode]);
   const InputEvent = (val: any) => {
     setValue(val);
   };
+
   const [value, setValue] = useState(state.value);
+  const popupCb = (crt: any) => {
+    setPopupVisible(false)
+    setDefaultCountryCode(crt['key'])
+    setCountryCode(crt['value'])
+  };
+  // 选择国家
+  const selectCountry = () => {
+    setPopupVisible(!popupVisible)
+  }
   return (
     <>
       <PublicHead {...headData} />
@@ -83,7 +100,8 @@ const EditorInfo = () => {
         value={value}
         input={(val: any) => InputEvent(val)}
         maxLength={state.maxLength}
-        prefix={<p>sdsffff</p>}
+        placeholder="请输入联系方式"
+        prefix={<CountrCode onClick={()=>selectCountry()} countryCode={countryCode} />}
         inputBoxStyle={{
           backgroundColor: "#fff",
           margin: "0 .3rem",
@@ -115,7 +133,71 @@ const EditorInfo = () => {
           确定
         </Button>
       </div>
+      <PopupComp
+        CountryCode={CountryCode}
+        onClick={(crt: any) => {
+          popupCb(crt);
+        }}
+        visible={popupVisible}
+      />
     </>
   );
 };
+const CountrCode = (props: any) => {
+  const changeCountry = (e:any)=>{
+    e.stopPropagation()
+    props.onClick?.()
+  }
+  return (
+    <p className="flex items-center" onClick={(e)=>{changeCountry(e)}}>
+      <span className="text-[.3rem] text-[#999]">+{props.countryCode}</span>
+      <i className="iconfont icon-zhankai text-[#C5CAD0] text-[.2rem] px-[.05rem]" />
+    </p>
+  );
+};
+// 确认弹窗
+const PopupComp = memo(
+  (props: any) => {
+    let countryCode = JSON.parse(JSON.stringify(props.CountryCode ?? "{}"));
+    const itemClick = useCallback((key: string) => {
+      props.onClick?.({ key, value: countryCode[key] });
+    }, []);
+    return (
+      <Popup
+        visible={props.visible}
+        onMaskClick={() => {
+          props?.cancel();
+        }}
+        bodyStyle={{
+          maxHeight: "40vh",
+          borderTopLeftRadius: "8px",
+          borderTopRightRadius: "8px",
+          padding: ".2rem .3rem .1rem .3rem",
+          overflowY: "auto",
+        }}
+      >
+        <ul>
+          {Object.keys(countryCode).map((key: string) => {
+            return (
+              <li
+                onClick={(e) => {
+                  e.stopPropagation();
+                  itemClick(key);
+                }}
+                key={key}
+                className="last:border-[0] flex h-[.6rem] items-center justify-between text-[.2rem] font-[700] border-b-[1px] border-b-[#f6f6f6]"
+              >
+                <span>{key}</span>
+                <span className="text-[#666]">{countryCode[key]}</span>
+              </li>
+            );
+          })}
+        </ul>
+      </Popup>
+    );
+  },
+  (prv, next) => {
+    return prv.visible == next.visible;
+  }
+);
 export default EditorInfo;

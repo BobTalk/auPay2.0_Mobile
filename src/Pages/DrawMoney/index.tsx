@@ -161,57 +161,64 @@ const BottomScopeNum = () => {
   );
 };
 // 确认弹窗
-const PopupComp = memo((props: PopupCompType) => {
-  return (
-    <Popup
-      visible={props.visible}
-      onMaskClick={() => {
-        props?.cancel();
-      }}
-      bodyStyle={{
-        borderTopLeftRadius: "8px",
-        borderTopRightRadius: "8px",
-        minHeight: "40vh",
-        padding: ".4rem .3rem .1rem .3rem",
-      }}
-    >
-      <p className="text-[.32rem] text-[#333] font-[700] text-center">
-        密码验证
-      </p>
-
-      <PublicInput
-        placeholder="请输入资金密码"
-        className="mt-[.25rem]"
-        inputStyle={{
-          height: ".4rem",
-          fontSize: ".28rem",
+const PopupComp = memo(
+  (props: PopupCompType) => {
+    return (
+      <Popup
+        visible={props.visible}
+        onMaskClick={() => {
+          props?.cancel();
         }}
-        top={<p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>}
-      />
-      {!props.isSelect && (
+        bodyStyle={{
+          borderTopLeftRadius: "8px",
+          borderTopRightRadius: "8px",
+          minHeight: "40vh",
+          padding: ".4rem .3rem .1rem .3rem",
+        }}
+      >
+        <p className="text-[.32rem] text-[#333] font-[700] text-center">
+          密码验证
+        </p>
+
         <PublicInput
-          placeholder="请输入Google验证码"
+          placeholder="请输入资金密码"
           className="mt-[.25rem]"
           inputStyle={{
             height: ".4rem",
             fontSize: ".28rem",
           }}
           top={
-            <p className="text-[.28rem] text-[#333] mb-[.16rem]">
-              Google验证码
-            </p>
+            <p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>
           }
         />
-      )}
-      <Button
-        onClick={() => props?.submit()}
-        block
-        color="primary"
-        className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
-      >
-        确认
-      </Button>
-    </Popup>
-  );
-});
+        {!props.isSelect && (
+          <PublicInput
+            placeholder="请输入Google验证码"
+            className="mt-[.25rem]"
+            inputStyle={{
+              height: ".4rem",
+              fontSize: ".28rem",
+            }}
+            top={
+              <p className="text-[.28rem] text-[#333] mb-[.16rem]">
+                Google验证码
+              </p>
+            }
+          />
+        )}
+        <Button
+          onClick={() => props?.submit()}
+          block
+          color="primary"
+          className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+        >
+          确认
+        </Button>
+      </Popup>
+    );
+  },
+  (prv, next) => {
+    return prv.visible == next.visible;
+  }
+);
 export default DrawMoney;

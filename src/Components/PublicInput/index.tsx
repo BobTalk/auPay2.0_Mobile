@@ -27,11 +27,9 @@ type propsVolit = {
 };
 const PublicInput = (props: propsVolit) => {
   const [isClear, setIsClear] = useState(false);
-  const [isBlur, setIsBlur] = useState(true);
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
-    inputRef.current.nativeElement.value = val;
-    setIsClear(!!val);
+    setIsClear(() => !!val);
     props.input?.(val);
   }, 1000);
   const selectChange = (e: any) => {
@@ -39,22 +37,16 @@ const PublicInput = (props: propsVolit) => {
     props.click?.(e);
   };
   const inputFocus = () => {
-    inputRef.current.nativeElement.value && setIsClear(true);
+    inputRef.current.nativeElement.value && setIsClear(() => true);
   };
   const inputBlur = () => {
-    isBlur && setIsClear(false);
+    setTimeout(() => {
+      setIsClear(() => false);
+    }, 0);
   };
   const clearInput = (e: any) => {
     e.stopPropagation();
     inputRef.current.clear();
-  };
-  const iconMouseEnter = (e: any) => {
-    e.stopPropagation();
-    setIsBlur(false);
-  };
-  const iconMouseLeave = (e: any) => {
-    e.stopPropagation();
-    setIsBlur(true);
   };
   return (
     <div
@@ -112,8 +104,6 @@ const PublicInput = (props: propsVolit) => {
         {props.children}
         {props.clearable && isClear && (
           <i
-            onMouseEnter={(e) => iconMouseEnter(e)}
-            onMouseLeave={(e) => iconMouseLeave(e)}
             onClick={(e) => clearInput(e)}
             style={props.clearStyle}
             className="iconfont icon-guanbi ml-[.15rem]"
