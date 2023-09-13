@@ -169,7 +169,7 @@ const AccountInformation = () => {
     }
     let crtCopy = cloneDeep(crt);
     Reflect.deleteProperty(crtCopy, "extra");
-    crt.showArrow && navigator("/my/editorInfo", { state: crt });
+    crt.showArrow && navigator("/my/editorInfo", { state: crtCopy });
   };
   const itemClickCb = (crt: any) => {
     EnumMap.get(MoneyUnit[crt["key"]])?.(crt);

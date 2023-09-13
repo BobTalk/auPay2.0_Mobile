@@ -85,14 +85,14 @@ const EditorInfo = () => {
 
   const [value, setValue] = useState(state.value);
   const popupCb = (crt: any) => {
-    setPopupVisible(false)
-    setDefaultCountryCode(crt['key'])
-    setCountryCode(crt['value'])
+    setPopupVisible(false);
+    setDefaultCountryCode(crt["key"]);
+    setCountryCode(crt["value"]);
   };
   // 选择国家
   const selectCountry = () => {
-    setPopupVisible(!popupVisible)
-  }
+    setPopupVisible(!popupVisible);
+  };
   return (
     <>
       <PublicHead {...headData} />
@@ -100,8 +100,15 @@ const EditorInfo = () => {
         value={value}
         input={(val: any) => InputEvent(val)}
         maxLength={state.maxLength}
-        placeholder="请输入联系方式"
-        prefix={<CountrCode onClick={()=>selectCountry()} countryCode={countryCode} />}
+        placeholder={InfoType.phone == state.type ? "请输入联系方式" : "请输入"}
+        prefix={
+          InfoType["phone"] == state.type ? (
+            <CountrCode
+              onClick={() => selectCountry()}
+              countryCode={countryCode}
+            />
+          ) : null
+        }
         inputBoxStyle={{
           backgroundColor: "#fff",
           margin: "0 .3rem",
@@ -144,12 +151,17 @@ const EditorInfo = () => {
   );
 };
 const CountrCode = (props: any) => {
-  const changeCountry = (e:any)=>{
-    e.stopPropagation()
-    props.onClick?.()
-  }
+  const changeCountry = (e: any) => {
+    e.stopPropagation();
+    props.onClick?.();
+  };
   return (
-    <p className="flex items-center" onClick={(e)=>{changeCountry(e)}}>
+    <p
+      className="flex items-center"
+      onClick={(e) => {
+        changeCountry(e);
+      }}
+    >
       <span className="text-[.3rem] text-[#999]">+{props.countryCode}</span>
       <i className="iconfont icon-zhankai text-[#C5CAD0] text-[.2rem] px-[.05rem]" />
     </p>
