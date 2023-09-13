@@ -6,6 +6,7 @@ import { debounce } from "lodash";
 import { useRef, useState } from "react";
 type propsVolit = {
   top?: any;
+  prefix?: any;
   bottom?: any;
   children?: any;
   style?: Object;
@@ -22,23 +23,15 @@ type propsVolit = {
   clearStyle: Object;
   inputClassName?: string;
   click?: Function;
-  maxLength:number|undefined
+  maxLength: number | undefined;
 };
-// const InputComp = styleComp.span`
-// width:100%;
-// .adm-input-clear{
-//   svg{
-//     width:${(props: any) => props.clearStyle.width};
-//     height:${(props: any) => props.clearStyle.height};
-//   }
-// }
-// `;
 const PublicInput = (props: propsVolit) => {
   const [isClear, setIsClear] = useState(false);
+  const [isBlur, setIsBlur] = useState(true);
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
-    inputRef.current.nativeElement.value = val
-    setIsClear(!!val)
+    inputRef.current.nativeElement.value = val;
+    setIsClear(!!val);
     props.input?.(val);
   }, 1000);
   const selectChange = (e: any) => {
@@ -49,13 +42,19 @@ const PublicInput = (props: propsVolit) => {
     inputRef.current.nativeElement.value && setIsClear(true);
   };
   const inputBlur = () => {
-    setTimeout(() => {
-      setIsClear(false);
-    }, 100);
+    isBlur && setIsClear(false);
   };
   const clearInput = (e: any) => {
     e.stopPropagation();
     inputRef.current.clear();
+  };
+  const iconMouseEnter = (e: any) => {
+    e.stopPropagation();
+    setIsBlur(false);
+  };
+  const iconMouseLeave = (e: any) => {
+    e.stopPropagation();
+    setIsBlur(true);
   };
   return (
     <div
@@ -71,6 +70,7 @@ const PublicInput = (props: propsVolit) => {
         )}
         style={props.inputBoxStyle}
       >
+        {props.prefix}
         {!props.isSelect ? (
           <Input
             onFocus={inputFocus}
@@ -112,6 +112,8 @@ const PublicInput = (props: propsVolit) => {
         {props.children}
         {props.clearable && isClear && (
           <i
+            onMouseEnter={(e) => iconMouseEnter(e)}
+            onMouseLeave={(e) => iconMouseLeave(e)}
             onClick={(e) => clearInput(e)}
             style={props.clearStyle}
             className="iconfont icon-guanbi ml-[.15rem]"
@@ -124,6 +126,7 @@ const PublicInput = (props: propsVolit) => {
 };
 PublicInput.defaultProps = {
   top: <Outlet />,
+  prefix: <Outlet />,
   bottom: <Outlet />,
   children: <Outlet />,
   style: {},
@@ -139,7 +142,7 @@ PublicInput.defaultProps = {
   inputBoxClassName: "",
   inputClassName: "",
   clearable: false,
-  maxLength:null,
+  maxLength: null,
   clearStyle: {
     fontSize: "1em",
   },

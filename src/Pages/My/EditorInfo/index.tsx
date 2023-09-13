@@ -83,6 +83,7 @@ const EditorInfo = () => {
         value={value}
         input={(val: any) => InputEvent(val)}
         maxLength={state.maxLength}
+        prefix={<p>sdsffff</p>}
         inputBoxStyle={{
           backgroundColor: "#fff",
           margin: "0 .3rem",
