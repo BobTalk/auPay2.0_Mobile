@@ -11,11 +11,29 @@ const ListComp = styled.div`
       }};
     }
   }
+  .adm-list-item-content {
+    flex: 1;
+    padding-right: var(--padding-right);
+    padding-left: var(--padding-left);
+    margin-left: var(--margin-left);
+    border-bottom-width: var(--border-b-w);
+    border-bottom-style: var(--border-b-style);
+    border-bottom-color: var(--border-b-color);
+  }
+  .adm-list-item-content-main {
+    display: flex;
+    justify-content: ${(props: any) => {
+      return props.iteminfo.subTitle ? "space-between" : "flex-start";
+    }};
+  }
 `;
 type itemType = {
   icon?: any;
   id: string | number;
   title: string;
+  subTitle?: string;
+  subTitleStyle?: Object;
+  subTitleClassName?: string;
   style?: Object;
   className?: string;
   itemStyle?: Object;
@@ -41,7 +59,7 @@ type listItemType = {
   [key: string]: any;
 };
 const PublicList = (props: Omit<publicListType, "itemInfo">) => {
-  console.log(props.list,'props.list')
+  console.log(props.list, "props.list");
   return (
     <List
       className={mergeClassName(
@@ -51,7 +69,6 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
       style={props.style}
     >
       {props.list.map((item: any) => (
-        
         <ListItem
           onClick={(crt: listItemType) => props.click?.(crt)}
           key={item.id}
@@ -98,7 +115,15 @@ const ListItem = (props: listItemType) => {
         extra={props.iteminfo.extra}
         onClick={(e) => listItemClick(e, props.iteminfo)}
       >
-        {props.iteminfo.title}
+        <span>{props.iteminfo.title}</span>
+        {props.iteminfo.subTitle && (
+          <span
+            className={props.iteminfo.subTitleClassName}
+            style={props.iteminfo.subTitleStyle}
+          >
+            {props.iteminfo.subTitle}
+          </span>
+        )}
       </List.Item>
     </ListComp>
   );
@@ -108,6 +133,9 @@ ListItem.defaultProps = {
     icon: "",
     id: "",
     title: "",
+    subTitle: "",
+    subTitleStyle: {},
+    subTitleClassName: "",
     style: {},
     className: "",
     itemStyle: {},
@@ -130,6 +158,9 @@ PublicList.defaultProps = {
       icon: "",
       id: "",
       title: "",
+      subTitle: "",
+      subTitleStyle: {},
+      subTitleClassName: "",
       style: {},
       className: "",
       itemStyle: {},

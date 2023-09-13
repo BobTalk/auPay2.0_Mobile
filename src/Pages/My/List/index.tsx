@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { memo, useState } from "react";
 const MyList = () => {
   const navigate = useNavigate();
-  const listInfo = [
+  let listInfo = [
     {
       id: "1",
       icon: "icon-jilu",
@@ -22,6 +22,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       iconStyle: {
@@ -41,6 +45,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       iconStyle: {
@@ -53,12 +61,17 @@ const MyList = () => {
       icon: "icon-anquan",
       showArrow: true,
       title: "安全信息",
+      path:'security-info',
       type: "secure",
       style: {},
       className: "",
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       iconStyle: {
@@ -67,7 +80,7 @@ const MyList = () => {
       },
     },
   ];
-  const listInfo1 = [
+  let listInfo1 = [
     {
       id: "11",
       icon: require("../Assets/images/pact.png"),
@@ -79,6 +92,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       imgStyle: {
@@ -98,6 +115,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       imgStyle: {
@@ -117,6 +138,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       imgStyle: {
@@ -142,6 +167,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
     },
     {
@@ -155,6 +184,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       imgStyle: {
@@ -164,7 +197,7 @@ const MyList = () => {
       },
     },
   ];
-  const listInfo2 = [
+  let listInfo2 = [
     {
       id: "61",
       icon: "icon-tuichudenglu",
@@ -176,6 +209,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
+        marginRight:'.3rem',
+        '--padding-left': 0,
+        '--padding-right': 0,
+        '--margin-left': '.2rem'
       },
       itemClass: "",
       iconStyle: {

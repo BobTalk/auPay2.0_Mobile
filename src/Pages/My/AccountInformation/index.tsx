@@ -167,6 +167,7 @@ const AccountInformation = () => {
       setPopupVisible(() => !popupVisible);
       return;
     }
+    if(InfoType['headSculpture'] == crt['type']) return
     let crtCopy = cloneDeep(crt);
     Reflect.deleteProperty(crtCopy, "extra");
     crt.showArrow && navigator("/my/editorInfo", { state: crtCopy });
