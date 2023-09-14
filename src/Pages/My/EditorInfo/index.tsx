@@ -2,7 +2,6 @@ import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Popup } from "antd-mobile";
 import {
-  MouseEvent,
   createRef,
   memo,
   useCallback,

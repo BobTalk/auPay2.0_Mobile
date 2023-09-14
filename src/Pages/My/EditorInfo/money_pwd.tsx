@@ -1,6 +1,6 @@
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
-import { MouseEvent, forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState } from "react";
 
 const MoneyPwd = (props: any, ref: any) => {
   console.log(props);
@@ -8,7 +8,7 @@ const MoneyPwd = (props: any, ref: any) => {
     crt: { flag: flagScope },
   } = props ?? {};
   let [showUpdatePwdEl, setShowUpdatePwdEl] = useState(
-    flagScope == 1 ? false : true
+    flagScope === 1 ? false : true
   );
   // 暴露给父级
   useImperativeHandle(
