@@ -1,8 +1,10 @@
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
 import { forwardRef, useImperativeHandle, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
+  const Navigator = useNavigate();
   console.log(props);
   let {
     crt: { flag: flagScope },
@@ -25,7 +27,13 @@ const MoneyPwd = (props: any, ref: any) => {
 
   return (
     <>
-      {!showUpdatePwdEl ? <OldPwdValid onClick={() => nextStep()} /> : null}
+      {!showUpdatePwdEl ? (
+        <OldPwdValid
+          navigator={Navigator}
+          crt={props}
+          onClick={() => nextStep()}
+        />
+      ) : null}
       {showUpdatePwdEl ? (
         <>
           <PublicInput
@@ -84,6 +92,11 @@ const OldPwdValid = (props: any) => {
     props.onClick?.();
   }
 
+  function ResetPwd(e: any) {
+    e.stopPropagation();
+    props.navigator?.("/resetpwd", { state: props.ctr });
+  }
+
   return (
     <>
       <PublicInput
@@ -115,6 +128,7 @@ const OldPwdValid = (props: any) => {
         </Button>
         <Button
           block
+          onClick={(e) => ResetPwd(e)}
           fill="outline"
           color="primary"
           className="text-[.3rem] text-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"

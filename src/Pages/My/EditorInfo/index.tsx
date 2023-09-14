@@ -1,13 +1,7 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Popup } from "antd-mobile";
-import {
-  createRef,
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { createRef, memo, useCallback, useEffect, useState } from "react";
 import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../Enum";
 import { useLocation } from "react-router-dom";
 import MoneyPwd from "./money_pwd";
