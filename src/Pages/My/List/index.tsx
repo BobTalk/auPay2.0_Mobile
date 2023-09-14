@@ -6,7 +6,7 @@ import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
-import { memo, useState } from "react";
+import { memo, useEffect,  useState } from "react";
 const MyList = () => {
   const navigate = useNavigate();
   let listInfo = [
@@ -22,10 +22,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       iconStyle: {
@@ -45,10 +45,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       iconStyle: {
@@ -61,17 +61,17 @@ const MyList = () => {
       icon: "icon-anquan",
       showArrow: true,
       title: "安全信息",
-      path:'security-info',
+      path: "security-info",
       type: "secure",
       style: {},
       className: "",
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       iconStyle: {
@@ -92,10 +92,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       imgStyle: {
@@ -115,10 +115,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       imgStyle: {
@@ -138,10 +138,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       imgStyle: {
@@ -167,10 +167,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
     },
     {
@@ -184,10 +184,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       imgStyle: {
@@ -209,10 +209,10 @@ const MyList = () => {
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
-        marginRight:'.3rem',
-        '--padding-left': 0,
-        '--padding-right': 0,
-        '--margin-left': '.2rem'
+        marginRight: ".3rem",
+        "--padding-left": 0,
+        "--padding-right": 0,
+        "--margin-left": ".2rem",
       },
       itemClass: "",
       iconStyle: {
@@ -232,68 +232,67 @@ const MyList = () => {
     setPopupVisible(!popupVisible);
   };
   return (
-    <div
-      className={mergeClassName(
-        styleScope["list_box"],
-        "px-[.3rem] overflow-y-auto"
-      )}
-    >
-      <div className="flex pt-[.7rem] gap-x-[.32rem]">
-        <Avatar
-          src=""
-          style={{
-            "--border-radius": "50%",
-            "--size": "1.34rem",
-            backgroundColor: "#fff",
-            marginLeft: ".08rem",
-          }}
-        />
-        <div className="flex flex-col justify-between h-[1.34rem]">
-          <p className="text-[.34rem] text-[#333] font-[700]">西尾猫的世界</p>
-          <p className="text-[.24rem] text-[#666]">
-            <span>上次登录</span>
-            <span>2023-06-30 18:17:47</span>
-          </p>
-          <p className="text-[.24rem] text-[#666]">92.119.178.68 罗马尼亚</p>
+    <>
+      <div
+        className={mergeClassName(
+          styleScope["list_box"],
+          "px-[.3rem] overflow-y-auto"
+        )}
+      >
+        <div className="flex pt-[.7rem] gap-x-[.32rem]">
+          <Avatar
+            src=""
+            style={{
+              "--border-radius": "50%",
+              "--size": "1.34rem",
+              backgroundColor: "#fff",
+              marginLeft: ".08rem",
+            }}
+          />
+          <div className="flex flex-col justify-between h-[1.34rem]">
+            <p className="text-[.34rem] text-[#333] font-[700]">西尾猫的世界</p>
+            <p className="text-[.24rem] text-[#666]">
+              <span>上次登录</span>
+              <span>2023-06-30 18:17:47</span>
+            </p>
+            <p className="text-[.24rem] text-[#666]">92.119.178.68 罗马尼亚</p>
+          </div>
         </div>
+        <div className="flex justify-between gap-x-[.3rem] mt-[.42rem]">
+          <Card
+            className="flex flex-1 h-[1rem] px-[.38rem]"
+            title={<Menu title="白名单管理" imgUrl={whiteImg} />}
+          ></Card>
+          <Card
+            className="flex flex-1 h-[1rem] px-[.38rem]"
+            title={<Menu title="应用管理" imgUrl={appmanger} />}
+          ></Card>
+        </div>
+        <PublicList
+          arrowStyle={{ fontSize: ".2rem" }}
+          arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+          click={itemClick}
+          className="mt-[.3rem]"
+          list={listInfo}
+        />
+        <PublicList
+          arrowStyle={{ fontSize: ".2rem" }}
+          arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+          click={itemClick}
+          className="mt-[.3rem]"
+          list={listInfo1}
+        />
+        <PublicList
+          arrowStyle={{ fontSize: ".2rem" }}
+          arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
+          click={signOut}
+          className="my-[.3rem]"
+          list={listInfo2}
+        />
+        <PopupComp visible={popupVisible} cancle={() => signOut()} />
       </div>
-      <div className="flex justify-between gap-x-[.3rem] mt-[.42rem]">
-        <Card
-          className="flex flex-1 h-[1rem] px-[.38rem]"
-          title={<Menu title="白名单管理" imgUrl={whiteImg} />}
-        ></Card>
-        <Card
-          className="flex flex-1 h-[1rem] px-[.38rem]"
-          title={<Menu title="应用管理" imgUrl={appmanger} />}
-        ></Card>
-      </div>
-      <PublicList
-        arrowStyle={{ fontSize: ".2rem" }}
-        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
-        click={itemClick}
-        className="mt-[.3rem]"
-        list={listInfo}
-      />
-      <PublicList
-        arrowStyle={{ fontSize: ".2rem" }}
-        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
-        click={itemClick}
-        className="mt-[.3rem]"
-        list={listInfo1}
-      />
-      <PublicList
-        arrowStyle={{ fontSize: ".2rem" }}
-        arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
-        click={signOut}
-        className="my-[.3rem]"
-        list={listInfo2}
-      />
-      <PublicFoo
-        style={{ position: "static", visibility: "hidden", overflow: "hidden" }}
-      />
-      <PublicFoo />
-      <PopupComp visible={popupVisible} cancle={() => signOut()} />
-    </div>
+      <PublicFoo/>
+    </>
   );
 };
 const Menu = (props: any) => {

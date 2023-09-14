@@ -71,8 +71,8 @@ const EditorInfo = () => {
   const [defaultCountryCode, setDefaultCountryCode] = useState<any>("China");
   const [countryCode, setCountryCode] = useState<any>();
   useEffect(() => {
-    if (typeMap.has(state.type)) {
-      typeMap.get(state.type)?.(state);
+    if (typeMap.has(state?.type)) {
+      typeMap.get(state?.type)?.(state);
     }
   }, []);
   useEffect(() => {
@@ -83,7 +83,7 @@ const EditorInfo = () => {
     setValue(val);
   };
 
-  const [value, setValue] = useState(state.value);
+  const [value, setValue] = useState(state?.value || "");
   const popupCb = (crt: any) => {
     setPopupVisible(false);
     setDefaultCountryCode(crt["key"]);
@@ -99,10 +99,10 @@ const EditorInfo = () => {
       <PublicInput
         value={value}
         input={(val: any) => InputEvent(val)}
-        maxLength={state.maxLength}
-        placeholder={InfoType.phone == state.type ? "请输入联系方式" : "请输入"}
+        maxLength={state?.maxLength}
+        placeholder={InfoType.phone == state?.type ? "请输入联系方式" : "请输入"}
         prefix={
-          InfoType["phone"] == state.type ? (
+          InfoType["phone"] == state?.type ? (
             <CountrCode
               onClick={() => selectCountry()}
               countryCode={countryCode}
@@ -124,7 +124,7 @@ const EditorInfo = () => {
         clearable={true}
         inputClassName="text-[.3rem] text-[#222]"
       >
-        {state.maxLength && (
+        {state?.maxLength && (
           <p className="text-[.24rem]">
             <span className="text-[#1c63ff]">{value.length}</span>
             <span className="text-[#666]">/12</span>

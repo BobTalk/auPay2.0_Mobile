@@ -75,7 +75,8 @@
         // }
         // var rem =  width / 10;
         var rem = width == 750 ? 100 : width * 100 / 750
-        docEl.style.fontSize = rem + 'px';
+        // docEl.style.fontSize = rem + 'px';
+        docEl.style.cssText=`font-size:${rem}px;max-width:${width}px;margin: 0 auto;`
         flexible.rem = win.rem = rem;
     }
 

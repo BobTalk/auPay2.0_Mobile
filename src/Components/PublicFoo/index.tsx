@@ -22,8 +22,9 @@ const PublicFoo = (props: any) => {
   return (
     <div
       className={mergeClassName(
-        "footer-nav_box",
-        `${clientW > 750 && "left-[50%] translate-x-[-50%]"}`
+        "footer-nav_box grid",
+        `${clientW > 750 ? "left-[50%] translate-x-[-50%]" : ""}`,
+        `grid-cols-[${navList.length}]`
       )}
       style={props.style}
     >
@@ -40,8 +41,13 @@ const PublicFoo = (props: any) => {
               key={item.path}
               className={curK === item.path ? "cur" : ""}
             >
-              <i className={"iconfont " + item.icon}></i>
-              <p>{item.label}</p>
+              <i
+                className={mergeClassName(
+                  "iconfont text-[.44rem]",
+                  `${item.icon}`
+                )}
+              ></i>
+              <p className="text-[.2rem]">{item.label}</p>
             </li>
           );
         })}

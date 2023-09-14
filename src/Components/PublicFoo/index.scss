@@ -1,7 +1,9 @@
 .footer-nav_box {
   position: fixed;
+  height: 1.08rem;
   bottom: 0;
   left: 0;
+  border-top: 1px solid rgba(219, 219, 219, 1);
 }
 
 .public_foo_nav {
@@ -9,25 +11,21 @@
   width: 100%;
   align-items: center;
   background: #FFFFFF;
-  padding: 8px 0 39px;
 
   li {
-    width: 33.33%;
     display: flex;
+    width: 33.33%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
     i {
-      font-size: 22px;
       color: #B8B8B8;
     }
 
     p {
-      font-size: 10px;
       text-align: center;
       color: #B8B8B8;
-      margin-top: 4.5px;
     }
   }
 
