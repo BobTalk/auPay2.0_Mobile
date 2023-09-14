@@ -44,7 +44,7 @@ const RouteList = [
   { label: '提币', path: 'draw', element: <DrawMoney /> },
   { label: '我的', path: 'my', element: <MyModule /> },
   { label: '账户信息', path: 'my/accountInfor', element: <AccountInformation /> },
-  { label: '编辑昵称', path: 'my/editorInfo', element: <EditorInfo /> },
+  { label: '编辑信息', path: 'my/editorInfo', element: <EditorInfo /> },
   { label: '安全信息', path: 'my/security-info', element: <SecurityInfo /> },
 ]
 export default RouteList

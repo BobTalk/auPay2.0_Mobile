@@ -1,28 +1,56 @@
 enum InfoType {
-  userName='userName',
-  eMail='eMail',
-  phone='phone',
-  unit='unit',
-  nickName='nickName',
-  headSculpture='headSculpture'
+  userName = "userName",
+  eMail = "eMail",
+  phone = "phone",
+  unit = "unit",
+  nickName = "nickName",
+  headSculpture = "headSculpture",
 }
 enum CountryCode {
-  "China"='86',
-  "Malaysia"='60',
-  "Singapore"='65',
-  "Thailand"='66',
-  "Japan"='81',
-  "SouthKorea"='82',
-  "Vietnam"='84',
-  "Burma"='95',
-  "Taiwan"='886',
+  "China" = "86",
+  "Malaysia" = "60",
+  "Singapore" = "65",
+  "Thailand" = "66",
+  "Japan" = "81",
+  "SouthKorea" = "82",
+  "Vietnam" = "84",
+  "Burma" = "95",
+  "Taiwan" = "886",
 }
 enum MonetaryUnit {
-  "China"="CNY",
-  "America"="USD"
+  "China" = "CNY",
+  "America" = "USD",
+}
+enum InfoSecurity {
+  siginPwd = "siginPwd",
+  updateSiginPwd = "updateSiginPwd",
+  securityPwd = "securityPwd",
+  updateSecurityPwd="updateSecurityPwd",
+  googleValidator = "googleValidator",
+  updateGoogleValidator = "updateGoogleValidator",
+
+}
+enum InfoSecurityTip {
+  siginPwd = "",
+  updateSiginPwd="",
+  securityPwd = "您尚未设置资金密码，为了您的账户安全，请设置六位数字密码",
+  updateSecurityPwd="资金密码重置或修改，24小时内无法进行交易",
+  googleValidator = "",
+  updateGoogleValidator=""
+}
+enum HeadTitle {
+  "siginPwd" = "设置登录密码",
+  "updateSiginPwd" = "修改登录密码",
+  "securityPwd" = "设置资金密码",
+  "updateSecurityPwd" = "修改资金密码",
+  "googleValidator" = "绑定Google验证器",
+  "updateGoogleValidator" = "修改Google验证器",
 }
 export {
   InfoType,
   CountryCode,
-  MonetaryUnit
-}
+  MonetaryUnit,
+  InfoSecurity,
+  InfoSecurityTip,
+  HeadTitle,
+};

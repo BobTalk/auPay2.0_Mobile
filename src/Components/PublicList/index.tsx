@@ -59,7 +59,6 @@ type listItemType = {
   [key: string]: any;
 };
 const PublicList = (props: Omit<publicListType, "itemInfo">) => {
-  console.log(props.list, "props.list");
   return (
     <List
       className={mergeClassName(

@@ -1,5 +1,7 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
+import { useNavigate } from "react-router-dom";
+import { InfoSecurity } from "../Enum";
 
 const SecurityInfo = () => {
   const HeadData = {
@@ -17,13 +19,11 @@ const SecurityInfo = () => {
     {
       id: "1",
       title: "登陆密码",
-      subTitle: "去设置",
+      flag: 1, // 0 设置 1 修改
+      subTitle: "修改", // "去设置",
+      type: InfoSecurity["updateSiginPwd"], //InfoSecurity["siginPwd"],
       subTitleClassName: "text-[#666] mr-[.1rem]",
       showArrow: true,
-      type: "bussion",
-      style: {},
-      path: "",
-      className: "",
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
@@ -32,7 +32,6 @@ const SecurityInfo = () => {
         "--padding-right": 0,
         "--margin-left": ".3rem",
       },
-      itemClass: "",
       iconStyle: {
         fontSize: ".4rem",
         marginLeft: ".3rem",
@@ -41,13 +40,11 @@ const SecurityInfo = () => {
     {
       id: "2",
       showArrow: true,
-      path: "accountInfor",
       title: "资金密码",
-      subTitle: "去设置",
+      flag: 1, // 0 设置 1 修改
+      subTitle: "修改", // "去设置",
+      type: InfoSecurity["updateSecurityPwd"], //InfoSecurity["securityPwd"],
       subTitleClassName: "text-[#666] mr-[.1rem]",
-      type: "account",
-      style: {},
-      className: "",
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
@@ -56,7 +53,6 @@ const SecurityInfo = () => {
         "--padding-right": 0,
         "--margin-left": ".3rem",
       },
-      itemClass: "",
       iconStyle: {
         fontSize: ".4rem",
         marginLeft: ".3rem",
@@ -66,12 +62,11 @@ const SecurityInfo = () => {
       id: "3",
       showArrow: true,
       title: "Google验证器",
-      subTitle: "绑定",
+      flag: 1, // 0 设置 1 修改
+      type: InfoSecurity["updateGoogleValidator"], //InfoSecurity["googleValidator"],
+      subTitle: "重置", // "绑定",
       subTitleClassName: "text-[#666] mr-[.1rem]",
       path: "security-info",
-      type: "secure",
-      style: {},
-      className: "",
       itemStyle: {
         fontSize: ".3rem",
         color: "#333",
@@ -79,9 +74,9 @@ const SecurityInfo = () => {
         "--padding-left": 0,
         "--padding-right": 0,
         "--margin-left": ".3rem",
-        "--border-b-w": '1px',
-        "--border-b-style":'solid',
-        '--border-b-color':'#eee'
+        "--border-b-w": "1px",
+        "--border-b-style": "solid",
+        "--border-b-color": "#eee",
       },
       itemClass: "flex justify-between]",
       iconStyle: {
@@ -90,6 +85,11 @@ const SecurityInfo = () => {
       },
     },
   ];
+  const Navigator = useNavigate();
+  let itemClick = (crt: any) => {
+    Navigator("/my/editorInfo", { state: crt });
+  };
+
   return (
     <>
       <PublicHead {...HeadData} />
@@ -97,6 +97,7 @@ const SecurityInfo = () => {
         arrowStyle={{ fontSize: ".2rem" }}
         arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
         list={listInfo}
+        click={(crt: any) => itemClick(crt)}
       />
     </>
   );

@@ -1,11 +1,22 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Popup } from "antd-mobile";
-import { memo, useCallback, useEffect, useState } from "react";
-import { InfoType, CountryCode } from "../Enum";
+import {
+  MouseEvent,
+  createRef,
+  memo,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../Enum";
 import { useLocation } from "react-router-dom";
+import MoneyPwd from "./money_pwd";
+import GoogleValidator from "./google-validator";
 
-const EditorInfo = () => {
+const EditorInfo = (props: any) => {
+  let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
+  let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   const typeMap = new Map([
     [
       InfoType.phone,
@@ -54,9 +65,10 @@ const EditorInfo = () => {
       },
     ],
   ]);
-  const { state } = useLocation();
+  const { state = {} } = useLocation();
+  console.log(state, "------->>");
   const headInfo = {
-    title: "编辑昵称",
+    title: HeadTitle1[state["type"]] ?? "编辑昵称",
     back: "goBack",
     titleStyle: { fontSize: ".34rem", color: "#333" },
     iconStyle: { fontSize: ".34rem", left: ".15rem" },
@@ -82,7 +94,7 @@ const EditorInfo = () => {
   const InputEvent = (val: any) => {
     setValue(val);
   };
-
+  const moneyPwd = createRef();
   const [value, setValue] = useState(state?.value || "");
   const popupCb = (crt: any) => {
     setPopupVisible(false);
@@ -93,53 +105,74 @@ const EditorInfo = () => {
   const selectCountry = () => {
     setPopupVisible(!popupVisible);
   };
+  // 确认提交
+  function submitInfo(e: any) {
+    console.log(moneyPwd.current);
+  }
+
   return (
     <>
       <PublicHead {...headData} />
-      <PublicInput
-        value={value}
-        input={(val: any) => InputEvent(val)}
-        maxLength={state?.maxLength}
-        placeholder={InfoType.phone == state?.type ? "请输入联系方式" : "请输入"}
-        prefix={
-          InfoType["phone"] == state?.type ? (
-            <CountrCode
-              onClick={() => selectCountry()}
-              countryCode={countryCode}
-            />
-          ) : null
-        }
-        inputBoxStyle={{
-          backgroundColor: "#fff",
-          margin: "0 .3rem",
-          paddingRight: 0,
-          paddingLeft: 0,
-          borderBottom: "1px solid #E6E6E6",
-          borderRadius: 0,
-        }}
-        clearStyle={{
-          fontSize: ".34rem",
-          color: "#E6E6E6",
-        }}
-        clearable={true}
-        inputClassName="text-[.3rem] text-[#222]"
-      >
-        {state?.maxLength && (
-          <p className="text-[.24rem]">
-            <span className="text-[#1c63ff]">{value.length}</span>
-            <span className="text-[#666]">/12</span>
-          </p>
-        )}
-      </PublicInput>
-      <div className="px-[.3rem]">
-        <Button
-          block
-          color="primary"
-          className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
-        >
-          确定
-        </Button>
-      </div>
+      {!!InfoSecurityTip1[state["type"]] ? (
+        <p className="grid items-center px-[.3rem] h-[.7rem] text-[.24rem] text-[#222] bg-[#E9ECF2]">
+          {InfoSecurityTip1[state["type"]]}
+        </p>
+      ) : null}
+      {
+        // 资金密码设置/修改
+        ["securityPwd", "updateSecurityPwd"].includes(state["type"]) ? (
+          <MoneyPwd ref={moneyPwd} crt={state} />
+        ) : state["type"] == "googleValidator" ? (
+          // google验证器、修改
+          <>
+            <GoogleValidator />
+            <SubmitBtn onClick={() => SubmitBtn(state)} />
+          </>
+        ) : (
+          // 电话号码 昵称等模块修改
+          <>
+            <PublicInput
+              value={value}
+              input={(val: any) => InputEvent(val)}
+              maxLength={state?.maxLength}
+              placeholder={
+                InfoType.phone === state?.type ? "请输入联系方式" : "请输入"
+              }
+              prefix={
+                InfoType["phone"] === state?.type ? (
+                  <CountrCode
+                    onClick={() => selectCountry()}
+                    countryCode={countryCode}
+                  />
+                ) : null
+              }
+              inputBoxStyle={{
+                backgroundColor: "#fff",
+                margin: "0 .3rem",
+                paddingRight: 0,
+                paddingLeft: 0,
+                borderBottom: "1px solid #E6E6E6",
+                borderRadius: 0,
+              }}
+              clearStyle={{
+                fontSize: ".34rem",
+                color: "#E6E6E6",
+              }}
+              clearable={true}
+              inputClassName="text-[.3rem] text-[#222]"
+            >
+              {state?.maxLength && (
+                <p className="text-[.24rem]">
+                  <span className="text-[#1c63ff]">{value.length}</span>
+                  <span className="text-[#666]">/12</span>
+                </p>
+              )}
+            </PublicInput>
+            <SubmitBtn onClick={() => SubmitBtn(state)} />
+          </>
+        )
+      }
+
       <PopupComp
         CountryCode={CountryCode}
         onClick={(crt: any) => {
@@ -150,6 +183,26 @@ const EditorInfo = () => {
     </>
   );
 };
+const SubmitBtn = (props: any) => {
+  function submitInfo(e: any) {
+    e.stopPropagation();
+    props.onClick?.();
+  }
+
+  return (
+    <div className="px-[.3rem]">
+      <Button
+        block
+        onClick={(e) => submitInfo(e)}
+        color="primary"
+        className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+      >
+        确定
+      </Button>
+    </div>
+  );
+};
+// 国家区号
 const CountrCode = (props: any) => {
   const changeCountry = (e: any) => {
     e.stopPropagation();
@@ -209,7 +262,7 @@ const PopupComp = memo(
     );
   },
   (prv, next) => {
-    return prv.visible == next.visible;
+    return prv.visible === next.visible;
   }
 );
 export default EditorInfo;
