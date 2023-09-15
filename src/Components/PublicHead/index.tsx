@@ -21,18 +21,18 @@ const PublicHead = (props: propsTs) => {
       style={props.style}
       className={
         props.textColor === "white"
-          ? "public_head public_head_white"
-          : "public_head"
+          ? "public_head public_head_white items-center"
+          : "public_head items-center"
       }
     >
-      {props.back && (
+      {props.back ? (
         <i
           onClick={clickBack}
           style={props.iconStyle}
-          className="iconfont icon-icon-arrow-right2"
+          className="iconfont icon-icon-arrow-right2 ml-[.3rem]"
         />
-      )}
-      <p className="public_head_tit" style={props.titleStyle}>
+      ) : null}
+      <p className="public_head_tit flex-1" style={props.titleStyle}>
         {props.title}
       </p>
     </div>

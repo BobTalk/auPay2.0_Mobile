@@ -59,7 +59,6 @@ const EditorInfo = (props: any) => {
     ],
   ]);
   const { state = {} } = useLocation();
-  console.log(state, "------->>");
   const headInfo = {
     title: HeadTitle1[state["type"]] ?? "编辑昵称",
     back: "goBack",
