@@ -76,7 +76,7 @@ const MoneyPwd = (props: any, ref: any) => {
             <Button
               block
               color="primary"
-              className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+              className="before:bg-transparent text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
             >
               确定
             </Button>
@@ -123,7 +123,7 @@ const OldPwdValid = (props: any) => {
           onClick={(e) => nextStep(e)}
           block
           color="primary"
-          className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+          className="before:bg-transparent text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
         >
           下一步
         </Button>
@@ -132,7 +132,7 @@ const OldPwdValid = (props: any) => {
           onClick={(e) => ResetPwd(e)}
           fill="outline"
           color="primary"
-          className="text-[.3rem] text-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+          className="before:bg-transparent text-[.3rem] text-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
         >
           忘记密码
         </Button>

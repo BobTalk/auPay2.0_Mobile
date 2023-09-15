@@ -191,7 +191,7 @@ const SubmitBtn = (props: any) => {
         block
         onClick={(e) => submitInfo(e)}
         color="primary"
-        className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+        className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
       >
         确定
       </Button>

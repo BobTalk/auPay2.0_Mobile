@@ -45,7 +45,7 @@ const ResetPwd = (props: any) => {
             type="submit"
             block
             color="primary"
-            className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+            className="before:bg-transparent text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
           >
             验证
           </Button>

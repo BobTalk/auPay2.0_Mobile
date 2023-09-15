@@ -71,7 +71,7 @@ const Login = () => {
         <div onClick={ forget } className='login_form_forget'><p>忘记密码</p></div>
 
         <Form.Item>
-          <Button className='login_form_btn' block type='submit' color='primary'>
+          <Button className='login_form_btn before:bg-transparent' block type='submit' color='primary'>
             登录
           </Button>
         </Form.Item>

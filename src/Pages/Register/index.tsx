@@ -118,7 +118,7 @@ const Register = () => {
         </Form.Item>
 
         <Form.Item>
-          <Button className='login_form_btn' block type='submit' color='primary'>
+          <Button className='before:bg-transparent login_form_btn' block type='submit' color='primary'>
             注册
           </Button>
         </Form.Item>

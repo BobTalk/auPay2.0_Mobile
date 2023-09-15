@@ -23,13 +23,13 @@ const Receipt = () => {
           <div className='reset_receipt'>
             <i className='iconfont icon-chenggong'></i>
             <p>密码重置成功</p>
-            <Button onClick={ backGo }>去登录</Button>
+            <Button className="before:bg-transparent" onClick={ backGo }>去登录</Button>
           </div>
         ) : (
           <div className='reset_receipt'>
             <i className='iconfont icon-shibai'></i>
             <p>密码重置失败</p>
-            <Button onClick={ backGo }>返回</Button>
+            <Button className='before:bg-transparent' onClick={ backGo }>返回</Button>
           </div>
         )
       }

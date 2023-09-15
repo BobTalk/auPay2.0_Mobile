@@ -53,7 +53,7 @@ const Verify = () => {
           </Form.Item>
         </Form.Item>
         <Form.Item>
-          <Button className='login_form_btn' block type='submit'>
+          <Button className='before:bg-transparent login_form_btn' block type='submit'>
             提交
           </Button>
         </Form.Item>

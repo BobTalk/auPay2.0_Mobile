@@ -61,7 +61,7 @@ const DrawMoney = () => {
         bottom={<BottomScopeNum />}
       >
         <Button
-          className="text-[.26rem] text-[#1C63FF]"
+          className="text-[.26rem] text-[#1C63FF] before:bg-transparent"
           color="primary"
           fill="none"
         >
@@ -95,7 +95,7 @@ const DrawMoney = () => {
         onClick={submitDraw}
         block
         color="primary"
-        className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+        className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
       >
         确认提币
       </Button>
@@ -210,7 +210,7 @@ const PopupComp = memo(
           onClick={() => props?.submit()}
           block
           color="primary"
-          className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem]"
+          className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
         >
           确认
         </Button>
