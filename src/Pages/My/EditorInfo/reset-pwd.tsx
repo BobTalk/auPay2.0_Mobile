@@ -1,6 +1,6 @@
 import PublicHead from "@/Components/PublicHead";
 import { useLocation } from "react-router-dom";
-import { InfoSecurityTip } from "../Enum";
+import { InfoSecurityTip, InfoSecurity } from "../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
@@ -8,6 +8,7 @@ import { useState } from "react";
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
+  let InfoSecurity1 = JSON.parse(JSON.stringify(InfoSecurity));
   const HeadInfo = {
     title: urlParams.headTitle ?? props.headTitle,
     back: "goBack",
@@ -81,7 +82,7 @@ const ResetPwd = (props: any) => {
             borderRadius: 0,
           }}
           inputClassName="text-[.3rem] text-[#222]"
-          prefix={<span className="text-[.3rem] text-[#222]">验证码</span>}
+          prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
           <Button
             className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
@@ -91,31 +92,53 @@ const ResetPwd = (props: any) => {
             获取
           </Button>
         </PublicInput>
-        <PublicInput
-          placeholder="请输入Google验证码"
-          inputStyle={{
-            "--text-align": "right",
-          }}
-          inputBoxStyle={{
-            backgroundColor: "#fff",
-            paddingRight: 0,
-            paddingLeft: 0,
-            borderBottom: "1px solid #E6E6E6",
-            borderRadius: 0,
-          }}
-          inputClassName="text-[.3rem] text-[#222]"
-          prefix={
-            <span className="text-[.3rem] text-[#222]">Google验证码</span>
-          }
-        >
-          <Button
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
-            color="primary"
-            fill="none"
+        {urlParams.crt.type == InfoSecurity1["updateGoogleValidator"] ? (
+          <>
+            <PublicInput
+              placeholder="请输入资金密码"
+              inputStyle={{
+                "--text-align": "right",
+              }}
+              inputBoxStyle={{
+                backgroundColor: "#fff",
+                paddingRight: 0,
+                paddingLeft: 0,
+                borderBottom: "1px solid #E6E6E6",
+                borderRadius: 0,
+              }}
+              inputClassName="text-[.3rem] text-[#222]"
+              prefix={
+                <span className="text-[.3rem] text-[#222]">资金密码</span>
+              }
+            ></PublicInput>
+          </>
+        ) : (
+          <PublicInput
+            placeholder="请输入Google验证码"
+            inputStyle={{
+              "--text-align": "right",
+            }}
+            inputBoxStyle={{
+              backgroundColor: "#fff",
+              paddingRight: 0,
+              paddingLeft: 0,
+              borderBottom: "1px solid #E6E6E6",
+              borderRadius: 0,
+            }}
+            inputClassName="text-[.3rem] text-[#222]"
+            prefix={
+              <span className="text-[.3rem] text-[#222]">Google验证码</span>
+            }
           >
-            发送
-          </Button>
-        </PublicInput>
+            <Button
+              className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
+              color="primary"
+              fill="none"
+            >
+              发送
+            </Button>
+          </PublicInput>
+        )}
       </PublicForm>
     </>
   );

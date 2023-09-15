@@ -1,5 +1,4 @@
 import { Input } from "antd-mobile";
-import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
@@ -24,6 +23,7 @@ type propsVolit = {
   inputClassName?: string;
   click?: Function;
   maxLength?: number | undefined;
+  minLength?: number | undefined;
   name?: string | undefined;
   rules?: Array<object>;
   [key:string]:any
@@ -79,6 +79,7 @@ const PublicInput = (props: propsVolit, ref:any):any => {
             placeholder={props.placeholder}
             defaultValue={props['value']}
             maxLength={props.maxLength}
+            minLength={props.minLength}
             onChange={valChange}
             disabled={props.disabled}
           />
@@ -139,6 +140,7 @@ const PublicInput = (props: propsVolit, ref:any):any => {
 //   inputClassName: "",
 //   clearable: false,
 //   maxLength: null,
+//   minLength: 0,
 //   clearStyle: {
 //     fontSize: "1em",
 //   },

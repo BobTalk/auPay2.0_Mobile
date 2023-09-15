@@ -118,7 +118,7 @@ const EditorInfo = (props: any) => {
         ) : ["siginPwd", "updateSiginPwd"].includes(state["type"]) ? <>
           <LoginPwd/>
         </> 
-        :state["type"] == "googleValidator" ? (
+        : state["type"] == "googleValidator" ? (
           // google验证器、修改
           <>
             <GoogleValidator />
