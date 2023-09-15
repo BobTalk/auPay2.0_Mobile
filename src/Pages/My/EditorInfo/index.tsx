@@ -6,6 +6,7 @@ import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../Enum";
 import { useLocation } from "react-router-dom";
 import MoneyPwd from "./money_pwd";
 import GoogleValidator from "./google-validator";
+import LoginPwd from "./login_pwd";
 
 const EditorInfo = (props: any) => {
   let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
@@ -114,7 +115,10 @@ const EditorInfo = (props: any) => {
         // 资金密码设置/修改
         ["securityPwd", "updateSecurityPwd"].includes(state["type"]) ? (
           <MoneyPwd ref={moneyPwd} crt={state} />
-        ) : state["type"] == "googleValidator" ? (
+        ) : ["siginPwd", "updateSiginPwd"].includes(state["type"]) ? <>
+          <LoginPwd/>
+        </> 
+        :state["type"] == "googleValidator" ? (
           // google验证器、修改
           <>
             <GoogleValidator />

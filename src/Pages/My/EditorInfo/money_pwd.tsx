@@ -94,7 +94,8 @@ const OldPwdValid = (props: any) => {
 
   function ResetPwd(e: any) {
     e.stopPropagation();
-    props.navigator?.("/resetpwd", { state: props.ctr });
+    console.log('>>>>>',props)
+    props.navigator?.("/resetpwd", { state: {...props.crt, headTitle:'重置资金密码'} });
   }
 
   return (

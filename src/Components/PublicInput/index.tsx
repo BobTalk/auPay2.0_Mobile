@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
-import { useRef, useState } from "react";
+import { forwardRef, useRef, useState } from "react";
 type propsVolit = {
   top?: any;
   prefix?: any;
@@ -11,21 +11,24 @@ type propsVolit = {
   children?: any;
   style?: Object;
   placeholder?: string | undefined;
-  value: string | undefined;
+  value?: string | undefined;
   disabled?: boolean;
   inputStyle?: Object;
   input?: Function;
-  className: string;
-  isSelect: boolean;
-  clearable: boolean;
+  className?: string | undefined;
+  isSelect?: boolean;
+  clearable?: boolean;
   inputBoxStyle?: Object;
   inputBoxClassName?: string;
-  clearStyle: Object;
+  clearStyle?: Object;
   inputClassName?: string;
   click?: Function;
-  maxLength: number | undefined;
+  maxLength?: number | undefined;
+  name?: string | undefined;
+  rules?: Array<object>;
+  [key:string]:any
 };
-const PublicInput = (props: propsVolit) => {
+const PublicInput = (props: propsVolit, ref:any):any => {
   const [isClear, setIsClear] = useState(false);
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
@@ -50,7 +53,10 @@ const PublicInput = (props: propsVolit) => {
   };
   return (
     <div
-      className={mergeClassName(styleScope["input-module"], props.className)}
+      className={mergeClassName(
+        styleScope["input-module"],
+        `${props?.className ?? ""}`
+      )}
       style={props.style}
     >
       {props.top}
@@ -71,7 +77,7 @@ const PublicInput = (props: propsVolit) => {
             className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
             style={props.inputStyle}
             placeholder={props.placeholder}
-            defaultValue={props.value}
+            defaultValue={props['value']}
             maxLength={props.maxLength}
             onChange={valChange}
             disabled={props.disabled}
@@ -114,27 +120,29 @@ const PublicInput = (props: propsVolit) => {
     </div>
   );
 };
-PublicInput.defaultProps = {
-  top: <Outlet />,
-  prefix: <Outlet />,
-  bottom: <Outlet />,
-  children: <Outlet />,
-  style: {},
-  placeholder: "请输入",
-  value: undefined,
-  disabled: false,
-  inputStyle: {},
-  input: () => {},
-  className: "",
-  isSelect: false,
-  inputBoxStyle: {},
-  click: () => {},
-  inputBoxClassName: "",
-  inputClassName: "",
-  clearable: false,
-  maxLength: null,
-  clearStyle: {
-    fontSize: "1em",
-  },
-};
-export default PublicInput;
+// PublicInput.defaultProps = {
+//   top: <Outlet />,
+//   prefix: <Outlet />,
+//   bottom: <Outlet />,
+//   children: <Outlet />,
+//   style: {},
+//   placeholder: "请输入",
+//   value: undefined,
+//   disabled: false,
+//   inputStyle: {},
+//   input: () => {},
+//   className: "",
+//   isSelect: false,
+//   inputBoxStyle: {},
+//   click: () => {},
+//   inputBoxClassName: "",
+//   inputClassName: "",
+//   clearable: false,
+//   maxLength: null,
+//   clearStyle: {
+//     fontSize: "1em",
+//   },
+//   name: undefined,
+//   rules: [],
+// };
+export default forwardRef(PublicInput);
