@@ -321,7 +321,8 @@ const PopupComp = memo(
     return (
       <Popup
         visible={props.visible}
-        onMaskClick={() => {
+        onMaskClick={(e) => {
+          e.stopPropagation();
           props.cancle?.();
         }}
         bodyStyle={{

@@ -1,7 +1,7 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
-import { Card, Switch } from "antd-mobile";
-import { useEffect, useRef, useState } from "react";
+import { Card, CenterPopup, Popup, Switch } from "antd-mobile";
+import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { WhiteListInfo } from "../Enum";
 import { getSession, setSession } from "@/utils/base";
@@ -75,8 +75,8 @@ const WhiteList = (props: any) => {
 };
 const DrawalMoney = (props: any) => {
   let Navigate = useNavigate();
+  let [visible, setVisible] = useState<boolean>(false);
   function addWhiteList(e: any, crt: { val: string }) {
-    console.log(e);
     e.stopPropagation();
     Navigate(`add`, {
       state: {
@@ -86,6 +86,10 @@ const DrawalMoney = (props: any) => {
         },
       },
     });
+  }
+  function deleteWhiteListUrl(e: any, crt: any) {
+    e.stopPropagation();
+    setVisible(() => !visible);
   }
   return (
     <>
@@ -130,20 +134,68 @@ const DrawalMoney = (props: any) => {
           },
           {
             id: "003",
-            title: <span className="text-[.28rem] text-[#666]">我的地址</span>,
+            title: <span className="text-[.28rem] text-[#666]">我的地址2</span>,
             vertical: true,
             subTitle: (
               <p className="flex">
                 <span className="text-[.28rem] text-[#666] mr-[.4rem]">
                   0x32983464f44i0sdwd4f44i0sdwd4f40x32983464f44i0sdwd4f44i0sdwd4f4
                 </span>
-                <i className="iconfont icon-shanchu text-[.3rem] text-[#878787]"></i>
+                <i
+                  onClick={(e) =>
+                    deleteWhiteListUrl(e, {
+                      title: "USDT-ERC20",
+                      addr: "我的地址",
+                    })
+                  }
+                  className="iconfont icon-shanchu text-[.3rem] text-[#878787]"
+                ></i>
               </p>
             ),
           },
         ]}
       />
+      <PopupComp visible={visible} cancel={() => setVisible(() => !visible)} />
     </>
   );
 };
+const PopupComp = memo(
+  (props: any) => {
+    return (
+      <Popup
+        visible={props.visible}
+        onMaskClick={(e) => {
+          e.stopPropagation();
+          props.cancel?.();
+        }}
+        bodyStyle={{
+          borderRadius: ".34rem .34rem 0 0",
+          overflow: "hidden",
+          backgroundColor: "#f6f6f6",
+        }}
+      >
+        <ul>
+          <li className="grid h-[1.24rem] bg-[#fff] text-[.24rem] text-[#666]  place-items-center border-b-[1px] border-b-[#dbdbdb]">
+            删除{props?.title ?? "--"}白名单地址:【{props?.addr ?? "--"}】
+          </li>
+          <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center">
+            删除
+          </li>
+          <li
+            onClick={(e) => {
+              e.stopPropagation();
+              props.cancel?.();
+            }}
+            className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#333] font-[700]  place-items-center mt-[.15rem]"
+          >
+            取消
+          </li>
+        </ul>
+      </Popup>
+    );
+  },
+  (prv, next) => {
+    return prv.visible == next.visible;
+  }
+);
 export default WhiteList;
