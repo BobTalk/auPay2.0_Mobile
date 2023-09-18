@@ -1,10 +1,11 @@
 import { forwardRef } from "react";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
+import { dataType } from "@/utils/base";
 
 interface propsTs {
   title?: String;
-  back?: String; // 返回路径
+  back?: any;
   textColor?: String; // 颜色 目前只有默认和’white‘两种
   iconStyle?: Object;
   titleStyle?: Object;
@@ -24,6 +25,7 @@ const PublicHead = (props: propsTs, ref: any) => {
   const navigate = useNavigate();
   const clickBack = () => {
     if (props.back === "goBack") return window.history.back();
+    if (dataType(props.back) === "function") return props?.back?.();
     return navigate(String(props.back));
   };
   return (

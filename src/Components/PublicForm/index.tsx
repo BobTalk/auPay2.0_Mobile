@@ -3,7 +3,7 @@ import { Form } from "antd-mobile";
 import styled from "styled-components";
 
 const PublicForm = (props: any) => {
-  console.log(props)
+  console.log(props);
   function validataCb(obj: Object): void {
     props.finish(obj);
   }
@@ -44,16 +44,18 @@ const PublicForm = (props: any) => {
           </>
         ) : (
           <>
-            {props?.children?.map((comp: any, idx:number) => (
-              <Form.Item
-                key={comp._owner.mode+idx}
-                // disabled={comp.props.disabled}
-                name={comp.props.name}
-                rules={comp.props.rules}
-              >
-                {comp}
-              </Form.Item>
-            ))}
+            {props?.children?.map((comp: any, idx: number) =>
+              comp ? (
+                <Form.Item
+                  key={comp._owner.mode + idx}
+                  // disabled={comp.props.disabled}
+                  name={comp?.props?.name}
+                  rules={comp?.props?.rules}
+                >
+                  {comp}
+                </Form.Item>
+              ) : null
+            )}
           </>
         )}
       </Form>

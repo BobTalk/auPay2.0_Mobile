@@ -1,13 +1,17 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
-import { Button, Card, Switch } from "antd-mobile";
+import { Card, Switch } from "antd-mobile";
 import { useEffect, useRef, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { WhiteListInfo } from "../Enum";
+import { getSession, setSession } from "@/utils/base";
 
 const WhiteList = (props: any) => {
   const HeaderEl = useRef<any>({});
+  const Navigate = useNavigate();
   let [headerH, setHeaderH] = useState<number>(0);
   let { state } = useLocation();
+  const [isOpen] = useState<boolean>(getSession("isOpenWhiteList"));
   let headInfo = {
     title: props.headTitle ?? state.headTitle,
     back: "goBack",
@@ -23,6 +27,22 @@ const WhiteList = (props: any) => {
     let { height } = HeaderEl.current?.getBoundingClientRect?.();
     setHeaderH(() => height);
   }, []);
+  function switchChangeCb(val: boolean) {
+    setSession("isOpenWhiteList", val);
+    Navigate(`${val}`, {
+      state: {
+        headTitle: (val ? "开启" : "关闭") + "白名单",
+        crt: {
+          type: val ? WhiteListInfo["open"] : WhiteListInfo["close"],
+        },
+      },
+    });
+    if (val) {
+      // 关闭白名单
+    } else {
+      // 开启白名单
+    }
+  }
   return (
     <>
       <PublicHead {...headInfo} ref={HeaderEl} />
@@ -38,7 +58,7 @@ const WhiteList = (props: any) => {
             headerClassName="p-[.3rem]"
             bodyClassName="py-[0] px-[.3rem]"
             title={<span className="text-[.3rem] text-[#222]">提币白名单</span>}
-            extra={<Switch defaultChecked />}
+            extra={<Switch onChange={switchChangeCb} checked={isOpen} />}
           >
             <DrawalMoney />
           </Card>
@@ -54,6 +74,19 @@ const WhiteList = (props: any) => {
   );
 };
 const DrawalMoney = (props: any) => {
+  let Navigate = useNavigate();
+  function addWhiteList(e: any, crt: { val: string }) {
+    console.log(e);
+    e.stopPropagation();
+    Navigate(`add`, {
+      state: {
+        headTitle: `新增白名单地址${crt?.val}`,
+        crt: {
+          type: WhiteListInfo["add"],
+        },
+      },
+    });
+  }
   return (
     <>
       <PublicList
@@ -71,7 +104,10 @@ const DrawalMoney = (props: any) => {
             ),
             vertical: false,
             subTitle: (
-              <p className="flex items-center">
+              <p
+                className="flex items-center"
+                onClick={(e) => addWhiteList(e, { val: "USDT-ERC20" })}
+              >
                 <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
                 <span className="text-[.28rem] text-[#222] ml-[.14rem]">
                   新增
@@ -88,7 +124,7 @@ const DrawalMoney = (props: any) => {
                 <span className="text-[.28rem] text-[#666] mr-[.4rem]">
                   0x32983464f44i0sdwd4f44i0sdwd4f40x32983464f44i0sdwd4f44i0sdwd4f4
                 </span>
-                <i className="iconfont icon-shanchu text-[.34rem] text-[#666]"></i>
+                <i className="iconfont icon-shanchu text-[.3rem] text-[#878787]"></i>
               </p>
             ),
           },
@@ -101,7 +137,7 @@ const DrawalMoney = (props: any) => {
                 <span className="text-[.28rem] text-[#666] mr-[.4rem]">
                   0x32983464f44i0sdwd4f44i0sdwd4f40x32983464f44i0sdwd4f44i0sdwd4f4
                 </span>
-                <i className="iconfont icon-shanchu text-[.34rem] text-[#666]"></i>
+                <i className="iconfont icon-shanchu text-[.3rem] text-[#878787]"></i>
               </p>
             ),
           },

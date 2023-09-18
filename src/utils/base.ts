@@ -1,7 +1,11 @@
 const AseKey = 'abcopekiYHJFMGTO';
-const {AES, enc, mode, pad} = require('crypto-js')
+const { AES, enc, mode, pad } = require('crypto-js')
+const SessionStorage = window.sessionStorage
 const mergeClassName = (...arg: string[]) => {
   return arg.join(" ").trim()
+}
+const dataType = (obj: any) => {
+  return Object.prototype.toString.call(obj).slice(8, -1).toLocaleLowerCase()
 }
 /**
  * @summary 加密
@@ -9,7 +13,7 @@ const mergeClassName = (...arg: string[]) => {
  * @param key 
  * @returns 
  */
-const encrypt =  (message: string, key: string = AseKey) => {
+const encrypt = (message: string, key: string = AseKey) => {
   return AES.encrypt(message, enc.Utf8.parse(key), {
     mode: mode.ECB,
     padding: pad.Pkcs7
@@ -22,12 +26,48 @@ const encrypt =  (message: string, key: string = AseKey) => {
  * @param key 
  * @returns 
  */
-const decrypt =  (message: string, key: string = AseKey) => {
+const decrypt = (message: string | null | undefined, key: string = AseKey) => {
+  if (!message) return message
   return AES.decrypt(message, enc.Utf8.parse(key), {
     mode: mode.ECB,
     padding: pad.Pkcs7
   }).toString(enc.Utf8);
 }
+
+/**
+ * @summary 获取session
+ * @param {*} name 
+ */
+function getSession(name: string) {
+  let value: any = decrypt(SessionStorage.getItem(name))
+  try {
+    value = JSON.parse(value)
+    if (value['_flag'] === 'boolean') {
+      value = Boolean(Number(value.val))
+    }
+    return value
+  } catch (error) {
+    return value
+  }
+}
+/**
+* @summary 设置session
+* @param {*} name 
+* @param {*} value 
+*/
+function setSession(name: string, value: any) {
+  if (dataType(value) === 'boolean') value = JSON.stringify({ _flag: 'boolean', val: Number(value) })
+  else if (dataType(value) === 'object') value = JSON.stringify({ ...value, _flag: 'object' })
+  return SessionStorage.setItem(name, encrypt(value))
+}
+/**
+* @summary 移除某一个session
+* @param {*} name 
+*/
+function removeSession(name: string) {
+  return SessionStorage.removeItem(name)
+}
+
 /**
  * @summary 千分符参数
  * @param {*} num 数据源
@@ -58,14 +98,15 @@ const getQueryObject = (url: string): object => {
   })
   return obj
 }
-const dataType = (obj:any)=>{
-  return Object.prototype.toString.call(obj).slice(8,-1).toLocaleLowerCase()
-}
+
 export {
   mergeClassName,
   encrypt,
   decrypt,
   thousands,
   getQueryObject,
-  dataType
+  dataType,
+  setSession,
+  getSession,
+  removeSession
 }

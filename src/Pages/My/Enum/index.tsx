@@ -25,18 +25,17 @@ enum InfoSecurity {
   siginPwd = "siginPwd",
   updateSiginPwd = "updateSiginPwd",
   securityPwd = "securityPwd",
-  updateSecurityPwd="updateSecurityPwd",
+  updateSecurityPwd = "updateSecurityPwd",
   googleValidator = "googleValidator",
   updateGoogleValidator = "updateGoogleValidator",
-
 }
 enum InfoSecurityTip {
   siginPwd = "",
-  updateSiginPwd="",
+  updateSiginPwd = "",
   securityPwd = "您尚未设置资金密码，为了您的账户安全，请设置六位数字密码",
-  updateSecurityPwd="资金密码重置或修改，24小时内无法进行交易",
+  updateSecurityPwd = "资金密码重置或修改，24小时内无法进行交易",
   googleValidator = "",
-  updateGoogleValidator=""
+  updateGoogleValidator = "",
 }
 enum HeadTitle {
   "siginPwd" = "设置登录密码",
@@ -46,6 +45,16 @@ enum HeadTitle {
   "googleValidator" = "绑定Google验证器",
   "updateGoogleValidator" = "修改Google验证器",
 }
+enum WhiteListInfo {
+  open = "openTip",
+  close = "closeTip",
+  add = "addTip",
+}
+enum WhiteListEnum {
+  openTip = "开启白名单地址提币功能，白名单地址可以快捷提币，非白名单地址无法进行提币",
+  closeTip = "关闭白名单地址提币功能，开放输入地址提币",
+  addTip = "温馨提示：新绑定的白名单地址24H后方可进行提币",
+}
 export {
   InfoType,
   CountryCode,
@@ -53,4 +62,6 @@ export {
   InfoSecurity,
   InfoSecurityTip,
   HeadTitle,
+  WhiteListEnum,
+  WhiteListInfo,
 };
