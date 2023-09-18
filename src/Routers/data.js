@@ -19,6 +19,7 @@ import AccountInformation from '@/Pages/My/AccountInformation'
 import EditorInfo from '@/Pages/My/EditorInfo'
 import SecurityInfo from '@/Pages/My/SecurityInfo'
 import ResetPwd from '@/Pages/My/EditorInfo/reset-pwd'
+import WhiteList from '@/Pages/My/WhiteList'
 
 // import { Navigate } from 'react-router-dom'
 
@@ -47,6 +48,7 @@ const RouteList = [
   { label: '账户信息', path: 'my/accountInfor', element: <AccountInformation /> },
   { label: '编辑信息', path: 'my/editorInfo', element: <EditorInfo /> },
   { label: '安全信息', path: 'my/security-info', element: <SecurityInfo /> },
+  { label: '白名单', path: 'my/white-list', element: <WhiteList /> },
   { label: '重置密码', path: 'resetpwd', element: <ResetPwd /> },
 ]
 export default RouteList

@@ -6,7 +6,7 @@ import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
-import { memo, useEffect,  useState } from "react";
+import { memo, useState } from "react";
 const MyList = () => {
   const navigate = useNavigate();
   let listInfo = [
@@ -221,6 +221,10 @@ const MyList = () => {
       },
     },
   ];
+  function whiteMenu(e: any, crt: Object) {
+    e.preventDefault();
+    navigate("/my/white-list", { state: crt });
+  }
   const [popupVisible, setPopupVisible] = useState(false);
   //每一项点击事件
   const itemClick = (crt: any) => {
@@ -261,7 +265,13 @@ const MyList = () => {
         <div className="flex justify-between gap-x-[.3rem] mt-[.42rem]">
           <Card
             className="flex flex-1 h-[1rem] px-[.38rem]"
-            title={<Menu title="白名单管理" imgUrl={whiteImg} />}
+            title={
+              <Menu
+                onClick={(e: any) => whiteMenu(e, { headTitle: "白名单管理" })}
+                title="白名单管理"
+                imgUrl={whiteImg}
+              />
+            }
           ></Card>
           <Card
             className="flex flex-1 h-[1rem] px-[.38rem]"
@@ -291,13 +301,13 @@ const MyList = () => {
         />
         <PopupComp visible={popupVisible} cancle={() => signOut()} />
       </div>
-      <PublicFoo/>
+      <PublicFoo />
     </>
   );
 };
 const Menu = (props: any) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center" onClick={(e) => props.onClick?.(e)}>
       <img className="w-[.54rem] mr-[.24rem]" src={props.imgUrl} />
       <span className="text-[.28rem] text-[#333] font-[700] ">
         {props.title}

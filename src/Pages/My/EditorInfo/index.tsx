@@ -60,7 +60,7 @@ const EditorInfo = (props: any) => {
     ],
   ]);
   const { state = {} } = useLocation();
-  const headInfo = {
+  let headInfo = {
     title: HeadTitle1[state["type"]] ?? "编辑昵称",
     back: "goBack",
     titleStyle: { fontSize: ".34rem", color: "#333" },

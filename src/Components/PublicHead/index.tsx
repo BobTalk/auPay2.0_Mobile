@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -10,7 +11,16 @@ interface propsTs {
   style?: Object;
 }
 
-const PublicHead = (props: propsTs) => {
+const PublicHead = (props: propsTs, ref: any) => {
+  let defaultProps = {
+    iconStyle: {},
+    titleStyle: {},
+    style: {},
+    title: "",
+    back: "",
+    textColor: "",
+  };
+  props = Object.assign({}, defaultProps, props);
   const navigate = useNavigate();
   const clickBack = () => {
     if (props.back === "goBack") return window.history.back();
@@ -18,6 +28,7 @@ const PublicHead = (props: propsTs) => {
   };
   return (
     <div
+      ref={ref}
       style={props.style}
       className={
         props.textColor === "white"
@@ -38,12 +49,12 @@ const PublicHead = (props: propsTs) => {
     </div>
   );
 };
-PublicHead.defaultProps = {
-  iconStyle: {},
-  titleStyle: {},
-  style: {},
-  title: "",
-  back: "",
-  textColor: "",
-};
-export default PublicHead;
+// PublicHead.defaultProps = {
+//   iconStyle: {},
+//   titleStyle: {},
+//   style: {},
+//   title: "",
+//   back: "",
+//   textColor: "",
+// };
+export default forwardRef(PublicHead);
