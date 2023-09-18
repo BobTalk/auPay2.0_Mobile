@@ -76,6 +76,7 @@ const WhiteList = (props: any) => {
 const DrawalMoney = (props: any) => {
   let Navigate = useNavigate();
   let [visible, setVisible] = useState<boolean>(false);
+  let [deleteItemCrt, setDeleteItemCrt] = useState<object>({});
   function addWhiteList(e: any, crt: { val: string }) {
     e.stopPropagation();
     Navigate(`add`, {
@@ -90,6 +91,7 @@ const DrawalMoney = (props: any) => {
   function deleteWhiteListUrl(e: any, crt: any) {
     e.stopPropagation();
     setVisible(() => !visible);
+    setDeleteItemCrt(()=> crt)
   }
   return (
     <>
@@ -155,7 +157,7 @@ const DrawalMoney = (props: any) => {
           },
         ]}
       />
-      <PopupComp visible={visible} cancel={() => setVisible(() => !visible)} />
+      <PopupComp visible={visible} crt={deleteItemCrt} cancel={() => setVisible(() => !visible)} />
     </>
   );
 };
@@ -176,7 +178,7 @@ const PopupComp = memo(
       >
         <ul>
           <li className="grid h-[1.24rem] bg-[#fff] text-[.24rem] text-[#666]  place-items-center border-b-[1px] border-b-[#dbdbdb]">
-            删除{props?.title ?? "--"}白名单地址:【{props?.addr ?? "--"}】
+            删除{props?.crt?.title ?? "--"}白名单地址:【{props?.crt?.addr ?? "--"}】
           </li>
           <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center">
             删除
