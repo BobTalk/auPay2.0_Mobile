@@ -21,6 +21,7 @@ import SecurityInfo from '@/Pages/My/SecurityInfo'
 import ResetPwd from '@/Pages/My/EditorInfo/reset-pwd'
 import WhiteList from '@/Pages/My/WhiteList'
 import OpenOrCloseWhiteList from '@/Pages/My/WhiteList/open-close'
+import AppManager from '@/Pages/My/APPManager'
 
 // import { Navigate } from 'react-router-dom'
 
@@ -52,5 +53,6 @@ const RouteList = [
   { label: '白名单', path: 'my/white-list', element: <WhiteList /> },
   { label: '开启/关闭白明白', path: 'my/white-list/:flag', element: <OpenOrCloseWhiteList /> },
   { label: '重置密码', path: 'resetpwd', element: <ResetPwd /> },
+  { label: '应用管理', path: 'my/app-manage', element: <AppManager /> },
 ]
 export default RouteList

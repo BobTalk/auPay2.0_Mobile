@@ -28,6 +28,7 @@ enum InfoSecurity {
   updateSecurityPwd = "updateSecurityPwd",
   googleValidator = "googleValidator",
   updateGoogleValidator = "updateGoogleValidator",
+  unbind="unbind"
 }
 enum InfoSecurityTip {
   siginPwd = "",
@@ -36,6 +37,7 @@ enum InfoSecurityTip {
   updateSecurityPwd = "资金密码重置或修改，24小时内无法进行交易",
   googleValidator = "",
   updateGoogleValidator = "",
+  unbind="解除与Ozbet账号：rose的绑定状态，解除后将无法进行快捷支付"
 }
 enum HeadTitle {
   "siginPwd" = "设置登录密码",
@@ -44,6 +46,7 @@ enum HeadTitle {
   "updateSecurityPwd" = "修改资金密码",
   "googleValidator" = "绑定Google验证器",
   "updateGoogleValidator" = "修改Google验证器",
+  "unbind"="解除绑定"
 }
 enum WhiteListInfo {
   open = "openTip",

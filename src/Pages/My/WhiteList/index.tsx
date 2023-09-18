@@ -37,11 +37,6 @@ const WhiteList = (props: any) => {
         },
       },
     });
-    if (val) {
-      // 关闭白名单
-    } else {
-      // 开启白名单
-    }
   }
   return (
     <>

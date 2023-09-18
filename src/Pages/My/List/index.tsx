@@ -225,6 +225,11 @@ const MyList = () => {
     e.preventDefault();
     navigate("/my/white-list", { state: crt });
   }
+  function appManage(e: any, crt: Object) {
+    e.preventDefault();
+    console.log(crt)
+    navigate("/my/app-manage", { state: crt });
+  }
   const [popupVisible, setPopupVisible] = useState(false);
   //每一项点击事件
   const itemClick = (crt: any) => {
@@ -275,7 +280,13 @@ const MyList = () => {
           ></Card>
           <Card
             className="flex flex-1 h-[1rem] px-[.38rem]"
-            title={<Menu title="应用管理" imgUrl={appmanger} />}
+            title={
+              <Menu
+                onClick={(e: any) => appManage(e, { headTitle: "应用管理" })}
+                title="应用管理"
+                imgUrl={appmanger}
+              />
+            }
           ></Card>
         </div>
         <PublicList
