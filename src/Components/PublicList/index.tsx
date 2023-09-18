@@ -2,7 +2,7 @@ import { dataType, mergeClassName } from "@/utils/base";
 import { List } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import styled from "styled-components";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 const ListComp = styled.div`
   .adm-list-item-content-arrow {
     .iconfont {
@@ -22,16 +22,22 @@ const ListComp = styled.div`
   }
   .adm-list-item-content-main {
     display: flex;
+    flex-direction: ${(props: any) =>
+      props.iteminfo.vertical ? "column" : "inherit"};
     justify-content: ${(props: any) => {
-      return props.iteminfo.subTitle ? "space-between" : "flex-start";
+      return props.iteminfo.vertical
+        ? ""
+        : props.iteminfo.subTitle
+        ? "space-between"
+        : "flex-start";
     }};
   }
 `;
 type itemType = {
   icon?: any;
   id: string | number;
-  title: string;
-  subTitle?: string;
+  title: ReactNode | string;
+  subTitle?: ReactNode | string;
   subTitleStyle?: Object;
   subTitleClassName?: string;
   style?: Object;
@@ -43,6 +49,7 @@ type itemType = {
   imgClass?: string;
   extra?: any;
   showArrow?: boolean;
+  vertical?: boolean;
 };
 type publicListType = {
   className?: string;
@@ -59,6 +66,9 @@ type listItemType = {
   [key: string]: any;
 };
 const PublicList = (props: Omit<publicListType, "itemInfo">) => {
+  let listItemCb = useCallback((crt: any) => {
+    props.click?.(crt);
+  }, []);
   return (
     <List
       className={mergeClassName(
@@ -69,7 +79,7 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
     >
       {props.list.map((item: any) => (
         <ListItem
-          onClick={(crt: listItemType) => props.click?.(crt)}
+          onClick={(crt: listItemType) => listItemCb(crt)}
           key={item.id}
           arrowstyle={props.arrowStyle}
           arrowcomp={props.arrowComp}
@@ -93,16 +103,14 @@ const ListItem = (props: listItemType) => {
           style={props.iteminfo?.iconStyle}
           className={mergeClassName("iconfont", `${props.iteminfo?.icon}`)}
         ></i>
-      ) : (
-        props.iteminfo?.icon && (
-          <img
-            className={props.iteminfo.imgClass}
-            style={props.iteminfo.imgStyle}
-            src={props.iteminfo?.icon}
-            alt=""
-          />
-        )
-      )}
+      ) : props.iteminfo?.icon ? (
+        <img
+          className={props.iteminfo.imgClass}
+          style={props.iteminfo.imgStyle}
+          src={props.iteminfo?.icon}
+          alt=""
+        />
+      ) : null}
       <List.Item
         clickable={false}
         arrow={props.iteminfo.showArrow ? props.arrowcomp : false}
@@ -115,14 +123,14 @@ const ListItem = (props: listItemType) => {
         onClick={(e) => listItemClick(e, props.iteminfo)}
       >
         <span>{props.iteminfo.title}</span>
-        {props.iteminfo.subTitle && (
+        {props.iteminfo.subTitle ? (
           <span
             className={props.iteminfo.subTitleClassName}
             style={props.iteminfo.subTitleStyle}
           >
             {props.iteminfo.subTitle}
           </span>
-        )}
+        ) : null}
       </List.Item>
     </ListComp>
   );
@@ -168,6 +176,7 @@ PublicList.defaultProps = {
       imgStyle: {},
       imgClass: "",
       showArrow: false,
+      vertical: false,
     },
   ],
 };
