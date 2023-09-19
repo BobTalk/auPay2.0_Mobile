@@ -10,6 +10,7 @@ interface propsTs {
   iconStyle?: Object;
   titleStyle?: Object;
   style?: Object;
+  className?: string;
   arrowClassName?: string | undefined;
 }
 
@@ -18,6 +19,7 @@ const PublicHead = (props: propsTs, ref: any) => {
     iconStyle: {},
     titleStyle: {},
     style: {},
+    className: "",
     title: "",
     back: "",
     textColor: "",
@@ -34,11 +36,12 @@ const PublicHead = (props: propsTs, ref: any) => {
     <div
       ref={ref}
       style={props.style}
-      className={
+      className={mergeClassName(
         props.textColor === "white"
           ? "public_head public_head_white items-center"
-          : "public_head items-center"
-      }
+          : "public_head items-center",
+        `${props.className}`
+      )}
     >
       {props.back ? (
         <i

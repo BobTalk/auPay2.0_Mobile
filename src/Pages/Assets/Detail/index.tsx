@@ -5,6 +5,7 @@ import styleScope from "./index.module.scss";
 import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
 import { encrypt } from "@/utils/base";
+import { HeadConfig } from "@/Assets/config/head";
 type ExtractAndRechargeType = {
   id: string;
   type: number | string;
@@ -15,7 +16,11 @@ type ExtractAndRechargeType = {
   rmb: string;
 };
 const Detail = () => {
-  let headData = { title: "BTC", back: "/assets", textColor: "white" };
+  let headData = Object.assign(HeadConfig, {
+    title: "BTC",
+    back: "/assets",
+    textColor: "white",
+  });
   let nav = [
     { label: "全部", value: "all" },
     { label: "充币", value: "deposit" },
@@ -85,42 +90,48 @@ const Detail = () => {
   const toDeposit = () => {
     navigate(location.pathname + "/deposit");
   };
-  const toDraw = ()=>{
-    navigate('/draw')
-  }
+  const toDraw = () => {
+    navigate("/draw");
+  };
   return (
     <div>
-      <div className={styleScope["assets_detail_banner"] + " public_w"}>
-        <PublicHead {...headData} />
-        <div className={styleScope["assets_detail_banner_top"]}>
-          <i className={styleScope["icon"] + " iconfont icon-BTC"}></i>
-          <div className={styleScope["assets_detail_banner_top_txt"]}>
-            <p>87,823.00</p>
-            <span>¥123,302.09</span>
+      <div className={styleScope["assets_detail_banner"]}>
+        <PublicHead
+          {...headData}
+          className="mx-[.3rem] w-[inherit] overflow-hidden"
+        />
+        <div className="p-[0_.3rem_.3rem]">
+          <div className={styleScope["assets_detail_banner_top"]}>
+            <i className={styleScope["icon"] + " iconfont icon-BTC"}></i>
+            <div className={styleScope["assets_detail_banner_top_txt"]}>
+              <p className="text-[.62rem]">87,823.00</p>
+              <span className="text-[.32rem]">¥123,302.09</span>
+            </div>
+          </div>
+          <div className={styleScope["assets_detail_banner_foo"]}>
+            <p onClick={toDeposit}>充币</p>
+            <p onClick={toDraw}>提币</p>
           </div>
         </div>
-        <div className={styleScope["assets_detail_banner_foo"]}>
-          <p onClick={toDeposit}>充币</p>
-          <p onClick={toDraw}>提币</p>
+
+        <div className={styleScope["assets_detail_content"]}>
+          <ul className={styleScope["assets_detail_nav"]}>
+            {nav.map((item) => {
+              return (
+                <li
+                  onClick={() => clickNav(item.value)}
+                  key={item.value}
+                  className={navK === item.value ? styleScope["cur"] : ""}
+                >
+                  {item.label}
+                </li>
+              );
+            })}
+          </ul>
+          <ul className={styleScope["assets_detail_record"]}>
+            <OrderItem orderData={capital} />
+          </ul>
         </div>
-      </div>
-      <div className={styleScope["assets_detail_content"]}>
-        <ul className={styleScope["assets_detail_nav"]}>
-          {nav.map((item) => {
-            return (
-              <li
-                onClick={() => clickNav(item.value)}
-                key={item.value}
-                className={navK === item.value ? styleScope["cur"] : ""}
-              >
-                {item.label}
-              </li>
-            );
-          })}
-        </ul>
-        <ul className="assets_detail_record">
-          <OrderItem orderData={capital} />
-        </ul>
       </div>
     </div>
   );
@@ -138,19 +149,23 @@ const OrderItem = (props: any) => {
     });
   };
   return orderData.map((item: ExtractAndRechargeType) => (
-    <li key={item.id} onClick={() => toInfo(item)}>
-      <div className="assets_detail_record_left">
+    <li
+      key={item.id}
+      onClick={() => toInfo(item)}
+      className={styleScope["item-list"]}
+    >
+      <div className={styleScope["assets_detail_record_left"]}>
         <img src={item.type == 1 ? DepositImg : DrawImg} alt="" />
-        <div className="assets_detail_record_left_order">
-          <p>{item.order}</p>
-          <span>{item.time}</span>
+        <div className={styleScope["assets_detail_record_left_order"]}>
+          <p className="text-[.3rem] text-[#333] leading-none">{item.order}</p>
+          <span className="text-[.24rem] text-[#999] leading-none">{item.time}</span>
         </div>
       </div>
-      <div className="assets_detail_record_right">
-        <p>
+      <div className={styleScope["assets_detail_record_right"]}>
+        <p className="text-[.32rem] text-[#333] font-[700] leading-none">
           {item.money} {item.currency}
         </p>
-        <span>{item.rmb}</span>
+        <span className="text-[.24rem] text-[#999] font-[700] leading-none">{item.rmb}</span>
       </div>
     </li>
   ));

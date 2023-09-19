@@ -32,7 +32,7 @@ const Assets = () => {
             onClick={toDetail}
           >
             <div className="flex items-center">
-              <i className="iconfont icon-BTC text-[.75rem] text-[]"></i>
+              <i className="iconfont icon-BTC text-[.75rem] text-[#f7931a]"></i>
               {/* <img src="" alt="" /> */}
               <p className="text-[.3rem] ml-[.2rem] text-[#333]">BTC</p>
             </div>
@@ -51,7 +51,7 @@ const Assets = () => {
             onClick={toDetail}
           >
             <div className="flex items-center">
-              <i className="iconfont icon-ETH text-[.75rem] text-[]"></i>
+              <i className="iconfont icon-ETH text-[.75rem] text-[#3e5bf2]"></i>
               {/* <img src="" alt="" /> */}
               <p className="text-[.3rem] ml-[.2rem] text-[#333]">ETH</p>
             </div>
@@ -70,7 +70,7 @@ const Assets = () => {
             onClick={toDetail}
           >
             <div className="flex items-center">
-              <i className="iconfont icon-USDT text-[.75rem] text-[]"></i>
+              <i className="iconfont icon-USDT text-[.75rem] text-[#17a37a]"></i>
               {/* <img src="" alt="" /> */}
               <p className="text-[.3rem] ml-[.2rem] text-[#333]">USDT</p>
             </div>
@@ -88,7 +88,7 @@ const Assets = () => {
             onClick={toDetail}
           >
             <div className="flex items-center">
-              <i className="iconfont icon-ETH text-[.75rem] text-[]"></i>
+              <i className="iconfont icon-ETH text-[.75rem] text-[#030133]"></i>
               {/* <img src="" alt="" /> */}
               <p className="text-[.3rem] ml-[.2rem] text-[#333]">EOS</p>
             </div>
@@ -106,7 +106,7 @@ const Assets = () => {
             onClick={toDetail}
           >
             <div className="flex items-center">
-              <i className="iconfont icon-USDT text-[.75rem] text-[]"></i>
+              <i className="iconfont icon-USDT text-[.75rem] text-[#17a37a]"></i>
               {/* <img src="" alt="" /> */}
               <p className="text-[.3rem] ml-[.2rem] text-[#333]">USDT</p>
             </div>
