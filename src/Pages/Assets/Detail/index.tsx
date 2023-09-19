@@ -15,19 +15,19 @@ type ExtractAndRechargeType = {
   rmb: string;
 };
 const Detail = () => {
-  const headData = { title: "BTC", back: "/assets", textColor: "white" };
-  const nav = [
+  let headData = { title: "BTC", back: "/assets", textColor: "white" };
+  let nav = [
     { label: "全部", value: "all" },
     { label: "充币", value: "deposit" },
     { label: "提币", value: "draw" },
     { label: "交易记录", value: "record" },
   ];
-  const [navK, setNavK] = useState("all");
+  let [navK, setNavK] = useState("all");
   // eslint-disable-next-line
-  const [id, setId] = useState("");
-  const location = useLocation();
-  const navigate = useNavigate();
-  const params: any = useParams();
+  let [id, setId] = useState("");
+  let location = useLocation();
+  let navigate = useNavigate();
+  let params: any = useParams();
 
   // 提取 充值
   const ExtractAndRecharge: Array<ExtractAndRechargeType> = [

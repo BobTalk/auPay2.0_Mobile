@@ -7,6 +7,7 @@ import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
 import { memo, useState } from "react";
+import { InfoSecurity } from "../Enum";
 const MyList = () => {
   const navigate = useNavigate();
   let listInfo = [
@@ -15,9 +16,9 @@ const MyList = () => {
       icon: "icon-jilu",
       title: "交易记录",
       showArrow: true,
-      type: "bussion",
+      type: InfoSecurity['bussionRecord'],
       style: {},
-      path: "",
+      path: "records",
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -39,7 +40,7 @@ const MyList = () => {
       showArrow: true,
       path: "accountInfor",
       title: "账户信息",
-      type: "account",
+      type: InfoSecurity['accountInfo'],
       style: {},
       className: "",
       itemStyle: {
@@ -62,7 +63,7 @@ const MyList = () => {
       showArrow: true,
       title: "安全信息",
       path: "security-info",
-      type: "secure",
+      type: InfoSecurity['secureInfo'],
       style: {},
       className: "",
       itemStyle: {
@@ -87,7 +88,7 @@ const MyList = () => {
       title: "用户协议",
       showArrow: true,
       style: {},
-      type: "agree",
+      type: InfoSecurity['userAgree'],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -110,7 +111,7 @@ const MyList = () => {
       title: "隐私政策",
       showArrow: true,
       style: {},
-      type: "privacy",
+      type: InfoSecurity['privacyPolicy'],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -133,7 +134,7 @@ const MyList = () => {
       title: "关于我们",
       showArrow: true,
       style: {},
-      type: "aboutAs",
+      type: InfoSecurity['aboutAs'],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -156,7 +157,7 @@ const MyList = () => {
       title: "联系我们",
       showArrow: true,
       style: {},
-      type: "linkAs",
+      type: InfoSecurity['aboutAs'],
       className: "",
       imgStyle: {
         width: ".4rem",
@@ -178,7 +179,7 @@ const MyList = () => {
       icon: require("../Assets/images/Ozfund.png"),
       title: "Ozfund",
       style: {},
-      type: "Ozfund",
+      type: InfoSecurity['Ozfund'],
       showArrow: true,
       className: "",
       itemStyle: {
@@ -203,7 +204,7 @@ const MyList = () => {
       icon: "icon-tuichudenglu",
       title: "退出登录",
       showArrow: true,
-      type: "loginOut",
+      type: InfoSecurity['loginOut'],
       style: {},
       className: "",
       itemStyle: {

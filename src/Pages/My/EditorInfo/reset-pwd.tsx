@@ -7,7 +7,6 @@ import PublicForm from "@/Components/PublicForm";
 import { useState } from "react";
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
-  console.log(urlParams, "-----");
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   let InfoSecurity1 = JSON.parse(JSON.stringify(InfoSecurity));
   const HeadInfo = {

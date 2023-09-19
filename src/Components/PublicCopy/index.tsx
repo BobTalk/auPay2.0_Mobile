@@ -10,35 +10,53 @@ type propsVali = {
   iconSize?: string;
   iconColor?: string;
   textStyle?: Object;
-  style?:Object
-  click:Function
+  textClassName?: string;
+  className?: string;
+  style?: Object;
+  click?: Function;
+  children?: any;
+  iconBox?: Object;
+  iconBoxClassName: string;
 };
 
 const PublicCopy = (props: propsVali) => {
-  const iconClick = useCallback((e:any)=>{
+  const iconClick = useCallback((e: any) => {
     // 阻止冒泡
     e.stopPropagation();
-    props?.click(e)
-  },[])
+    props?.click?.(e);
+  }, []);
   return (
     <div
       className={mergeClassName(
         styleScope["copy-box"],
-        "cursor-pointer grid items-center"
+        "cursor-pointer grid items-center",
+        `${props.className}`
       )}
       style={{ background: props.bgcolor, ...props.style }}
     >
       <Ellipsis
-        style={{ overflowWrap: "anywhere",...props.textStyle }}
+        className={props.textClassName}
+        style={{ overflowWrap: "anywhere", ...props.textStyle }}
         direction={props.direction}
         rows={props.rows}
         content={props.info}
       />
-      <div className={styleScope["icon-box"]} onClick={iconClick}>
-        <i
-          className="iconfont icon-fuzhi"
-          style={{ fontSize: props.iconSize, color: props.iconColor }}
-        ></i>
+      <div
+        className={mergeClassName(
+          styleScope["icon-box"],
+          `${props.iconBoxClassName}`
+        )}
+        style={props.iconBox}
+        onClick={iconClick}
+      >
+        {props.children ? (
+          <>{props.children}</>
+        ) : (
+          <i
+            className="iconfont icon-fuzhi"
+            style={{ fontSize: props.iconSize, color: props.iconColor }}
+          ></i>
+        )}
       </div>
     </div>
   );
@@ -50,8 +68,13 @@ PublicCopy.defaultProps = {
   bgcolor: "#F6F6F6",
   iconSize: ".34rem",
   iconColor: "#919191",
-  textStyle:{},
-  style:{},
-  click:()=>{}
+  textStyle: {},
+  textClassName: "",
+  className: "",
+  style: {},
+  click: () => {},
+  children: null,
+  iconBox: {},
+  iconBoxClassName: "w-[.57rem] h-[.57rem]",
 };
 export default PublicCopy;
