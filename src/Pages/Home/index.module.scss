@@ -6,41 +6,41 @@
   .home_banner {
     position: relative;
     width: 100%;
-    height: 136px;
+    height: 2.72rem;
     background: url('~@/Assets/images/home/banner.png') no-repeat;
     background-size: cover;
-    padding-top: 13px;
-    margin-bottom: 47.5px;
+    padding-top: .26rem;
+    margin-bottom: .95rem;
 
     .home_banner_info {
       display: flex;
       align-items: center;
 
       img {
-        width: 50px;
-        height: 50px;
+        width: 1rem;
+        height: 1rem;
         border-radius: 50%;
       }
 
       p {
         font-family: PingFangSC-Medium-oz;
-        font-size: 18px;
-        color: #FFFFFF;
+        font-size: .36rem;
+        color: #FFF;
         font-weight: 500;
-        margin-left: 10px;
+        margin-left: .2rem;
       }
     }
 
     .home_banner_assets {
       position: absolute;
-      left: 15px;
-      bottom: -37.5px;
-      width: calc(100% - 30px);
+      left: .3rem;
+      bottom: -.75rem;
+      width: calc(100% - .6rem);
       display: flex;
       background: #FFFFFF;
-      border-radius: 9px;
-      height: 95px;
-      padding: 22px 0;
+      border-radius: .18rem;
+      height: 1.9rem;
+      padding: .44rem 0;
 
       li {
         width: 50%;
@@ -54,28 +54,28 @@
         }
 
         p {
-          font-size: 12px;
+          font-size: .24rem;
           color: #333333;
-          line-height: 16px;
-          margin-bottom: 8px;
+          line-height: .32rem;
+          margin-bottom: .16rem;
 
           i {
-            font-size: 12px;
-            margin-left: 5px;
+            font-size: .24rem;
+            margin-left: .1rem;
           }
 
           .icon-biyan {
-            font-size: 20px;
+            font-size: .4rem
           }
         }
 
         span {
           font-family: DINAlternate-Bold-oz;
-          font-size: 23px;
-          color: #333333;
+          font-size: .46rem;
+          color: #333;
           text-align: center;
           font-weight: 700;
-          line-height: 26px;
+          line-height: .52rem;
         }
       }
     }
@@ -85,15 +85,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 35px;
-    background: #FFFFFF;
-    border-radius: 5px;
-    padding: 0 10px;
+    height: .7rem;
+    background: #FFF;
+    border-radius: .1rem;
+    padding: 0 .2rem;
 
     p {
-      font-size: 12px;
-      color: #333333;
-      line-height: 35px;
+      font-size: .24rem;
+      color: #333;
+      line-height: .7rem;
       width: 100%;
       overflow: hidden;
       white-space: nowrap;
@@ -101,27 +101,27 @@
     }
 
     i {
-      font-size: 14px;
-      margin-left: 23px;
+      font-size: .28rem;
+      margin-left: .46rem;
       flex-grow: 0;
       flex-shrink: 0;
     }
   }
 
   .home_notice {
-    padding: 15px;
+    padding: .3rem;
     background: #FFFFFF;
-    border-radius: 9px;
-    margin-top: 10px;
+    border-radius: .18rem;
+    margin-top: .2rem;
 
     .home_notice_top {
       position: relative;
       width: 100%;
-      height: 90px;
+      height: 1.8rem;
       background-image: linear-gradient(257deg, #1C63FF 0%, #8671F2 100%);
-      border-radius: 9px;
+      border-radius: .18rem;
       overflow: hidden;
-      padding: 20px 21px;
+      padding: .4rem;
 
       .home_notice_top_i {
         position: absolute;
@@ -133,61 +133,62 @@
       }
 
       .home_notice_top_i1 {
-        width: 102px;
-        height: 102px;
-        right: 35px;
-        top: -40px;
+        width: 2.04rem;
+        height: 2.04rem;
+        right: .7rem;
+        top: -.8rem;
       }
 
       .home_notice_top_i2 {
-        width: 150px;
-        height: 150px;
-        right: -50px;
-        top: -20px;
+        width: 3rem;
+        height: 3rem;
+        right: -.1rem;
+        top: -.4rem;
       }
 
       p {
-        font-size: 19px;
-        color: #FFFFFF;
+        font-size: .38rem;
+        color: #FFF;
         font-weight: 600;
-        line-height: 26px;
-        margin-bottom: 3.5px;
+        line-height: .52rem;
+        margin-bottom: .07rem;
       }
 
       span {
-        font-size: 12px;
+        font-size: .24rem;
         color: #FFFFFF;
-        line-height: 17px;
+        line-height: .34rem;
       }
     }
 
     .home_notice_foo {
       display: flex;
       align-items: center;
-      margin-top: 14px;
+      margin-top: .28rem;
 
       .home_notice_foo_tit {
         font-family: PingFangSC-Medium-oz;
-        font-size: 14px;
-        color: #222222;
+        font-size: .28rem;
+        color: #222;
         font-weight: 500;
         flex-grow: 0;
         flex-shrink: 0;
-        margin-right: 10px;
+        margin-right: .2rem;
 
         i {
-          font-size: 14px;
+          font-size: .28rem;
         }
       }
 
       .home_notice_swiper {
-        width: calc(100% - 70px);
+        width: calc(100% - 1.4rem);
 
         .home_notice_swiper_p {
           width: 100%;
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          color: #666;
         }
       }
 
@@ -200,52 +201,52 @@
 }
 
 .currency_list {
-  margin-top: 10px;
+  margin-top: .2rem;
 
   li {
-    margin-bottom: 10px;
-    background: #FFFFFF;
-    border-radius: 9px;
+    margin-bottom: .2rem;
+    background: #FFF;
+    border-radius: .18rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 12px;
+    padding: .3rem .24rem;
 
     .currency_icon {
       display: flex;
       align-items: center;
 
       img {
-        width: 38px;
-        height: 38px;
+        width: .76rem;
+        height: .76rem;
         border-radius: 50%;
       }
 
       i {
-        font-size: 38px;
+        font-size: .76rem;
         color: red;
       }
 
       p {
-        font-size: 15px;
-        color: #333333;
-        margin-left: 10px;
+        font-size: .3rem;
+        color: #333;
+        margin-left: .2rem;
       }
     }
 
     .currency_money {
       p {
         font-family: DINAlternate-Bold-oz;
-        font-size: 16px;
-        color: #333333;
+        font-size: .32rem;
+        color: #333;
         text-align: right;
         font-weight: 700;
-        margin-bottom: 5px;
+        margin-bottom: .1rem;
       }
 
       span {
         font-family: DINAlternate-Bold-oz;
-        font-size: 12px;
+        font-size: .24rem;
         color: #999;
         text-align: right;
         font-weight: 700;
