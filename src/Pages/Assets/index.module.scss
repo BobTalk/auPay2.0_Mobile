@@ -3,35 +3,35 @@
   height: calc(100vh - 1.08rem);
   overflow-y: auto;
   .assets_banner {
-    margin-bottom: 20px;
+    margin-bottom: .4rem;
     background: url('~@/Assets/images/assets/banner.png') no-repeat;
     background-size: cover;
-    border-radius: 9px;
+    border-radius: .25rem;
     width: 100%;
-    height: 135px;
-    padding: 17px 25px;
-    box-shadow: 0px 7px 9px -4px #1c75ff;
+    height: 2.7rem;
+    padding: .34rem .5rem;
+    box-shadow: 0px .07rem .09rem  -.04rem #1c75ff;
     .assets_banner_tit {
-      font-size: 12px;
-      color: #FFFFFF;
+      font-size: .24rem;
+      color: #FFF;
     }
     .assets_banner_money {
       font-family: DINAlternate-Bold-oz;
       font-weight: 700;
-      color: #FFFFFF;
+      color: #FFF;
       display: flex;
       align-items: baseline;
-      margin-top: 10px;
+      margin-top: .2rem;
       p {
         font-family: inherit;
-        font-size: 31px;
-        margin-right: 15px;
-        line-height: 36px;
+        font-size: .62rem;
+        margin-right: .3rem;
+        line-height: .72rem;
       }
       span {
         font-family: inherit;
-        font-size: 16px;
-        line-height: 17px;
+        font-size: .32rem;
+        line-height: .34rem;
       }
     }
     .assets_banner_line {
@@ -39,10 +39,10 @@
       width: 100%;
       height: 1px;
       background-image: linear-gradient(to right, #1C63FF, #0BA0FF,  #1C63FF);
-      margin: 13px 0 12px;
+      margin: .26rem 0 .24rem;
     }
     .assets_banner_record {
-      font-size: 11px;
+      font-size: .22rem;
       color: #A8E0FF;
       text-align: center;
       display: block;
