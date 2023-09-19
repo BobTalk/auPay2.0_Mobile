@@ -1,15 +1,16 @@
 import { forwardRef } from "react";
 import "./index.scss";
 import { useNavigate } from "react-router-dom";
-import { dataType } from "@/utils/base";
+import { dataType, mergeClassName } from "@/utils/base";
 
 interface propsTs {
-  title?: String;
+  title?: string;
   back?: any;
-  textColor?: String; // 颜色 目前只有默认和’white‘两种
+  textColor?: string; // 颜色 目前只有默认和’white‘两种
   iconStyle?: Object;
   titleStyle?: Object;
   style?: Object;
+  arrowClassName?: string | undefined;
 }
 
 const PublicHead = (props: propsTs, ref: any) => {
@@ -20,6 +21,7 @@ const PublicHead = (props: propsTs, ref: any) => {
     title: "",
     back: "",
     textColor: "",
+    arrowClassName: "",
   };
   props = Object.assign({}, defaultProps, props);
   const navigate = useNavigate();
@@ -42,7 +44,10 @@ const PublicHead = (props: propsTs, ref: any) => {
         <i
           onClick={clickBack}
           style={props.iconStyle}
-          className="iconfont icon-icon-arrow-right2 ml-[.3rem]"
+          className={mergeClassName(
+            "iconfont icon-icon-arrow-right2",
+            `${props.arrowClassName}`
+          )}
         />
       ) : null}
       <p className="public_head_tit flex-1" style={props.titleStyle}>
