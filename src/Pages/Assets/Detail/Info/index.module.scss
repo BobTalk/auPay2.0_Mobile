@@ -1,13 +1,13 @@
 .assets_info {
   background-color: #1C63FF;
-  padding: 0 15px;
+  padding: 0 .3rem;
   min-height: 100vh;
   .assets_info_form {
     background: url('~@/Assets/images/assets/infoBg.png') no-repeat;
     background-size: 100% 100%;
     width: 100%;
-    padding: 25px 0 37px;
-    margin-top: 20px;
+    padding: .5rem 0 .74rem;
+    margin-top: .4rem;
     .assets_info_form_head {
       display: flex;
       flex-direction: column;
@@ -16,10 +16,10 @@
       font-family: DINAlternate-Bold-oz;
       font-weight: 700;
       color: #333333;
-      margin-bottom: 20px;
+      margin-bottom: .4rem;
       .assets_info_form_head_status {
         .iconfont {
-          font-size: 45px;
+          font-size: .9rem;
           &.icon-top { color:#1C63FF; }
           &.icon-chenggong { color:#52C41A; }
           &.icon-shibai { color:#E84335; font-weight: 400; }
@@ -27,40 +27,40 @@
       }
       p {
         font-family: inherit;
-        font-size: 25px;
+        font-size: .5rem;
         text-align: center;
-        line-height: 29px;
-        margin: 20px 0 4px;
+        line-height: .58rem;
+        margin: .4rem 0 .08rem;
         .iconfont {
-          font-size: 22px;
-          margin-right: 6px;
+          font-size: .44rem;
+          margin-right: .12rem;
         }
       }
       span {
         font-family: inherit;
-        font-size: 14px;
+        font-size: .28rem;
         color: #333333;
         text-align: center;
-        line-height: 19px;
+        line-height: .38rem;
         display: block;
       }
     }
     .assets_info_form_ul {
       border-top: 1px dashed #DBDBDB;
-      padding-top: 20px;
-      margin-bottom: 15px;
+      padding-top: .4rem;
+      margin-bottom: .3rem;
       li {
-        font-size: 14px;
-        line-height: 20px;
+        font-size: .28rem;
+        line-height: .4rem;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
-        margin-bottom: 12px;
+        margin-bottom: .24rem;
         &:nth-last-child(1) { margin-bottom: 0; }
         p {
           color: #999999;
-          width: 70px;
-          margin-right: 15px;
+          width: 1.4rem;
+          margin-right: .3rem;
           flex-grow: 0;
           flex-shrink: 0;
         }
@@ -73,8 +73,8 @@
         .assets_info_form_progress {
           display: flex;
           .adm-progress-bar {
-            margin-right: 10px;
-            width: 103px;
+            margin-right: .2rem;
+            width: 2.06rem;
             flex-grow: 0;
             flex-shrink: 0;
             // --track-color: '#CDE2FF',
@@ -83,21 +83,21 @@
       }
       .assets_info_form_li_money {
         font-family: PingFangSC-Medium-oz;
-        font-size: 16px;
+        font-size: .32rem;
         font-weight: 500;
       }
       .assets_info_form_li_number {
         font-family: PingFangSC-Medium-oz;
         color: #1C63FF;
-        font-size: 16px;
+        font-size: .32rem;
       }
     }
   }
 }
 .goBrowser {
   display: block;
-  font-size: 14px;
+  font-size: .28rem;
   color: #FFFFFF !important;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 2rem;
 }

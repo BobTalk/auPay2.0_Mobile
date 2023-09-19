@@ -1,3 +1,4 @@
+import { HeadConfig } from "@/Assets/config/head";
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
 import PublicSummary from "@/Components/PublicSummary";
@@ -12,18 +13,10 @@ type PopupCompType = {
 };
 // 提币
 const DrawMoney = () => {
-  const headInfo = {
+  let headInfo = Object.assign(HeadConfig,{
     title: "提币USDT-ERC20",
     back: "goBack",
-    titleStyle: {
-      fontSize: ".34rem",
-      color: "#333",
-      fontWeight: 700,
-    },
-    iconStyle: {
-      fontSize: ".34rem",
-    },
-  };
+  })
   const [popupVisible, setPopupVisible] = useState(false);
   const [isSelect, setIsSelect] = useState(true);
   const submitDraw = () => {
