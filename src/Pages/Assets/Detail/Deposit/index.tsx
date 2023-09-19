@@ -1,43 +1,64 @@
 import PublicHead from "@/Components/PublicHead";
-import "./index.scss";
+import styleScope from "./index.module.scss";
 import DepositBorder from "@/Assets/images/assets/depositBorder.png";
 import QrImg from "@/Assets/images/test/qr.png";
 import PublicCopy from "@/Components/PublicCopy";
 import PublicSummary from "@/Components/PublicSummary";
+import { HeadConfig } from "@/Assets/config/head";
+import { mergeClassName } from "@/utils/base";
 
 const Deposit = () => {
-  const headData = { title: "充币USDT-ERC20", back: "goBack" };
+  let headData = Object.assign(HeadConfig, {
+    title: "充币USDT-ERC20",
+    back: "goBack",
+  });
   const iconClick = (e: any) => {
     console.log(e, "----");
   };
   return (
-    <div className="assets_deposit public_w">
+    <div className={styleScope["assets_deposit"]}>
       <PublicHead {...headData} />
-      <p className="assets_deposit_tit">
+      <p className={styleScope["assets_deposit_tit"]}>
         这是您的USDT-ERC20钱包地址
         <br />
         请将您的USDT-ERC20转入此地址
       </p>
-      <div className="assets_deposit_qr">
-        <div className="assets_deposit_qr_info">
-          <img className="assets_deposit_qr_info_img" src={QrImg} alt="" />
+      <div className={styleScope["assets_deposit_qr"]}>
+        <div className={styleScope["assets_deposit_qr_info"]}>
           <img
-            className="assets_deposit_qr_info_border assets_deposit_qr_info_border1"
+            className={styleScope["assets_deposit_qr_info_img"]}
+            src={QrImg}
+            alt=""
+          />
+          <img
+            className={mergeClassName(
+              styleScope["assets_deposit_qr_info_border"],
+              styleScope["assets_deposit_qr_info_border1"]
+            )}
             src={DepositBorder}
             alt=""
           />
           <img
-            className="assets_deposit_qr_info_border assets_deposit_qr_info_border2"
+            className={mergeClassName(
+              styleScope["assets_deposit_qr_info_border"],
+              styleScope["assets_deposit_qr_info_border2"]
+            )}
             src={DepositBorder}
             alt=""
           />
           <img
-            className="assets_deposit_qr_info_border assets_deposit_qr_info_border3"
+            className={mergeClassName(
+              styleScope["assets_deposit_qr_info_border"],
+              styleScope["assets_deposit_qr_info_border3"]
+            )}
             src={DepositBorder}
             alt=""
           />
           <img
-            className="assets_deposit_qr_info_border assets_deposit_qr_info_border4"
+            className={mergeClassName(
+              styleScope["assets_deposit_qr_info_border"],
+              styleScope["assets_deposit_qr_info_border4"]
+            )}
             src={DepositBorder}
             alt=""
           />

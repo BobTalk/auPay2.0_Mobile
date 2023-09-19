@@ -1,35 +1,36 @@
 .assets_deposit {
+  margin: 0 .3rem;
   .assets_deposit_tit {
-    font-size: 14px;
+    font-size: .28rem;
     color: #333333;
     text-align: center;
-    line-height: 19px;
-    margin-top: 52px;
+    line-height: .38rem;
+    margin-top: 1.04rem;
   }
   .assets_deposit_qr {
     background: url('~@/Assets/images/assets/depositBg.png') no-repeat;
     background-size: cover;
     background-position: 50% 50%;
-    width: 300px;
-    height: 185px;
-    margin: 20px auto 0;
+    width: 6rem;
+    height: 3.7rem;
+    margin: .4rem auto 0;
     display: flex;
     align-items: center;
     justify-content: center;
     .assets_deposit_qr_info {
       position: relative;
-      width: 175px;
-      height: 175px;
+      width: 3.5rem;
+      height: 3.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
       .assets_deposit_qr_info_img {
-        width: 135px;
-        height: 135px;
+        width: 2.7rem;
+        height: 2.7rem;
       }
       .assets_deposit_qr_info_border {
-        width: 30px;
-        height: 30px;
+        width: .6rem;
+        height: .6rem;
         position: absolute;
         z-index: 2;
       }
