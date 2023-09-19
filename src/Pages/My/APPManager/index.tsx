@@ -14,7 +14,7 @@ const AppManager = (props: any) => {
     titleStyle: { fontSize: ".34rem", color: "#333" },
     iconStyle: { fontSize: ".34rem", left: ".15rem" },
     style: {
-      padding: ".32rem 0",
+      padding: ".32rem .3rem",
       borderBottom: "1px solid rgba(197,202,208,1)",
       height: "auto",
     },
