@@ -7,7 +7,7 @@ import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 const Login = () => {
-  let headData = Object.assign({}, HeadConfig, {
+  let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
   });
@@ -49,8 +49,9 @@ const Login = () => {
       time: 60,
     });
   };
-  const onFinish = (value: any) => {
-    console.log("登陆提交数据" + value);
+  const onFinish = (obj: any) => {
+    console.log("登陆提交数据" + obj);
+
   };
   const forget = () => {
     navigate("/reset/user");

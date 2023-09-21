@@ -5,6 +5,7 @@ import CloseImg from "@/Assets/images/close.png";
 import { Form, Input, Button, Checkbox } from "antd-mobile";
 import { Link } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
+import { GetRegionCode } from "@/Api";
 const Register = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户注册",
@@ -16,13 +17,23 @@ const Register = () => {
     status: false,
     time: 60,
   });
+  let [formObj, setFormObj] = useState({
+    code: "sdsd",
+    email: "1232@qq.com",
+    newPassword: "123456",
+    password: "123456",
+    username: "dsdsdsd",
+  });
   const formRef: any = useRef(null);
   const closePassword = (key: String) => {
     if (!key) return;
     formRef && formRef.current && formRef.current.setFieldValue(key, "");
   };
   const getEmailCode = () => {
-    codeTimer = setInterval(codeTime, 1000);
+    // codeTimer = setInterval(codeTime, 1000);
+    GetRegionCode(formObj.email).then(res => {
+      console.log(res)
+    });
   };
   const codeTime = () => {
     setCodeData((codeData) => ({
@@ -47,8 +58,8 @@ const Register = () => {
       time: 60,
     });
   };
-  const onFinish = (value: any) => {
-    console.log("注册提交数据" + value);
+  const onFinish = (obj: any) => {
+    console.log("注册提交数据 %o", obj);
   };
   return (
     <div className="login_wrap px-[.3rem]">
