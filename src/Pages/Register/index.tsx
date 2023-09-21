@@ -2,10 +2,11 @@ import { useRef, useState, useEffect } from "react";
 import PublicHead from "@/Components/PublicHead";
 import Logo from "@/Assets/images/logo.png";
 import CloseImg from "@/Assets/images/close.png";
-import { Form, Input, Button, Checkbox } from "antd-mobile";
+import { Form, Input, Button, Checkbox, Toast } from "antd-mobile";
 import { Link } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
-import { GetRegionCode } from "@/Api";
+import { GetRegionCode, RegisterI } from "@/Api";
+import PublicToast from "@/Components/PublicToast";
 const Register = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户注册",
@@ -18,11 +19,11 @@ const Register = () => {
     time: 60,
   });
   let [formObj, setFormObj] = useState({
-    code: "sdsd",
-    email: "1232@qq.com",
-    newPassword: "123456",
-    password: "123456",
-    username: "dsdsdsd",
+    code: "",
+    email: "",
+    newPassword: "",
+    password: "",
+    username: "",
   });
   const formRef: any = useRef(null);
   const closePassword = (key: String) => {
@@ -31,8 +32,16 @@ const Register = () => {
   };
   const getEmailCode = () => {
     // codeTimer = setInterval(codeTime, 1000);
-    GetRegionCode(formObj.email).then(res => {
-      console.log(res)
+    if (!formObj.email) {
+      Toast.show({
+        content: "请输入邮箱！",
+      });
+      return;
+    }
+    GetRegionCode(formObj.email).then((res: any) => {
+      PublicToast({
+        message:res.message,
+      })
     });
   };
   const codeTime = () => {
@@ -59,7 +68,11 @@ const Register = () => {
     });
   };
   const onFinish = (obj: any) => {
-    console.log("注册提交数据 %o", obj);
+    RegisterI(obj).then((res) => {
+      PublicToast({
+        message:res.message,
+      })
+    });
   };
   return (
     <div className="login_wrap px-[.3rem]">
@@ -68,6 +81,7 @@ const Register = () => {
       <Form
         className="login_form register_form mx-[.1rem]"
         onFinish={onFinish}
+        initialValues={formObj}
         ref={formRef}
       >
         <Form.Item>
@@ -84,6 +98,7 @@ const Register = () => {
             ]}
           >
             <Input
+              onChange={(val) => setFormObj({ ...formObj, username: val })}
               className="login_form_input"
               placeholder="6-10位字母加数字组合，且首位不为数字"
             />
@@ -108,6 +123,7 @@ const Register = () => {
             >
               <Input
                 type="password"
+                onChange={(val) => setFormObj({ ...formObj, password: val })}
                 className="login_form_input"
                 placeholder="密码长度在6-20个字符之间"
               />
@@ -141,6 +157,7 @@ const Register = () => {
             >
               <Input
                 type="password"
+                onChange={(val) => setFormObj({ ...formObj, newPassword: val })}
                 className="login_form_input"
                 placeholder="重复输入登录密码"
               />
@@ -167,6 +184,7 @@ const Register = () => {
             >
               <Input
                 className="login_form_input"
+                onChange={(val) => setFormObj({ ...formObj, email: val })}
                 placeholder="请输入邮箱地址"
               />
             </Form.Item>
@@ -188,6 +206,7 @@ const Register = () => {
               rules={[{ required: true, message: "邮箱验证码不能为空" }]}
             >
               <Input
+                onChange={(val) => setFormObj({ ...formObj, code: val })}
                 className="login_form_input"
                 placeholder="请输入邮箱验证码"
               />

@@ -13,9 +13,9 @@ interface AxiosRequest {
 }
 
 interface CustomResponse {
-    readonly status: boolean;
-    readonly message: string;
-    data: any;
+    // readonly status: boolean;
+    // readonly message: string;
+    data?: any;
     origin?: any;
 }
 // 定义接口

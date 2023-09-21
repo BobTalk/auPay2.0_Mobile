@@ -18,14 +18,15 @@ export const Login = () => {
   })
 }
 // 注册
-export const Register = () => {
+export const RegisterI = (obj:any) => {
+  console.log(">>><<<<, %o", obj)
   return _http.postReq({
     url: `${PublicPrefix}/register`,
     data: {
-      username: "",
-      password: ``,
-      emailCode: ``,
-      email: ""
+      username: obj.username,
+      password: obj.password,
+      emailCode: obj.code,
+      email: obj.email
     }
   })
 }

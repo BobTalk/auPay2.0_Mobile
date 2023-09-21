@@ -8,9 +8,7 @@ class BaseHttp {
   protected headers: object = {
     ContentType: 'application/json;charset=UTF-8'
   }
-  constructor() {
-    console.log(process.env)
-  }
+  constructor() { }
   private apiAxios({
     baseURL = this.baseURL,
     headers = this.headers,
@@ -19,7 +17,7 @@ class BaseHttp {
     data,
     params,
     responseType
-  }: AxiosRequest): Promise<CustomResponse> {
+  }: AxiosRequest): Promise<any> {
 
     return new Promise((resolve, reject) => {
       instance({
@@ -31,18 +29,18 @@ class BaseHttp {
         headers,
         responseType
       }).then((res: any) => {
+        console.log('请求， %o', res)
         // 200:服务端业务处理正常结束
         if (res.status === 200) {
           resolve({
+            ...(res?.data?.data),
             status: true,
-            message: '请求成功',
-            data: res.data
+            message: res?.data?.message ?? "成功"
           });
         } else {
           resolve({
             status: false,
             message: res.data?.errorMessage || (url + '请求失败'),
-            data: null
           });
         }
       }).catch((err: any) => {
