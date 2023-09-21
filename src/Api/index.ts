@@ -7,19 +7,18 @@ export const GetAccessKey = () => {
   })
 }
 // 登陆
-export const Login = () => {
+export const LoginI = (obj:any) => {
   return _http.postReq({
     url: `${PublicPrefix}/login`,
     data: {
-      username: "",
-      password: ``,
-      emailCode: ``
+      username: obj.username,
+      password: obj.password,
+      emailCode: obj.code
     }
   })
 }
 // 注册
 export const RegisterI = (obj:any) => {
-  console.log(">>><<<<, %o", obj)
   return _http.postReq({
     url: `${PublicPrefix}/register`,
     data: {
@@ -37,9 +36,9 @@ export const GetRegionCode = (email: string) => {
   })
 }
 // 登录验证码
-export const GetCode = () => {
+export const GetCode = (name:string) => {
   return _http.getReq({
-    url: `${PublicPrefix}/sendLoginEmailCode?username=USERNAM`,
+    url: `${PublicPrefix}/sendLoginEmailCode?username=${name}`,
   })
 }
 // 退出

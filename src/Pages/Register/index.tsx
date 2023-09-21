@@ -7,17 +7,13 @@ import { Link } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetRegionCode, RegisterI } from "@/Api";
 import PublicToast from "@/Components/PublicToast";
+let rafId: number;
 const Register = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户注册",
     back: "/",
   });
-  let codeTimer: any = null;
-  const [codeData, setCodeData] = useState({
-    timer: null,
-    status: false,
-    time: 60,
-  });
+  let [timeDown, setTimeDown] = useState(60);
   let [formObj, setFormObj] = useState({
     code: "",
     email: "",
@@ -30,48 +26,46 @@ const Register = () => {
     if (!key) return;
     formRef && formRef.current && formRef.current.setFieldValue(key, "");
   };
-  const getEmailCode = () => {
-    // codeTimer = setInterval(codeTime, 1000);
+  // 倒计时
+  const Timeout = (delay: number) => {
+    let timer: number;
+    const stime = +new Date();
+    const loop = () => {
+      const etime = +new Date();
+      if (stime + delay <= etime) {
+        if (timeDown > -1) {
+          setTimeDown(--timeDown);
+          Timeout(1000);
+          return;
+        }
+        cancelAnimationFrame(timer);
+        setTimeDown(60)
+        return;
+      }
+      timer = requestAnimationFrame(loop);
+    };
+    timer = requestAnimationFrame(loop);
+  };
+  const getEmailCode = (e: any) => {
+    e.stopPropagation();
     if (!formObj.email) {
-      Toast.show({
-        content: "请输入邮箱！",
+      PublicToast({
+        message: "请输入邮箱！",
       });
       return;
     }
+    Timeout(1000);
     GetRegionCode(formObj.email).then((res: any) => {
       PublicToast({
-        message:res.message,
-      })
-    });
-  };
-  const codeTime = () => {
-    setCodeData((codeData) => ({
-      ...codeData,
-      status: true,
-      time: codeData.time - 1,
-    }));
-  };
-  useEffect(() => {
-    if (codeData.time < 1) return closeCodeTime();
-  }, [codeData]);
-  useEffect(() => {
-    return () => {
-      closeCodeTime();
-    };
-  }, []);
-  const closeCodeTime = () => {
-    clearInterval(codeTimer);
-    setCodeData({
-      timer: null,
-      status: false,
-      time: 60,
+        message: res.message,
+      });
     });
   };
   const onFinish = (obj: any) => {
     RegisterI(obj).then((res) => {
       PublicToast({
-        message:res.message,
-      })
+        message: res.message,
+      });
     });
   };
   return (
@@ -211,10 +205,13 @@ const Register = () => {
                 placeholder="请输入邮箱验证码"
               />
             </Form.Item>
-            {codeData.status ? (
-              <p className="login_form_get_code">{codeData.time} s</p>
+            {0 <= timeDown && timeDown < 60 ? (
+              <p className="login_form_get_code">{timeDown} s</p>
             ) : (
-              <p onClick={getEmailCode} className="login_form_get_code">
+              <p
+                onClick={(e) => getEmailCode(e)}
+                className="login_form_get_code"
+              >
                 获取验证码
               </p>
             )}

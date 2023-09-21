@@ -1,5 +1,5 @@
 const AseKey = 'abcopekiYHJFMGTO';
-const { AES, enc, mode, pad } = require('crypto-js')
+const { AES, enc, mode, pad, DES } = require('crypto-js')
 const SessionStorage = window.sessionStorage
 const mergeClassName = (...arg: string[]) => {
   return arg.join(" ").trim()
@@ -19,7 +19,12 @@ const encrypt = (message: string, key: string = AseKey) => {
     padding: pad.Pkcs7
   }).toString()
 }
-
+const encryptByDES = (message: string, key: string = AseKey) => {
+  return DES.encrypt(message, enc.Utf8.parse(key), {
+    mode: mode.ECB,
+    padding: pad.Pkcs7
+  }).toString()
+}
 /**
  * @summary 解密
  * @param message 
@@ -108,5 +113,6 @@ export {
   dataType,
   setSession,
   getSession,
-  removeSession
+  removeSession,
+  encryptByDES
 }

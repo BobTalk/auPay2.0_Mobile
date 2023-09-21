@@ -1,3 +1,4 @@
+import { dataType } from "@/utils/base";
 import instance from "./request";
 import { AxiosRequest, CustomResponse } from "./type";
 
@@ -33,7 +34,7 @@ class BaseHttp {
         // 200:服务端业务处理正常结束
         if (res.status === 200) {
           resolve({
-            ...(res?.data?.data),
+            ...(dataType(res?.data?.data) === 'object' ? res?.data?.data : { value: res?.data?.data }),
             status: true,
             message: res?.data?.message ?? "成功"
           });

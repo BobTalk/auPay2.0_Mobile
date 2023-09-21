@@ -6,52 +6,71 @@ import { Form, Input, Button } from "antd-mobile";
 import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
+import { GetAccessKey, GetCode, LoginI } from "@/Api";
+import PublicToast from "@/Components/PublicToast";
+import {encryptByDES, setSession } from "@/utils/base";
 const Login = () => {
+  let [timeDown, setTimeDown] = useState(60);
+  let [formVal, setFormVal] = useState({
+    username: "",
+    password: "",
+    code: "",
+  });
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
   });
-  console.log("login", headData);
   const navigate = useNavigate();
-  let codeTimer: any = null;
-  const [codeData, setCodeData] = useState({
-    timer: null,
-    status: false,
-    time: 60,
-  });
   const formRef: any = useRef(null);
   const closePassword = () => {
     formRef && formRef.current && formRef.current.setFieldValue("password", "");
   };
-  const getEmailCode = () => {
-    codeTimer = setInterval(codeTime, 1000);
-  };
-  const codeTime = () => {
-    setCodeData((codeData) => ({
-      ...codeData,
-      status: true,
-      time: codeData.time - 1,
-    }));
-  };
-  useEffect(() => {
-    if (codeData.time < 1) return closeCodeTime();
-  }, [codeData]);
-  useEffect(() => {
-    return () => {
-      closeCodeTime();
+  // 倒计时
+  const Timeout = (delay: number) => {
+    let timer: number;
+    const stime = +new Date();
+    const loop = () => {
+      const etime = +new Date();
+      if (stime + delay <= etime) {
+        if (timeDown > -1) {
+          setTimeDown(--timeDown);
+          Timeout(1000);
+          return;
+        }
+        cancelAnimationFrame(timer);
+        setTimeDown(60);
+        return;
+      }
+      timer = requestAnimationFrame(loop);
     };
-  }, []);
-  const closeCodeTime = () => {
-    clearInterval(codeTimer);
-    setCodeData({
-      timer: null,
-      status: false,
-      time: 60,
+    timer = requestAnimationFrame(loop);
+  };
+  const getEmailCode = (e: any) => {
+    e.stopPropagation();
+    if (!formVal.username) {
+      PublicToast({ message: "请输入用户名！" });
+      return;
+    }
+    GetCode(formVal.username).then((res) => {
+      PublicToast({
+        message: res.message,
+      });
     });
   };
-  const onFinish = (obj: any) => {
-    console.log("登陆提交数据" + obj);
 
+  const onFinish = (obj: any) => {
+    GetAccessKey()
+      .then((res) => {
+        return LoginI({
+          username: formVal.username,
+          password: encryptByDES(obj.password, res.value),
+          code: formVal.code,
+        });
+      })
+      .then((finallyRes) => {
+        setSession('token', finallyRes.value)
+        navigate('/')
+      });
   };
   const forget = () => {
     navigate("/reset/user");
@@ -67,6 +86,7 @@ const Login = () => {
       <Form
         className="login_form mx-[.1rem]"
         layout="horizontal"
+        initialValues={formVal}
         onFinish={onFinish}
         ref={formRef}
       >
@@ -77,7 +97,11 @@ const Login = () => {
             name="username"
             rules={[{ required: true, message: "用户名不能为空" }]}
           >
-            <Input className="login_form_input" placeholder="请输入姓名" />
+            <Input
+              className="login_form_input"
+              onChange={(val) => setFormVal({ ...formVal, username: val })}
+              placeholder="请输入姓名"
+            />
           </Form.Item>
         </Form.Item>
 
@@ -90,6 +114,7 @@ const Login = () => {
           >
             <Input
               type="password"
+              onChange={(val) => setFormVal({ ...formVal, password: val })}
               className="login_form_input"
               placeholder="请输入登陆密码"
             />
@@ -102,26 +127,27 @@ const Login = () => {
           />
         </Form.Item>
 
-        <Form.Item>
+        {/* <Form.Item>
           <p className="login_form_label">邮箱验证码</p>
           <Form.Item
             noStyle
             name="code"
-            rules={[{ required: true, message: "邮箱验证码不能为空" }]}
+            rules={[{ required: false, message: "邮箱验证码不能为空" }]}
           >
             <Input
+              onChange={(val) => setFormVal({ ...formVal, code: val })}
               className="login_form_input"
               placeholder="请输入邮箱验证码"
             />
           </Form.Item>
-          {codeData.status ? (
-            <p className="login_form_get_code">{codeData.time} s</p>
+          {0 <= timeDown && timeDown < 60 ? (
+            <p className="login_form_get_code">{timeDown} s</p>
           ) : (
-            <p onClick={getEmailCode} className="login_form_get_code">
+            <p onClick={(e) => getEmailCode(e)} className="login_form_get_code">
               获取验证码
             </p>
           )}
-        </Form.Item>
+        </Form.Item> */}
 
         <div onClick={forget} className="login_form_forget">
           <p>忘记密码</p>
