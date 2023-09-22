@@ -1,13 +1,12 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import PublicHead from "@/Components/PublicHead";
 import Logo from "@/Assets/images/logo.png";
 import CloseImg from "@/Assets/images/close.png";
-import { Form, Input, Button, Checkbox, Toast } from "antd-mobile";
+import { Form, Input, Button, Checkbox } from "antd-mobile";
 import { Link } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetRegionCode, RegisterI } from "@/Api";
 import PublicToast from "@/Components/PublicToast";
-let rafId: number;
 const Register = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户注册",

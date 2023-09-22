@@ -43,7 +43,7 @@ const RouteList = [
   { label: '首页', isAuth: true, path: 'home', element: <Home /> },
   { label: '公告', isAuth: true, path: 'notice', element: <Notice /> },
   { label: '资产', isAuth: true, path: 'assets', element: <Assets /> },
-  { label: '资产详情', isAuth: true, path: 'assets/detail/:id', element: <AssetsDetail /> },
+  { label: '资产详情', isAuth: true, path: 'assets/detail', element: <AssetsDetail /> },
   { label: '资产详情信息', isAuth: true, path: 'assets/detail/:id/info', element: <AssetsDetailInfo /> },
   { label: '资产交易记录', isAuth: true, path: 'assets/detail/:id/record', element: <AssetsDetailRecord /> },
   { label: '资产交易记录详情', isAuth: true, path: 'assets/detail/:id/record/info/:id', element: <AssetsDetailRecordInfo /> },
