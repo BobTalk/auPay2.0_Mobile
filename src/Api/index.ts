@@ -187,7 +187,7 @@ export const FindTradeRecordList = (obj: {
   pageSize: number | undefined;
   conditions?: undefined;
 }) => {
-  return _http.getReq(
+  return _http.postReq(
     {
       url: `${PublicPrefix}/findTradeRecordList`,
       data: {
@@ -223,7 +223,7 @@ export const FindWithdrawRecordList = (obj: {
 }) => {
   return _http.postReq(
     {
-      url: `${PublicPrefix}/findRechargeRecordList`,
+      url: `${PublicPrefix}/findWithdrawRecordList`,
       data: {
         pageNo: obj.pageNo,
         pageSize: obj.pageSize,

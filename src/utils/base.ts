@@ -80,9 +80,11 @@ function removeSession(name: string) {
  * @param {*} num 数据源
  */
 const thousands = (num: number): string => {
+  if (!num) return "0";
   if (typeof num === 'string' || typeof num === 'number') {
     return (num.toString().indexOf('.') !== -1) ? Number(num).toLocaleString() : num.toString().replace(/(\d)(?=(?:\d{3})+$)/g, '$1,')
   }
+
   return num
 }
 /**

@@ -9,8 +9,11 @@ const Assets = () => {
   let headData = Object.assign(HeadConfig, { title: "资产", back: "" });
   const navigate = useNavigate();
   const toDetail = (crt: any) => {
-    let { currencyChain, currencyId } = crt ?? {};
-    navigate("/assets/detail", { state: { currencyChain, currencyId } });
+    console.log(crt);
+    let { currencyChain, currencyId, flag: title, realM, rmbM } = crt ?? {};
+    navigate("/assets/detail", {
+      state: { currencyChain, currencyId, title, realM, rmbM },
+    });
   };
   return (
     <>

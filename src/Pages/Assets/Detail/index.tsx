@@ -6,6 +6,11 @@ import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
 import { encrypt } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
+import {
+  FindRechargeRecordList,
+  FindTradeRecordList,
+  FindWithdrawRecordList,
+} from "@/Api";
 type ExtractAndRechargeType = {
   id: string;
   type: number | string;
@@ -16,9 +21,10 @@ type ExtractAndRechargeType = {
   rmb: string;
 };
 const Detail = () => {
+  let location = useLocation();
   let headData = Object.assign(HeadConfig, {
-    title: "BTC",
-    back: "/assets",
+    title: location.state.title,
+    back: "goBack",
     textColor: "white",
   });
   let nav = [
@@ -28,11 +34,29 @@ const Detail = () => {
     { label: "交易记录", value: "record" },
   ];
   let [navK, setNavK] = useState("all");
-  // eslint-disable-next-line
-  let [id, setId] = useState("");
-  let location = useLocation();
   let navigate = useNavigate();
   let params: any = useParams();
+  // 充币分页
+  let [depositPagination, setDepositPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  // 提币分页
+  let [drawPagination, setDrawPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  // 交易记录分页
+  let [recordPagination, setRecordPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+
+  // 全部分页
+  let [allPagination, setAllPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
 
   // 提取 充值
   const ExtractAndRecharge: Array<ExtractAndRechargeType> = [
@@ -57,9 +81,6 @@ const Detail = () => {
   ];
   // 资产数据
   let [capital, setCapital] = useState(ExtractAndRecharge);
-  useEffect(() => {
-    setId(params.id ?? ""); // 用这个id获取数据
-  }, [params]);
   // 充币
   const DepositFn = (): any => {
     const DepositData = ExtractAndRecharge.filter((item) => item.type == 1);
@@ -70,6 +91,7 @@ const Detail = () => {
     const DrawData = ExtractAndRecharge.filter((item) => item.type == 2);
     return setCapital(DrawData);
   };
+
   // 全部
   const AllFn = (): any => {
     return setCapital(ExtractAndRecharge);
@@ -93,6 +115,36 @@ const Detail = () => {
   const toDraw = () => {
     navigate("/draw");
   };
+  //充币函数
+  async function getDepositInfo(obj: { pageNo: number; pageSize: number }) {
+    return await FindRechargeRecordList(obj);
+  }
+  // 提币函数
+  async function getDrawInfo(obj: { pageNo: number; pageSize: number }) {
+    return await FindWithdrawRecordList(obj);
+  }
+  // 交易记录
+  async function getRecordInfo(obj: { pageNo: number; pageSize: number }) {
+    return await FindTradeRecordList(obj);
+  }
+  // // 充币
+  // useEffect(() => {}, []);
+  // // 提币
+  // useEffect(() => {}, []);
+  // // 交易记录
+  // useEffect(() => {}, []);
+  // 全部
+  useEffect(() => {
+    Promise.all([
+      getDepositInfo(allPagination),
+      getDrawInfo(allPagination),
+      getRecordInfo(allPagination),
+    ]).then((res) => {
+      let allInfo = res.map((item) => item.data);
+      setCapital(() => allInfo);
+    });
+  }, [allPagination]);
+
   return (
     <div>
       <div className={styleScope["assets_detail_banner"]}>
@@ -104,8 +156,8 @@ const Detail = () => {
           <div className={styleScope["assets_detail_banner_top"]}>
             <i className={styleScope["icon"] + " iconfont icon-BTC"}></i>
             <div className={styleScope["assets_detail_banner_top_txt"]}>
-              <p className="text-[.62rem]">87,823.00</p>
-              <span className="text-[.32rem]">¥123,302.09</span>
+              <p className="text-[.62rem]">{location.state.realM}</p>
+              <span className="text-[.32rem]">≈ ¥{location.state.rmbM}</span>
             </div>
           </div>
           <div className={styleScope["assets_detail_banner_foo"]}>
@@ -158,14 +210,18 @@ const OrderItem = (props: any) => {
         <img src={item.type == 1 ? DepositImg : DrawImg} alt="" />
         <div className={styleScope["assets_detail_record_left_order"]}>
           <p className="text-[.3rem] text-[#333] leading-none">{item.order}</p>
-          <span className="text-[.24rem] text-[#999] leading-none">{item.time}</span>
+          <span className="text-[.24rem] text-[#999] leading-none">
+            {item.time}
+          </span>
         </div>
       </div>
       <div className={styleScope["assets_detail_record_right"]}>
         <p className="text-[.32rem] text-[#333] font-[700] leading-none">
           {item.money} {item.currency}
         </p>
-        <span className="text-[.24rem] text-[#999] font-[700] leading-none">{item.rmb}</span>
+        <span className="text-[.24rem] text-[#999] font-[700] leading-none">
+          {item.rmb}
+        </span>
       </div>
     </li>
   ));
