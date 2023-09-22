@@ -69,7 +69,7 @@ const Login = () => {
       })
       .then((finallyRes) => {
         setSession('token', finallyRes.value)
-        navigate('/')
+        navigate('/home')
       });
   };
   const forget = () => {

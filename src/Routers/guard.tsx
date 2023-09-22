@@ -1,0 +1,11 @@
+import { getSession } from "@/utils/base";
+import { Navigate, useLocation } from "react-router-dom";
+export function Guard(element: any) {
+  let { route } = element.props.match;
+  let token = getSession("token");
+  useLocation();
+  if (route.isAuth) {
+    return token ? element : <Navigate replace to="login" />;
+  }
+  return element;
+}

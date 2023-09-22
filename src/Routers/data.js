@@ -28,35 +28,41 @@ import BussionRecords from '@/Pages/My/Transaction'
 
 // 如果需要重定向 咋需要把element换成 <Navigate to={ item.to } />
 const RouteList = [
-  { label: '登陆', path: 'login', element: <Login /> },
-  { label: '注册', path: 'register', element: <Register /> },
+  { label: '', isAuth: false, path: '/', element: <Login /> },
+  { label: '登陆', isAuth: false, path: 'login', element: <Login /> },
+  { label: '注册', isAuth: false, path: 'register', element: <Register /> },
   {
-    label: '重置密码', path: 'reset', element: <Reset />, children: [
-      { label: '重置密码_用户名', path: 'user', element: <ResetUser /> },
-      { label: '重置密码_安全验证', path: 'verify', element: <ResetVerify /> },
-      { label: '重置密码_设置新密码', path: 'new', element: <ResetNew /> },
-      { label: '重置密码_回执', path: 'receipt', element: <ResetReceipt /> }
+    label: '重置密码', isAuth: true, path: 'reset', element: <Reset />,
+    children: [
+      { label: '重置密码_用户名', isAuth: true, path: 'user', element: <ResetUser /> },
+      { label: '重置密码_安全验证', isAuth: true, path: 'verify', element: <ResetVerify /> },
+      { label: '重置密码_设置新密码', isAuth: true, path: 'new', element: <ResetNew /> },
+      { label: '重置密码_回执', isAuth: true, path: 'receipt', element: <ResetReceipt /> }
     ]
   },
-  { label: '首页', path: '/', element: <Home /> },
-  { label: '公告', path: 'notice', element: <Notice /> },
-  { label: '资产', path: 'assets', element: <Assets /> },
-  { label: '资产详情', path: 'assets/detail/:id', element: <AssetsDetail /> },
-  { label: '资产详情信息', path: 'assets/detail/:id/info', element: <AssetsDetailInfo /> },
-  { label: '资产交易记录', path: 'assets/detail/:id/record', element: <AssetsDetailRecord /> },
-  { label: '资产交易记录详情', path: 'assets/detail/:id/record/info/:id', element: <AssetsDetailRecordInfo /> },
-  { label: '充值', path: 'assets/detail/:id/deposit', element: <AssetsDetailDeposit /> },
-  { label: '提币', path: 'draw', element: <DrawMoney /> },
-  { label: '我的', path: 'my', element: <MyModule /> },
-  { label: '账户信息', path: 'my/accountInfor', element: <AccountInformation /> },
-  { label: '编辑信息', path: 'my/editorInfo', element: <EditorInfo /> },
-  { label: '安全信息', path: 'my/security-info', element: <SecurityInfo /> },
-  { label: '白名单', path: 'my/white-list', element: <WhiteList /> },
-  { label: '开启/关闭白明白', path: 'my/white-list/:flag', element: <OpenOrCloseWhiteList /> },
-  { label: '重置密码', path: 'resetpwd', element: <ResetPwd /> },
-  { label: '应用管理', path: 'my/app-manage', element: <AppManager /> },
-  { label: '交易记录', path: 'my/records', element: <BussionRecords /> },
-  { label: '交易记录', path: 'my/records', element: <BussionRecords /> },
-  { label: '交易记录详情', path: 'my/records/records-detail', element: <AssetsDetailRecordInfo /> },
+  { label: '首页', isAuth: true, path: 'home', element: <Home /> },
+  { label: '公告', isAuth: true, path: 'notice', element: <Notice /> },
+  { label: '资产', isAuth: true, path: 'assets', element: <Assets /> },
+  { label: '资产详情', isAuth: true, path: 'assets/detail/:id', element: <AssetsDetail /> },
+  { label: '资产详情信息', isAuth: true, path: 'assets/detail/:id/info', element: <AssetsDetailInfo /> },
+  { label: '资产交易记录', isAuth: true, path: 'assets/detail/:id/record', element: <AssetsDetailRecord /> },
+  { label: '资产交易记录详情', isAuth: true, path: 'assets/detail/:id/record/info/:id', element: <AssetsDetailRecordInfo /> },
+  { label: '充值', isAuth: true, path: 'assets/detail/:id/deposit', element: <AssetsDetailDeposit /> },
+  { label: '提币', isAuth: true, path: 'draw', element: <DrawMoney /> },
+  { label: '我的', isAuth: true, path: 'my', element: <MyModule /> },
+  { label: '账户信息', isAuth: true, path: 'my/accountInfor', element: <AccountInformation /> },
+  { label: '编辑信息', isAuth: true, path: 'my/editorInfo', element: <EditorInfo /> },
+  { label: '安全信息', isAuth: true, path: 'my/security-info', element: <SecurityInfo /> },
+  { label: '白名单', isAuth: true, path: 'my/white-list', element: <WhiteList /> },
+  { label: '开启/关闭白明白', isAuth: true, path: 'my/white-list/:flag', element: <OpenOrCloseWhiteList /> },
+  { label: '重置密码', isAuth: true, path: 'resetpwd', element: <ResetPwd /> },
+  { label: '应用管理', isAuth: true, path: 'my/app-manage', element: <AppManager /> },
+  { label: '交易记录', isAuth: true, path: 'my/records', element: <BussionRecords /> },
+  { label: '交易记录', isAuth: true, path: 'my/records', element: <BussionRecords /> },
+  { label: '交易记录详情', isAuth: true, path: 'my/records/records-detail', element: <AssetsDetailRecordInfo /> },
 ]
+
+
+
+
 export default RouteList
