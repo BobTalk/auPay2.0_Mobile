@@ -1,5 +1,5 @@
 import PublicHead from "@/Components/PublicHead";
-import { HeadTitle } from "../Enum";
+import { HeadTitle } from "../../Enum";
 import PublicCopy from "@/Components/PublicCopy";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";

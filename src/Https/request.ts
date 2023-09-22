@@ -1,5 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { PendingType } from './type';
+import { getSession } from '@/utils/base';
+import { Navigate } from 'react-router-dom';
 // 取消重复请求
 const pending: Array<PendingType> = [];
 const CancelToken = axios.CancelToken;
@@ -28,12 +30,11 @@ const removePending = (config: AxiosRequestConfig) => {
 // 添加请求拦截器
 instance.interceptors.request.use(
   (request: any) => {
-    // TODO: handle loading
-
-    removePending(request);
+    // removePending(request);
     request.cancelToken = new CancelToken((c) => {
       pending.push({ url: request.url, method: request.method, params: request.params, data: request.data, cancel: c });
     });
+    request.headers.token = getSession('token')
     return request;
   },
   (error: any) => {
@@ -43,12 +44,12 @@ instance.interceptors.request.use(
 // 添加响应拦截器
 instance.interceptors.response.use(
   (response: any) => {
-    removePending(response.config);
+    // removePending(response.config);
 
     const errorCode = response?.data?.errorCode;
     switch (errorCode) {
       case '401':
-        // 根据errorCode，对业务做异常处理(和后端约定)
+        Navigate({ to: 'login', replace: true })
         break;
       default:
         break;

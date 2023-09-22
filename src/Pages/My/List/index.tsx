@@ -7,7 +7,7 @@ import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
 import { memo, useState } from "react";
-import { InfoSecurity } from "../Enum";
+import { InfoSecurity } from "../../Enum";
 const MyList = () => {
   const navigate = useNavigate();
   let listInfo = [

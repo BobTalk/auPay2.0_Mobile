@@ -2,7 +2,7 @@ import PublicHead from "@/Components/PublicHead";
 import { Avatar } from "antd-mobile";
 import { MouseEvent, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { InfoSecurity } from "../Enum";
+import { InfoSecurity } from "../../Enum";
 
 const AppManager = (props: any) => {
   const HeaderEl = useRef();

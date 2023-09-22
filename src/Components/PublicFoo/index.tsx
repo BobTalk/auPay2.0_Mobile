@@ -9,7 +9,7 @@ const PublicFoo = (props: any) => {
   const location = useLocation();
   const navigate = useNavigate();
   const navList = [
-    { label: "首页", icon: "icon-shouye", path: "/" },
+    { label: "首页", icon: "icon-shouye", path: "/home" },
     { label: "资产", icon: "icon-zichan", path: "/assets" },
     { label: "我的", icon: "icon-wode", path: "/my" },
   ];

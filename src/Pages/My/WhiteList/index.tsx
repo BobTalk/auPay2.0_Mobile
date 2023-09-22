@@ -3,7 +3,7 @@ import PublicList from "@/Components/PublicList";
 import { Card, CenterPopup, Popup, Switch } from "antd-mobile";
 import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { WhiteListInfo } from "../Enum";
+import { WhiteListInfo } from "../../Enum";
 import { getSession, setSession } from "@/utils/base";
 
 const WhiteList = (props: any) => {

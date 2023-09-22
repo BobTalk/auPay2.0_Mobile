@@ -7,7 +7,11 @@ export const GetAccessKey = () => {
   })
 }
 // 登陆
-export const LoginI = (obj:any) => {
+export const LoginI = (obj: {
+  username: string,
+  password: string,
+  code: string
+}) => {
   return _http.postReq({
     url: `${PublicPrefix}/login`,
     data: {
@@ -18,7 +22,12 @@ export const LoginI = (obj:any) => {
   })
 }
 // 注册
-export const RegisterI = (obj:any) => {
+export const RegisterI = (obj: {
+  username: string,
+  password: string,
+  code: string,
+  email: string,
+}) => {
   return _http.postReq({
     url: `${PublicPrefix}/register`,
     data: {
@@ -36,7 +45,7 @@ export const GetRegionCode = (email: string) => {
   })
 }
 // 登录验证码
-export const GetCode = (name:string) => {
+export const GetCode = (name: string) => {
   return _http.getReq({
     url: `${PublicPrefix}/sendLoginEmailCode?username=${name}`,
   })
@@ -66,10 +75,10 @@ export const GetUserWithdrawAddress = () => {
 }
 
 // 9.删除白名单地址 DELETE user/deleteWithdrawAddress?id=ID
-export const DeleteWithdrawAddress = () => {
+export const DeleteWithdrawAddress = (id: string) => {
   return _http.deleteReq(
     {
-      url: `${PublicPrefix}/deleteWithdrawAddress`
+      url: `${PublicPrefix}/deleteWithdrawAddress?id=${id}`
     }
   )
 }
@@ -91,63 +100,63 @@ export const GetUserApplyApplication = () => {
   )
 }
 // 12.解绑授权应用 PUT user/unbindUserApplyApplication?id=ID
-export const UnbindUserApplyApplication = () => {
+export const UnbindUserApplyApplication = (id: string) => {
   return _http.putReq(
     {
-      url: `${PublicPrefix}/unbindUserApplyApplication?id=ID`
+      url: `${PublicPrefix}/unbindUserApplyApplication?id=${id}`
     }
   )
 }
 // 13.获取用户模糊邮箱(重置密码) GET user/getUserBlurEmail?username=USERNAME
-export const GetUserBlurEmail = () => {
+export const GetUserBlurEmail = (username: string) => {
   return _http.getReq(
     {
-      url: `${PublicPrefix}/getUserBlurEmail?username=USERNAME`
+      url: `${PublicPrefix}/getUserBlurEmail?username=${username}`
     }
   )
 }
 // 14.发送重置密码邮箱验证码 GET user/sendResetPasswordEmailCode?username=USERNAME
-export const SendResetPasswordEmailCode = () => {
+export const SendResetPasswordEmailCode = (username: string) => {
   return _http.getReq(
     {
-      url: `${PublicPrefix}/sendResetPasswordEmailCode?username=USERNAME`
+      url: `${PublicPrefix}/sendResetPasswordEmailCode?username=${username}`
     }
   )
 }
 // 15.重置密码 PUT  user/resetPassword  {username password  emailCode  googleCode}
-export const ResetPassword = () => {
+export const ResetPassword = ({ username = '', password = '', emailCode = '', googleCode = '', }) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/resetPassword`,
       data: {
-        username: "",
-        password: "",
-        emailCode: "",
-        googleCode: ''
+        username,
+        password,
+        emailCode,
+        googleCode
       }
     }
   )
 }
 // 16.修改密码 PUT  user / updatePassword {oldPassword newPassword }
-export const UpdatePassword = () => {
+export const UpdatePassword = ({ oldPassword = '', newPassword = '' }) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/updatePassword`,
       data: {
-        oldPassword: "",
-        newPassword: "",
+        oldPassword,
+        newPassword,
       }
     }
   )
 }
 // 17.重置资金密码 PUT user / resetAssetsPassword(验证: 谷歌 邮箱) 请求头
-export const ResetAssetsPassword = () => {
+export const ResetAssetsPassword = ({ googleToken = '', emailToken = "" }) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/resetAssetsPassword`,
       headers: {
-        "Google-Auth-Token": '',
-        "Email-Token": ''
+        "Google-Auth-Token": googleToken,
+        "Email-Token": emailToken
       }
     }
   )
@@ -173,71 +182,96 @@ export const GetAssetsInfo = () => {
   )
 }
 // 20.获取交易记录  POST user / findTradeRecordList  {pageNo pageSize conditions }
-export const FindTradeRecordList = () => {
+export const FindTradeRecordList = (obj: {
+  pageNo: number | undefined;
+  pageSize: number | undefined;
+  conditions?: undefined;
+}) => {
   return _http.getReq(
     {
       url: `${PublicPrefix}/findTradeRecordList`,
       data: {
-        pageNo: '',
-        pageSize: '',
-        conditions: ''
+        pageNo: obj.pageNo,
+        pageSize: obj.pageSize,
+        conditions: obj.conditions,
       }
     }
   )
 }
 // 21.获取充币记录  POST user / findRechargeRecordList {pageNo pageSize conditions }
-export const FindRechargeRecordList = () => {
+export const FindRechargeRecordList = (obj: {
+  pageNo: number | undefined;
+  pageSize: number | undefined;
+  conditions?: undefined;
+}) => {
   return _http.postReq(
     {
       url: `${PublicPrefix}/findRechargeRecordList`,
       data: {
-        pageNo: '',
-        pageSize: '',
-        conditions: ''
+        pageNo: obj.pageNo,
+        pageSize: obj.pageSize,
+        conditions: obj.conditions,
       }
     }
   )
 }
 // 22.获取提币记录  POST user / findWithdrawRecordList {pageNo pageSize conditions }
-export const FindWithdrawRecordList = () => {
+export const FindWithdrawRecordList = (obj: {
+  pageNo: number | undefined;
+  pageSize: number | undefined;
+  conditions?: undefined;
+}) => {
   return _http.postReq(
     {
       url: `${PublicPrefix}/findRechargeRecordList`,
       data: {
-        pageNo: '',
-        pageSize: '',
-        conditions: ''
+        pageNo: obj.pageNo,
+        pageSize: obj.pageSize,
+        conditions: obj.conditions,
       }
     }
   )
 }
 
 // 23.获取帐变记录  POST user / findAssetsChangeRecord {pageNo pageSize conditions }
-export const FindAssetsChangeRecord = () => {
+export const FindAssetsChangeRecord = (obj: {
+  pageNo: number | undefined;
+  pageSize: number | undefined;
+  conditions?: undefined;
+}) => {
   return _http.postReq(
     {
       url: `${PublicPrefix}/findAssetsChangeRecord`,
       data: {
-        pageNo: '',
-        pageSize: '',
-        conditions: ''
+        pageNo: obj.pageNo,
+        pageSize: obj.pageSize,
+        conditions: obj.conditions,
       }
     }
   )
 }
 // 24.公告列表  POST operate / operation / viewAnnouncement {pageNo pageSize conditions }
-export const ViewAnnouncement = () => {
+export const ViewAnnouncement = (obj: {
+  pageNo: number | undefined;
+  pageSize: number | undefined;
+  conditions?: undefined;
+}) => {
   return _http.postReq(
     {
       url: `/operate/operation/viewAnnouncement`,
       data: {
-        pageNo: '',
-        pageSize: '',
-        conditions: ''
+        pageNo: obj.pageNo,
+        pageSize: obj.pageSize,
+        conditions: obj.conditions,
       }
     }
   )
 }
-
+// 数字货币汇率接口
+export const GetUSDTTickers = () => {
+  return _http.getReq({
+    url: `/operate/operation/getUSDTTickers`
+  })
+}
 
 

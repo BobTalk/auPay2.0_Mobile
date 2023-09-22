@@ -1,7 +1,7 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
 import { useNavigate } from "react-router-dom";
-import { InfoSecurity } from "../Enum";
+import { InfoSecurity } from "../../Enum";
 
 const SecurityInfo = () => {
   const HeadData = {

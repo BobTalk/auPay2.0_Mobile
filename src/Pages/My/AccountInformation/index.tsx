@@ -3,7 +3,7 @@ import PublicList from "@/Components/PublicList";
 import { Avatar, Popup } from "antd-mobile";
 import { memo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InfoType, MonetaryUnit } from "../Enum";
+import { InfoType, MonetaryUnit } from "../../Enum";
 import { mergeClassName } from "@/utils/base";
 import { cloneDeep } from "lodash";
 const AccountInformation = () => {

@@ -1,6 +1,6 @@
 import PublicHead from "@/Components/PublicHead";
 import { useLocation } from "react-router-dom";
-import { InfoSecurityTip, InfoSecurity } from "../Enum";
+import { InfoSecurityTip, InfoSecurity } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";

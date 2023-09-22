@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "19464567",
+      "name": "EOS 区块链",
+      "font_class": "EOS",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
       "icon_id": "1191716",
       "name": "正确",
       "font_class": "zhengque",

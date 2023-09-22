@@ -1,6 +1,6 @@
 import PublicHead from "@/Components/PublicHead";
 import { useLocation, useParams } from "react-router-dom";
-import { WhiteListEnum } from "../Enum";
+import { WhiteListEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";

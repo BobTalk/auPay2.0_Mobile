@@ -30,7 +30,6 @@ class BaseHttp {
         headers,
         responseType
       }).then((res: any) => {
-        console.log('请求， %o', res)
         // 200:服务端业务处理正常结束
         if (res.status === 200) {
           resolve({

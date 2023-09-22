@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 const AseKey = 'abcopekiYHJFMGTO';
 const { AES, enc, mode, pad, DES } = require('crypto-js')
 const SessionStorage = window.sessionStorage
@@ -103,7 +105,11 @@ const getQueryObject = (url: string): object => {
   })
   return obj
 }
-
+const timeFormate = (time: string): string => {
+  let t = dayjs(time).format('YYYY-MM-DD')
+  console.log(t)
+  return t
+}
 export {
   mergeClassName,
   encrypt,
@@ -114,5 +120,6 @@ export {
   setSession,
   getSession,
   removeSession,
-  encryptByDES
+  encryptByDES,
+  timeFormate
 }

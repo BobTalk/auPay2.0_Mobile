@@ -3,14 +3,87 @@ import styleScope from "./index.module.scss";
 import { Link } from "react-router-dom";
 import { Swiper } from "antd-mobile";
 import PublicFoo from "@/Components/PublicFoo";
-import { useState } from "react";
-import { mergeClassName } from "@/utils/base";
+import { useEffect, useState } from "react";
+import { mergeClassName, thousands } from "@/utils/base";
+import {
+  GetAssetsInfo,
+  GetUSDTTickers,
+  GetUserInfo,
+  ViewAnnouncement,
+} from "@/Api";
 
 const Home = () => {
-  const [hide, setHide] = useState(false);
+  let [hide, setHide] = useState(false);
+  let [assets, setAssets] = useState<any>({});
+  let [userInfo, setUserInfo] = useState<any>({});
+  let [isLayz, setIsLayz] = useState(false);
+  let [pagination, setPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let [notice, setNotice] = useState<any>({});
+  let [ratio, setRatio] = useState<Array<object>>([]);
   const hideMoney = () => {
     setHide(!hide);
   };
+  async function initPageInfo() {
+    let userInfo = await GetUserInfo();
+    let notice = await ViewAnnouncement({ pageNo: 1, pageSize: 10 });
+    let ratio = await GetUSDTTickers();
+    setRatio(ratio.value);
+    setNotice(notice);
+    setUserInfo(userInfo);
+  }
+  async function getAssetsInfo() {
+    let assets = await GetAssetsInfo();
+    setAssets(assets);
+  }
+  useEffect(() => {
+    initPageInfo();
+  }, []);
+  useEffect(() => {
+    getAssetsInfo();
+  }, [pagination]);
+  // 处理单位
+  function formatUnit(id: number, chain?: number): string | undefined {
+    let unit = "EOS";
+    if (id === 1) unit = "BTC";
+    if (id === 2) unit = "ETH";
+    if (id === 3) {
+      if (chain === 1) unit = "USDT-OMNI";
+      if (chain === 2) unit = "USDT-ERC20";
+      if (chain === 3) unit = "USDT-TRC20";
+    }
+    return unit;
+  }
+  // icon图标
+  function cssIcon(id: number): string | undefined {
+    let unit = "EOS";
+    if (id === 1) unit = "BTC";
+    if (id === 2) unit = "ETH";
+    if (id === 3) unit = "USDT";
+    return unit;
+  }
+  // icon图标
+  function iconColor(id: number): string | undefined {
+    let unit = "text-[#030133]";
+    if (id === 1) unit = "text-[#f7931b]";
+    if (id === 2) unit = "text-[#3e5bf2]";
+    if (id === 3) unit = "text-[#17a37a]";
+    return unit;
+  }
+  function rmbConvert(id: number, money: number): number {
+    let m = money;
+    if (id === 1) {
+      let o: any = ratio.find((item: any) => item.symbol === "btcusdt");
+      m = Number(o?.["bid"]) * money;
+    }
+    if (id === 2) {
+      let o: any = ratio.find((item: any) => item.symbol === "ethusdt");
+      m = Number(o?.["bid"]) * money;
+    }
+    return m;
+  }
   return (
     <>
       <div className={styleScope["home_wrap"]}>
@@ -18,8 +91,8 @@ const Home = () => {
           className={mergeClassName(styleScope["home_banner"], "px-[.3rem]")}
         >
           <div className={styleScope["home_banner_info"]}>
-            <img src={photoImg} alt="" />
-            <p>西尾猫的世界</p>
+            <img src={userInfo.headPortrait ?? photoImg} alt="" />
+            <p>{userInfo?.nickname ?? userInfo?.username}</p>
           </div>
           <ul className={styleScope["home_banner_assets"]}>
             <li>
@@ -79,36 +152,22 @@ const Home = () => {
                   direction="vertical"
                   style={{ "--height": ".33rem" }}
                 >
-                  <Swiper.Item>
-                    <p
-                      className={mergeClassName(
-                        styleScope["home_notice_swiper_p"],
-                        "text-[.24rem]"
-                      )}
-                    >
-                      公告一公告一公告一公告一公告一公告一公告一公告一公告一公告一公告一
-                    </p>
-                  </Swiper.Item>
-                  <Swiper.Item>
-                    <p
-                      className={mergeClassName(
-                        styleScope["home_notice_swiper_p"],
-                        "text-[.24rem]"
-                      )}
-                    >
-                      公告2公告2公告2公告2公告2公告2公告2公告2公告2公告2公告2
-                    </p>
-                  </Swiper.Item>
-                  <Swiper.Item>
-                    <p
-                      className={mergeClassName(
-                        styleScope["home_notice_swiper_p"],
-                        "text-[.24rem]"
-                      )}
-                    >
-                      公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3公告3
-                    </p>
-                  </Swiper.Item>
+                  {notice?.data?.map(
+                    (item: { id: string; content: string }) => {
+                      return (
+                        <Swiper.Item key={item.id}>
+                          <p
+                            className={mergeClassName(
+                              styleScope["home_notice_swiper_p"],
+                              "text-[.24rem]"
+                            )}
+                          >
+                            {item.content}
+                          </p>
+                        </Swiper.Item>
+                      );
+                    }
+                  )}
                 </Swiper>
               </div>
               <Link to="/notice">
@@ -118,61 +177,31 @@ const Home = () => {
           </div>
 
           <ul className={styleScope["currency_list"]}>
-            <li>
-              <div className={styleScope["currency_icon"]}>
-                <i className="iconfont icon-BTC"></i>
-                {/* <img src="" alt="" /> */}
-                <p>BTC</p>
-              </div>
-              <div className={styleScope["currency_money"]}>
-                <p>10,781,57 USDT</p>
-                <span>¥76,901.35</span>
-              </div>
-            </li>
-            <li>
-              <div className={styleScope["currency_icon"]}>
-                <i className="iconfont icon-ETH"></i>
-                {/* <img src="" alt="" /> */}
-                <p>BTC</p>
-              </div>
-              <div className={styleScope["currency_money"]}>
-                <p>10,781,57 USDT</p>
-                <span>¥76,901.35</span>
-              </div>
-            </li>
-            <li>
-              <div className={styleScope["currency_icon"]}>
-                <i className="iconfont icon-USDT"></i>
-                {/* <img src="" alt="" /> */}
-                <p>BTC</p>
-              </div>
-              <div className={styleScope["currency_money"]}>
-                <p>10,781,57 USDT</p>
-                <span>¥76,901.35</span>
-              </div>
-            </li>
-            <li>
-              <div className={styleScope["currency_icon"]}>
-                <i className="iconfont icon-ETH"></i>
-                {/* <img src="" alt="" /> */}
-                <p>BTC</p>
-              </div>
-              <div className={styleScope["currency_money"]}>
-                <p>10,781,57 USDT</p>
-                <span>¥76,901.35</span>
-              </div>
-            </li>
-            <li>
-              <div className={styleScope["currency_icon"]}>
-                <i className="iconfont icon-USDT"></i>
-                {/* <img src="" alt="" /> */}
-                <p>BTC</p>
-              </div>
-              <div className={styleScope["currency_money"]}>
-                <p>10,781,57 USDT</p>
-                <span>¥76,901.35</span>
-              </div>
-            </li>
+            {assets?.list?.map((item: any, index: number) => {
+              return (
+                <li key={item.userId + "_" + index}>
+                  <div className={styleScope["currency_icon"]}>
+                    <i
+                      className={mergeClassName(
+                        "iconfont",
+                        `icon-${cssIcon(item.currencyId)}`,
+                        `${iconColor(item.currencyId)}`
+                      )}
+                    ></i>
+                    <p>{formatUnit(item.currencyId, item.currencyChain)}</p>
+                  </div>
+                  <div className={styleScope["currency_money"]}>
+                    <p>{thousands(item.feeBalance) ?? "--"} USDT</p>
+                    <span>
+                      ¥
+                      {thousands(
+                        rmbConvert(item.currencyId, item.feeBalance)
+                      ) ?? "0"}
+                    </span>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
