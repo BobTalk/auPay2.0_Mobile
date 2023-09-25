@@ -8,14 +8,12 @@ export const useRMBConversion = (): Array<any> => {
     ratio = rs.value
   }
   function format(id: number, money: number) {
-    console.log('id', id)
-    console.log('money', money)
     m = money;
     if (id === 1) {
       let o: any = ratio?.find((item: any) => item.symbol === "btcusdt");
       if (!o) {
         m = 0;
-        console.log(`currencyId为： --> ${id} 未匹配到symbol为btcusdt的汇率数据`)
+        console.warn(`currencyId为： --> ${id} 未匹配到symbol为btcusdt的汇率数据`)
       } else {
         m = +(o?.["bid"]) * m;
       }
@@ -24,12 +22,11 @@ export const useRMBConversion = (): Array<any> => {
       let o: any = ratio?.find((item: any) => item.symbol === "ethusdt");
       if (!o) {
         m = 0;
-        console.log(`currencyId为： --> ${id} 未匹配到symbol为ethusdt的汇率数据`)
+        console.warn(`currencyId为： --> ${id} 未匹配到symbol为ethusdt的汇率数据`)
       } else {
         m = +(o?.["bid"]) * m;
       }
     }
-    console.log(m)
     return m * 1;
   }
   useLayoutEffect(() => {
