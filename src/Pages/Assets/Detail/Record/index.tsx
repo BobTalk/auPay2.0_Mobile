@@ -4,12 +4,13 @@ import DrawImg from "@/Assets/images/assets/draw.png";
 import { Picker, DatePicker, InfiniteScroll, DotLoading } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { useEffect, useState } from "react";
-import { dateFil, currencyFil } from "@/Libs/filters";
+import { currencyFil } from "@/Libs/filters";
 import { currencyData } from "@/Libs/publicData";
 import { useLocation, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { FindTradeRecordList } from "@/Api";
 import { timeFormate } from "@/utils/base";
+import { cloneDeep } from "lodash";
 
 const Record = () => {
   let headData = Object.assign(HeadConfig, {
@@ -26,7 +27,13 @@ const Record = () => {
   let location = useLocation();
   console.log(location);
   let navigate = useNavigate();
-  let [conditions, setConditions] = useState({
+  let [conditions, setConditions] = useState<any>({
+    currencyChain: undefined,
+    currencyId: undefined,
+    beginTime: undefined,
+    endTime: undefined,
+  });
+  let [copyConditions, setCopyConditions] = useState<any>({
     currencyChain: undefined,
     currencyId: undefined,
     beginTime: undefined,
@@ -34,6 +41,7 @@ const Record = () => {
   });
   let [crtPagination, setCrtpagination] = useState<any>({});
   let [dateVisible, setDateVisible] = useState(false);
+  let [endDateVisible, setEndDateVisible] = useState(false);
   let [currencyVisible, setCurrencyVisible] = useState(false);
   // 交易记录分页
   let [recordPagination, setRecordPagination] = useState({
@@ -45,12 +53,33 @@ const Record = () => {
   let [capital, setCapital] = useState<any>([]);
   const [filterData, setFilterData] = useState({ date: "", currency: "" });
   const dateConfirm = (v: any) => {
-    setFilterData({ ...filterData, date: dateFil(v) });
+    let t = timeFormate(v, "YYYY-MM-DD HH:mm:ss");
+    setFilterData({ ...filterData, date: t });
+    setEndDateVisible(true);
+    setConditions((val: any) => ({ ...val, beginTime: t }));
+  };
+  const endDateConfirm = (v: any) => {
+   
+    let t = timeFormate(v, "YYYY-MM-DD HH:mm:ss");
+    let cpTime = cloneDeep({...conditions,endTime: t});
+    
+    setFilterData({ ...filterData, date: t });
+    setConditions((val: any) => ({ ...val, endTime: t }));
+    setCopyConditions(cpTime);
+    getTradeRecord({
+      ...recordPagination,
+      conditions: {
+        ...conditions,
+        endTime: t,
+      },
+    }).then((res) => {
+      interfaceInfoFormat(res);
+    });
   };
   const currencyConfirm = (v: any) => {
     setFilterData({ ...filterData, currency: currencyFil(v[0]) });
     let valSplit = v[0].split("_");
-    setConditions((val) => ({
+    setConditions((val: any) => ({
       ...val,
       currencyChain: valSplit[1] ?? undefined,
       currencyId: valSplit[0] ?? undefined,
@@ -62,9 +91,12 @@ const Record = () => {
         currencyChain: valSplit[1] ? +valSplit[1] : undefined,
         currencyId: +valSplit[0] ?? undefined,
       },
+    }).then((res) => {
+      interfaceInfoFormat(res);
     });
   };
-  const filter = (k: String) => {
+  const filter = (e: any, k: String) => {
+    e.stopPropagation();
     if (k === "date") return setDateVisible(true);
     if (k === "currency") return setCurrencyVisible(true);
   };
@@ -76,7 +108,7 @@ const Record = () => {
     event.nativeEvent.stopImmediatePropagation();
   };
   const getInfo = () => {
-    navigate("/assets/detail/record/info/123");
+    navigate("/assets/detail/record/info");
   };
   // 交易记录
   async function getTradeRecord(obj: {
@@ -90,22 +122,30 @@ const Record = () => {
     if (!hasLoadMore) return;
     setRecordPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
   }
+  function interfaceInfoFormat(res: {
+    pageNo: any;
+    pageSize: any;
+    total: any;
+    data: any;
+  }) {
+    let { pageNo, pageSize, total, data } = res;
+    setCapital((val: any[]) => val.concat(data));
+    setCrtpagination(() => ({ pageNo, pageSize, total }));
+    setHasLoadMore(() => pageSize * pageNo < total);
+  }
   useEffect(() => {
     getTradeRecord({
       ...recordPagination,
       conditions,
     }).then((res) => {
-      let { pageNo, pageSize, total, data } = res;
-      setCapital((val: any[]) => val.concat(data));
-      setCrtpagination(() => ({ pageNo, pageSize, total }));
-      setHasLoadMore(() => pageSize * pageNo < total);
+      interfaceInfoFormat(res);
     });
   }, [recordPagination]);
   return (
     <div className={styleScope["assets_record"]}>
       <PublicHead {...headData} />
       <ul className="public_filter">
-        <li onClick={() => filter("currency")} className="public_filter_i">
+        <li onClick={(e) => filter(e, "currency")} className="public_filter_i">
           <p>{filterData.currency ? filterData.currency : "货币类型"}</p>
           {filterData.currency ? (
             <i
@@ -116,8 +156,14 @@ const Record = () => {
             <i className="iconfont icon-xiangyou1" />
           )}
         </li>
-        <li onClick={() => filter("date")} className="public_filter_i">
-          <p>{filterData.date ? filterData.date : "时间"}</p>
+        <li onClick={(e) => filter(e, "date")} className="public_filter_i">
+          <p>
+            {conditions.beginTime && conditions.endTime
+              ? timeFormate(conditions.beginTime, "YYYY/MM/DD") +
+                " -- " +
+                timeFormate(conditions.endTime, "YYYY/MM/DD")
+              : "时间"}
+          </p>
           {filterData.date ? (
             <i
               onClick={(event) => close("date", event)}
@@ -136,13 +182,37 @@ const Record = () => {
         }}
         onConfirm={currencyConfirm}
       />
+      {/* 开始时间 */}
       <DatePicker
+        title="开始时间"
+        max={new Date()}
+        closeOnMaskClick={false}
         visible={dateVisible}
         onClose={() => {
           setDateVisible(false);
         }}
-        precision="day"
+        onCancel={() => {
+          console.log('copyConditions',copyConditions)
+          setConditions(copyConditions)
+        }}
+        precision="second"
         onConfirm={dateConfirm}
+      />
+      {/* 结束时间 */}
+      <DatePicker
+        title="结束时间"
+        max={new Date()}
+        closeOnMaskClick={false}
+        visible={endDateVisible}
+        min={new Date(conditions.beginTime)}
+        onClose={() => {
+          setEndDateVisible(false);
+        }}
+        onCancel={() => {
+          setConditions(copyConditions);
+        }}
+        precision="second"
+        onConfirm={endDateConfirm}
       />
       <ul className="assets_detail_record">
         {capital?.map((item: any) => (

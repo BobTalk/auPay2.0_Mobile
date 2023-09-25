@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { PendingType } from './type';
-import { getSession } from '@/utils/base';
-import { Navigate } from 'react-router-dom';
+import { getSession, removeSession } from '@/utils/base';
+import { Toast } from 'antd-mobile';
 // 取消重复请求
 const pending: Array<PendingType> = [];
 const CancelToken = axios.CancelToken;
@@ -45,16 +45,16 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response: any) => {
     // removePending(response.config);
-
-    const errorCode = response?.data?.errorCode;
-    switch (errorCode) {
-      case '401':
-        Navigate({ to: 'login', replace: true })
-        break;
-      default:
-        break;
+    console.log('response', response)
+    const errorCode = response?.data?.code;
+    if (errorCode === 401) {
+      Toast.show({
+        content: '登陆信息已过期,请重新登陆'
+      })
+      removeSession('token')
+      window.history.forward()
+      return
     }
-
     return response;
   },
   (error: any) => {

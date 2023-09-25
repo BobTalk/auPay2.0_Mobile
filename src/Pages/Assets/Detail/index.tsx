@@ -31,7 +31,11 @@ const Detail = () => {
     title: location.state.title,
     back: "goBack",
     className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden",
-    // textColor: "white",
+    style: {
+      padding: ".32rem 0",
+      height: "auto",
+      borderBottom: 0,
+    },
   });
   let nav = [
     { label: "全部", value: "all" },
