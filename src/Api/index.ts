@@ -185,7 +185,7 @@ export const GetAssetsInfo = () => {
 export const FindTradeRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: undefined;
+  conditions?: object|undefined;
 }) => {
   return _http.postReq(
     {
@@ -198,11 +198,11 @@ export const FindTradeRecordList = (obj: {
     }
   )
 }
-// 21.获取充币记录  POST user / findRechargeRecordList {pageNo pageSize conditions }
+// 21.获取充币记录  POST user / findRechargeRecordList {pageNo pageSize conditions } conditions筛选条件字段
 export const FindRechargeRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: undefined;
+  conditions?: object|undefined;
 }) => {
   return _http.postReq(
     {
@@ -219,7 +219,7 @@ export const FindRechargeRecordList = (obj: {
 export const FindWithdrawRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: undefined;
+  conditions?:object| undefined;
 }) => {
   return _http.postReq(
     {
@@ -237,7 +237,7 @@ export const FindWithdrawRecordList = (obj: {
 export const FindAssetsChangeRecord = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: undefined;
+  conditions?: object|undefined;
 }) => {
   return _http.postReq(
     {
@@ -254,7 +254,7 @@ export const FindAssetsChangeRecord = (obj: {
 export const ViewAnnouncement = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: undefined;
+  conditions?: object|undefined;
 }) => {
   return _http.postReq(
     {

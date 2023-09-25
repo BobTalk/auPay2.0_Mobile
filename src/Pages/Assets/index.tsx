@@ -10,9 +10,9 @@ const Assets = () => {
   const navigate = useNavigate();
   const toDetail = (crt: any) => {
     console.log(crt);
-    let { currencyChain, currencyId, flag: title, realM, rmbM } = crt ?? {};
+    let { currencyChain, currencyId, flag: title, realM, rmbM,userId } = crt ?? {};
     navigate("/assets/detail", {
-      state: { currencyChain, currencyId, title, realM, rmbM },
+      state: { currencyChain, currencyId, title, realM, rmbM,userId },
     });
   };
   return (

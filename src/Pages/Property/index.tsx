@@ -2,16 +2,16 @@ import { GetAssetsInfo, GetUSDTTickers } from "@/Api";
 import styleScope from "./index.module.scss";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { mergeClassName, thousands } from "@/utils/base";
+import { useRMBConversion } from "@/Hooks/RMBConversion";
+
 type PropertyComp = {
   onClick?: Function;
 };
 const PropertyComp = (props: PropertyComp) => {
+  let [, setRMBConversion] = useRMBConversion();
   let [assets, setAssets] = useState<any>({});
-  let [ratio, setRatio] = useState<Array<object>>([]);
   async function getAssetsInfo() {
     let assets = await GetAssetsInfo();
-    let ratio = await GetUSDTTickers();
-    setRatio(ratio.value);
     setAssets(assets);
   }
   useEffect(() => {
@@ -48,18 +48,9 @@ const PropertyComp = (props: PropertyComp) => {
     },
     []
   );
-  const rmbConvert = useCallback((id: number, money: number): number => {
-    let m = money;
-    if (id === 1) {
-      let o: any = ratio.find((item: any) => item.symbol === "btcusdt");
-      m = Number(o?.["bid"]) * money;
-    }
-    if (id === 2) {
-      let o: any = ratio.find((item: any) => item.symbol === "ethusdt");
-      m = Number(o?.["bid"]) * money;
-    }
-    return m * 1;
-  }, []);
+  const rmbConvert = (id: number, money: number) => {
+   return setRMBConversion(id, money)
+  };
   const itemClickCb = useCallback((e: any, crt: any) => {
     e.stopPropagation();
     props?.onClick?.(crt);

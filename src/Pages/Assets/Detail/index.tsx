@@ -4,13 +4,14 @@ import PublicHead from "@/Components/PublicHead";
 import styleScope from "./index.module.scss";
 import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
-import { encrypt } from "@/utils/base";
+import { encrypt, timeFormate } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import {
   FindRechargeRecordList,
   FindTradeRecordList,
   FindWithdrawRecordList,
 } from "@/Api";
+import { useRMBConversion } from "@/Hooks/RMBConversion";
 type ExtractAndRechargeType = {
   id: string;
   type: number | string;
@@ -19,9 +20,11 @@ type ExtractAndRechargeType = {
   money: string;
   currency: string;
   rmb: string;
+  [key:string]:any
 };
 const Detail = () => {
   let location = useLocation();
+  
   let headData = Object.assign(HeadConfig, {
     title: location.state.title,
     back: "goBack",
@@ -58,44 +61,15 @@ const Detail = () => {
     pageSize: 10,
   });
 
-  // 提取 充值
-  const ExtractAndRecharge: Array<ExtractAndRechargeType> = [
-    {
-      id: "002",
-      type: 1,
-      order: "payme…9500001",
-      time: "2023-06-30 18:17:47",
-      money: "20,935.89",
-      currency: "USDT",
-      rmb: "￥3,760.08",
-    },
-    {
-      id: "001",
-      type: 2,
-      order: "payme…9500001",
-      time: "2023-06-29 18:17:47",
-      money: "20,935.89",
-      currency: "USDT",
-      rmb: "￥3,760.08",
-    },
-  ];
   // 资产数据
-  let [capital, setCapital] = useState(ExtractAndRecharge);
+  let [capital, setCapital] = useState<any>([]);
   // 充币
-  const DepositFn = (): any => {
-    const DepositData = ExtractAndRecharge.filter((item) => item.type == 1);
-    return setCapital(DepositData);
-  };
+  const DepositFn = (): any => {};
   // 提币
-  const DrawFn = (): any => {
-    const DrawData = ExtractAndRecharge.filter((item) => item.type == 2);
-    return setCapital(DrawData);
-  };
+  const DrawFn = (): any => {};
 
   // 全部
-  const AllFn = (): any => {
-    return setCapital(ExtractAndRecharge);
-  };
+  const AllFn = (): any => {};
   const FnMap = new Map([
     ["deposit", DepositFn],
     ["draw", DrawFn],
@@ -124,7 +98,11 @@ const Detail = () => {
     return await FindWithdrawRecordList(obj);
   }
   // 交易记录
-  async function getRecordInfo(obj: { pageNo: number; pageSize: number }) {
+  async function getTradeRecord(obj: {
+    pageNo: number;
+    pageSize: number;
+    conditions: Object;
+  }) {
     return await FindTradeRecordList(obj);
   }
   // // 充币
@@ -135,12 +113,24 @@ const Detail = () => {
   // useEffect(() => {}, []);
   // 全部
   useEffect(() => {
+    let { currencyChain, currencyId } = location.state;
+    let params = {
+      ...allPagination,
+      conditions: {
+        currencyChain,
+        currencyId,
+      },
+    };
     Promise.all([
-      getDepositInfo(allPagination),
-      getDrawInfo(allPagination),
-      getRecordInfo(allPagination),
+      getDepositInfo(params),
+      getDrawInfo(params),
+      getTradeRecord(params),
     ]).then((res) => {
-      let allInfo = res.map((item) => item.data);
+      let allInfo = res
+        .map((item) => item.data)
+        .filter(Boolean)
+        .flat();
+      console.log("allInfo,", allInfo);
       setCapital(() => allInfo);
     });
   }, [allPagination]);
@@ -193,6 +183,7 @@ const OrderItem = (props: any) => {
   let { orderData } = props;
   const navigate = useNavigate();
   const location = useLocation();
+  let [, setRMBConversion]= useRMBConversion()
   const toInfo = (crt: ExtractAndRechargeType) => {
     let type = encrypt(crt.type + "");
     let currency = encrypt(crt.currency);
@@ -202,25 +193,25 @@ const OrderItem = (props: any) => {
   };
   return orderData.map((item: ExtractAndRechargeType) => (
     <li
-      key={item.id}
+      key={item.id+"_"+item.recordType}
       onClick={() => toInfo(item)}
       className={styleScope["item-list"]}
     >
       <div className={styleScope["assets_detail_record_left"]}>
         <img src={item.type == 1 ? DepositImg : DrawImg} alt="" />
         <div className={styleScope["assets_detail_record_left_order"]}>
-          <p className="text-[.3rem] text-[#333] leading-none">{item.order}</p>
+          <p className="text-[.3rem] text-[#333] leading-none">{item.id}</p>
           <span className="text-[.24rem] text-[#999] leading-none">
-            {item.time}
+            {timeFormate(item.createTime)}
           </span>
         </div>
       </div>
       <div className={styleScope["assets_detail_record_right"]}>
         <p className="text-[.32rem] text-[#333] font-[700] leading-none">
-          {item.money} {item.currency}
+          {item.amount} {item.currency || "USDT"}
         </p>
         <span className="text-[.24rem] text-[#999] font-[700] leading-none">
-          {item.rmb}
+          {setRMBConversion(item.currencyId, item.amount)}
         </span>
       </div>
     </li>

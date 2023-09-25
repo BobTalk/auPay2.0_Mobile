@@ -52,8 +52,9 @@ const ItemComp = ({ list }: any) =>
       createTime: string;
       content: string;
       isRoll: boolean;
+      id:string
     }) => (
-      <li>
+      <li key={item.id}>
         <div className={styleScope["notice_list_tit"]}>
           <p>{item.title}</p>
           <i>{timeFormate(item.createTime)}</i>

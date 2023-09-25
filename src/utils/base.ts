@@ -107,10 +107,9 @@ const getQueryObject = (url: string): object => {
   })
   return obj
 }
-const timeFormate = (time: string): string => {
-  let t = dayjs(time).format('YYYY-MM-DD')
-  console.log(t)
-  return t
+// 日期处理
+const timeFormate = (time: string,format:string='YYYY-MM-DD'): string => {
+  return dayjs(time).format(format)
 }
 export {
   mergeClassName,
