@@ -1,13 +1,15 @@
 import PublicHead from "@/Components/PublicHead";
 import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
-import { Picker, DatePicker } from "antd-mobile";
+import { Picker, DatePicker, InfiniteScroll, DotLoading } from "antd-mobile";
 import styleScope from "./index.module.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dateFil, currencyFil } from "@/Libs/filters";
 import { currencyData } from "@/Libs/publicData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
+import { FindTradeRecordList } from "@/Api";
+import { timeFormate } from "@/utils/base";
 
 const Record = () => {
   let headData = Object.assign(HeadConfig, {
@@ -20,15 +22,47 @@ const Record = () => {
       borderBottom: "1px solid #C5CAD0",
     },
   });
-  const navigate = useNavigate();
-  const [dateVisible, setDateVisible] = useState(false);
-  const [currencyVisible, setCurrencyVisible] = useState(false);
+  useLocation();
+  let location = useLocation();
+  console.log(location);
+  let navigate = useNavigate();
+  let [conditions, setConditions] = useState({
+    currencyChain: undefined,
+    currencyId: undefined,
+    beginTime: undefined,
+    endTime: undefined,
+  });
+  let [crtPagination, setCrtpagination] = useState<any>({});
+  let [dateVisible, setDateVisible] = useState(false);
+  let [currencyVisible, setCurrencyVisible] = useState(false);
+  // 交易记录分页
+  let [recordPagination, setRecordPagination] = useState({
+    pageNo: 1,
+    pageSize: 10,
+  });
+  let [hasLoadMore, setHasLoadMore] = useState(false);
+  // 资产数据
+  let [capital, setCapital] = useState<any>([]);
   const [filterData, setFilterData] = useState({ date: "", currency: "" });
   const dateConfirm = (v: any) => {
     setFilterData({ ...filterData, date: dateFil(v) });
   };
   const currencyConfirm = (v: any) => {
     setFilterData({ ...filterData, currency: currencyFil(v[0]) });
+    let valSplit = v[0].split("_");
+    setConditions((val) => ({
+      ...val,
+      currencyChain: valSplit[1] ?? undefined,
+      currencyId: valSplit[0] ?? undefined,
+    }));
+    getTradeRecord({
+      ...recordPagination,
+      conditions: {
+        ...conditions,
+        currencyChain: valSplit[1] ? +valSplit[1] : undefined,
+        currencyId: +valSplit[0] ?? undefined,
+      },
+    });
   };
   const filter = (k: String) => {
     if (k === "date") return setDateVisible(true);
@@ -42,8 +76,31 @@ const Record = () => {
     event.nativeEvent.stopImmediatePropagation();
   };
   const getInfo = () => {
-    navigate("/assets/detail/:id/record/info/123");
+    navigate("/assets/detail/record/info/123");
   };
+  // 交易记录
+  async function getTradeRecord(obj: {
+    pageNo: number;
+    pageSize: number;
+    conditions: Object;
+  }) {
+    return await FindTradeRecordList(obj);
+  }
+  function loadMore(): any {
+    if (!hasLoadMore) return;
+    setRecordPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
+  }
+  useEffect(() => {
+    getTradeRecord({
+      ...recordPagination,
+      conditions,
+    }).then((res) => {
+      let { pageNo, pageSize, total, data } = res;
+      setCapital((val: any[]) => val.concat(data));
+      setCrtpagination(() => ({ pageNo, pageSize, total }));
+      setHasLoadMore(() => pageSize * pageNo < total);
+    });
+  }, [recordPagination]);
   return (
     <div className={styleScope["assets_record"]}>
       <PublicHead {...headData} />
@@ -84,88 +141,41 @@ const Record = () => {
         onClose={() => {
           setDateVisible(false);
         }}
-        precision="minute"
+        precision="day"
         onConfirm={dateConfirm}
       />
       <ul className="assets_detail_record">
-        <li onClick={getInfo}>
-          <div className="assets_detail_record_left">
-            <img src={DepositImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
+        {capital?.map((item: any) => (
+          <li onClick={getInfo}>
+            <div className="assets_detail_record_left">
+              <img src={item?.tradeType === 1 ? DepositImg : DrawImg} alt="" />
+              <div className="assets_detail_record_left_order">
+                <p>{item.id}</p>
+                <span>
+                  {timeFormate(item.createTime, "YYYY-MM-DD HH:mm:ss")}
+                </span>
+              </div>
             </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <div className="assets_detail_record_left">
-            <img src={DrawImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
+            <div className="assets_detail_record_right">
+              <p>{item.amount} USDT</p>
+              <span></span>
             </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <div className="assets_detail_record_left">
-            <img src={DepositImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
-            </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <div className="assets_detail_record_left">
-            <img src={DrawImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
-            </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <div className="assets_detail_record_left">
-            <img src={DepositImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
-            </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
-        <li>
-          <div className="assets_detail_record_left">
-            <img src={DrawImg} alt="" />
-            <div className="assets_detail_record_left_order">
-              <p>payme…9500001</p>
-              <span>2023-06-30 18:17:47</span>
-            </div>
-          </div>
-          <div className="assets_detail_record_right">
-            <p>20,935.89 USDT</p>
-            <span></span>
-          </div>
-        </li>
+          </li>
+        ))}
+        <InfiniteScroll
+          loadMore={loadMore}
+          threshold={30}
+          hasMore={hasLoadMore}
+        >
+          {hasLoadMore ? (
+            <>
+              <span>加载中</span>
+              <DotLoading />
+            </>
+          ) : (
+            <span>--- {capital.length ? "我是有底线的" : "暂无数据"} ---</span>
+          )}
+        </InfiniteScroll>
       </ul>
     </div>
   );

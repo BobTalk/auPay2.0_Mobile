@@ -103,7 +103,10 @@ const Detail = () => {
     ["all", AllFn],
   ]);
   const clickNav = (k: string) => {
-    if (k === "record") return navigate(location.pathname + "/record");
+    if (k === "record")
+      return navigate(location.pathname + "/record", {
+        state: { currencyChain, currencyId },
+      });
     if (FnMap.has(k)) {
       FnMap.get(k)?.();
     }
@@ -212,7 +215,16 @@ const Detail = () => {
   function loadMore(): any {
     console.log(crtPagination);
     if (!hasLoadMore) return;
-    setAllPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
+    if (navK == "draw") {
+      setDrawPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
+    } else if (navK === "deposit") {
+      setDepositPagination((val) => ({
+        ...val,
+        pageNo: ++crtPagination.pageNo,
+      }));
+    } else {
+      setAllPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
+    }
   }
   return (
     <div>

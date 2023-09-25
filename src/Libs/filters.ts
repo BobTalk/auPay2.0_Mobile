@@ -10,7 +10,7 @@ export function dateFil(value: Date, type = 'yyyy-MM-DD HH:MM:ss') {
   }
 }
 
-export function currencyFil(k: number, type = 'label') {
+export function currencyFil(k: any, type = 'label') {
   if (!k) return '-'
   const temp = currencyData.filter(item => item.value === k)
   if (temp && temp.length) return (temp[0] as any)[type]
