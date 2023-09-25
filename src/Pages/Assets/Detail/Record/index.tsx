@@ -13,6 +13,7 @@ const Record = () => {
   let headData = Object.assign(HeadConfig, {
     title: "交易记录",
     back: "goBack",
+    className: "text-[#333]",
     style: {
       padding: ".32rem .3rem",
       height: "auto",

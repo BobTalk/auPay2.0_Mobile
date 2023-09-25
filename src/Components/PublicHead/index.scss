@@ -10,13 +10,13 @@
   .public_head_tit {
     font-family: PingFangSC-Medium-oz;
     font-size: 17px;
-    color: #333333;
+    color: currentColor;
     text-align: center;
     font-weight: 500;
   }
 }
 .public_head_white {
   .public_head_tit, .iconfont {
-    color: white;
+    color: currentColor;
   }
 }

@@ -4,7 +4,7 @@ import PublicHead from "@/Components/PublicHead";
 import styleScope from "./index.module.scss";
 import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
-import { encrypt, timeFormate } from "@/utils/base";
+import { encrypt, thousands, timeFormate } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import {
   FindRechargeRecordList,
@@ -12,6 +12,7 @@ import {
   FindWithdrawRecordList,
 } from "@/Api";
 import { useRMBConversion } from "@/Hooks/RMBConversion";
+import { InfiniteScroll } from "antd-mobile";
 type ExtractAndRechargeType = {
   id: string;
   type: number | string;
@@ -20,15 +21,17 @@ type ExtractAndRechargeType = {
   money: string;
   currency: string;
   rmb: string;
-  [key:string]:any
+  [key: string]: any;
 };
 const Detail = () => {
   let location = useLocation();
-  
+  let { currencyChain, currencyId } = location.state;
+  let [hasLoadMore, setHasLoadMore] = useState(false);
   let headData = Object.assign(HeadConfig, {
     title: location.state.title,
     back: "goBack",
-    textColor: "white",
+    className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden",
+    // textColor: "white",
   });
   let nav = [
     { label: "全部", value: "all" },
@@ -60,16 +63,40 @@ const Detail = () => {
     pageNo: 1,
     pageSize: 10,
   });
+  let [crtPagination, setCrtpagination] = useState<any>({});
 
   // 资产数据
   let [capital, setCapital] = useState<any>([]);
   // 充币
-  const DepositFn = (): any => {};
+  const DepositFn = (): any => {
+    console.log("充币");
+    setDepositPagination({
+      pageNo: 1,
+      pageSize: 10,
+    });
+    setHasLoadMore(false);
+    setCapital(() => []);
+  };
   // 提币
-  const DrawFn = (): any => {};
+  const DrawFn = (): any => {
+    console.log("提币");
+    setDrawPagination({
+      pageNo: 1,
+      pageSize: 10,
+    });
+    setHasLoadMore(false);
+    setCapital(() => []);
+  };
 
   // 全部
-  const AllFn = (): any => {};
+  const AllFn = (): any => {
+    setAllPagination({
+      pageNo: 1,
+      pageSize: 10,
+    });
+    setHasLoadMore(false);
+    setCapital(() => []);
+  };
   const FnMap = new Map([
     ["deposit", DepositFn],
     ["draw", DrawFn],
@@ -90,11 +117,19 @@ const Detail = () => {
     navigate("/draw");
   };
   //充币函数
-  async function getDepositInfo(obj: { pageNo: number; pageSize: number }) {
+  async function getDepositInfo(obj: {
+    pageNo: number;
+    pageSize: number;
+    conditions: Object;
+  }) {
     return await FindRechargeRecordList(obj);
   }
   // 提币函数
-  async function getDrawInfo(obj: { pageNo: number; pageSize: number }) {
+  async function getDrawInfo(obj: {
+    pageNo: number;
+    pageSize: number;
+    conditions: Object;
+  }) {
     return await FindWithdrawRecordList(obj);
   }
   // 交易记录
@@ -106,14 +141,41 @@ const Detail = () => {
     return await FindTradeRecordList(obj);
   }
   // // 充币
-  // useEffect(() => {}, []);
-  // // 提币
-  // useEffect(() => {}, []);
-  // // 交易记录
-  // useEffect(() => {}, []);
+  useEffect(() => {
+    if (navK == "deposit") {
+      getDepositInfo({
+        ...depositPagination,
+        conditions: {
+          currencyChain,
+          currencyId,
+        },
+      }).then((res) => {
+        let { pageNo, pageSize, total } = res.data;
+        setCapital((val: any[]) => val.concat(res.data));
+        setCrtpagination(() => ({ pageNo, pageSize, total }));
+        setHasLoadMore(() => pageSize * pageNo < total);
+      });
+    }
+  }, [depositPagination]);
+  // 提币
+  useEffect(() => {
+    if (navK == "draw") {
+      getDrawInfo({
+        ...drawPagination,
+        conditions: {
+          currencyChain,
+          currencyId,
+        },
+      }).then((res) => {
+        let { pageNo, pageSize, total } = res.data;
+        setCapital((val: any[]) => val.concat(res.data));
+        setCrtpagination(() => ({ pageNo, pageSize, total }));
+        setHasLoadMore(() => pageSize * pageNo < total);
+      });
+    }
+  }, [drawPagination]);
   // 全部
   useEffect(() => {
-    let { currencyChain, currencyId } = location.state;
     let params = {
       ...allPagination,
       conditions: {
@@ -126,22 +188,36 @@ const Detail = () => {
       getDrawInfo(params),
       getTradeRecord(params),
     ]).then((res) => {
+      console.log(res);
+      let paginationTotal = res.reduce(
+        (prv, next) => (prv.total > next.total ? prv : next),
+        {
+          total: 0,
+        }
+      );
+      console.log(paginationTotal);
       let allInfo = res
         .map((item) => item.data)
         .filter(Boolean)
         .flat();
       console.log("allInfo,", allInfo);
-      setCapital(() => allInfo);
+      setCapital((val: any[]) => val.concat(allInfo));
+      setCrtpagination(() => paginationTotal);
+      let { total, pageSize, pageNo } = paginationTotal;
+      console.log(" b", pageSize * pageNo < total);
+      setHasLoadMore(() => pageSize * pageNo < total);
     });
   }, [allPagination]);
 
+  function loadMore(): any {
+    console.log(crtPagination);
+    if (!hasLoadMore) return;
+    setAllPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
+  }
   return (
     <div>
       <div className={styleScope["assets_detail_banner"]}>
-        <PublicHead
-          {...headData}
-          className="mx-[.3rem] w-[inherit] overflow-hidden"
-        />
+        <PublicHead {...headData} />
         <div className="p-[0_.3rem_.3rem]">
           <div className={styleScope["assets_detail_banner_top"]}>
             <i className={styleScope["icon"] + " iconfont icon-BTC"}></i>
@@ -172,6 +248,11 @@ const Detail = () => {
           </ul>
           <ul className={styleScope["assets_detail_record"]}>
             <OrderItem orderData={capital} />
+            <InfiniteScroll
+              loadMore={loadMore}
+              threshold={30}
+              hasMore={hasLoadMore}
+            />
           </ul>
         </div>
       </div>
@@ -183,7 +264,7 @@ const OrderItem = (props: any) => {
   let { orderData } = props;
   const navigate = useNavigate();
   const location = useLocation();
-  let [, setRMBConversion]= useRMBConversion()
+  let [, setRMBConversion] = useRMBConversion();
   const toInfo = (crt: ExtractAndRechargeType) => {
     let type = encrypt(crt.type + "");
     let currency = encrypt(crt.currency);
@@ -191,14 +272,14 @@ const OrderItem = (props: any) => {
       state: { module: type, currency },
     });
   };
-  return orderData.map((item: ExtractAndRechargeType) => (
+  return orderData?.map((item: ExtractAndRechargeType) => (
     <li
-      key={item.id+"_"+item.recordType}
+      key={item.id + "_" + item.recordType}
       onClick={() => toInfo(item)}
       className={styleScope["item-list"]}
     >
       <div className={styleScope["assets_detail_record_left"]}>
-        <img src={item.type == 1 ? DepositImg : DrawImg} alt="" />
+        <img src={item.recordType == 1 ? DepositImg : DrawImg} alt="" />
         <div className={styleScope["assets_detail_record_left_order"]}>
           <p className="text-[.3rem] text-[#333] leading-none">{item.id}</p>
           <span className="text-[.24rem] text-[#999] leading-none">
@@ -211,7 +292,7 @@ const OrderItem = (props: any) => {
           {item.amount} {item.currency || "USDT"}
         </p>
         <span className="text-[.24rem] text-[#999] font-[700] leading-none">
-          {setRMBConversion(item.currencyId, item.amount)}
+          ￥{thousands(setRMBConversion(item.currencyId, item.amount))}
         </span>
       </div>
     </li>
