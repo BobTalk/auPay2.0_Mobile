@@ -2,19 +2,14 @@ import PublicHead from "@/Components/PublicHead";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styleScope from "./index.module.scss";
+import { HeadConfig } from "@/Assets/config/head";
 const Info = () => {
   // 根据传进来的数据判断是充币详情还是提币详情
-  let headData = {
+  let headData = Object.assign(HeadConfig,{
     title: "交易记录详情",
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#FFF" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem 0",
-      height: "auto",
-      color: "#FFF",
-    },
-  };
+    className:'text-[#fff]'
+  });
 
   const params = useParams();
   const [id, setId] = useState("");

@@ -46,7 +46,7 @@ const RouteList = [
   { label: '资产详情', isAuth: true, path: 'assets/detail', element: <AssetsDetail /> },
   { label: '资产详情信息', isAuth: true, path: 'assets/detail/info', element: <AssetsDetailInfo /> },
   { label: '资产交易记录', isAuth: true, path: 'assets/detail/record', element: <AssetsDetailRecord /> },
-  { label: '资产交易记录详情', isAuth: true, path: 'assets/detail/record/info/:id', element: <AssetsDetailRecordInfo /> },
+  { label: '资产交易记录详情', isAuth: true, path: 'assets/detail/record/info', element: <AssetsDetailRecordInfo /> },
   { label: '充值', isAuth: true, path: 'assets/detail/deposit', element: <AssetsDetailDeposit /> },
   { label: '提币', isAuth: true, path: 'draw', element: <DrawMoney /> },
   { label: '我的', isAuth: true, path: 'my', element: <MyModule /> },
