@@ -280,5 +280,11 @@ export const FileUpload=(file:any)=>{
     data:{file}
   })
 }
+// 交易记录详情
+export const TradeRecordDetail=(id:any)=>{
+  return _http.getReq({
+    url: `${PublicPrefix}/checkTradeRecordDetail?id=${id}`,
+  })
+}
 
 

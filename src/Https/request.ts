@@ -45,7 +45,6 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response: any) => {
     // removePending(response.config);
-    console.log('response', response)
     const errorCode = response?.data?.code;
     if (errorCode === 401) {
       Toast.show({
