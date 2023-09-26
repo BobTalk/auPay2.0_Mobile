@@ -73,7 +73,6 @@ const Detail = () => {
   let [capital, setCapital] = useState<any>([]);
   // 充币
   const DepositFn = (): any => {
-    console.log("充币");
     setDepositPagination({
       pageNo: 1,
       pageSize: 10,
@@ -83,7 +82,6 @@ const Detail = () => {
   };
   // 提币
   const DrawFn = (): any => {
-    console.log("提币");
     setDrawPagination({
       pageNo: 1,
       pageSize: 10,
@@ -282,10 +280,10 @@ const OrderItem = (props: any) => {
   const location = useLocation();
   let [, setRMBConversion] = useRMBConversion();
   const toInfo = (crt: ExtractAndRechargeType) => {
-    let type = encrypt(crt.type + "");
-    let currency = encrypt(crt.currency);
+    let type = encrypt(crt.recordType+"");
+    let currency = encrypt(crt.currency ?? "USDT");
     navigate(location.pathname + `/info`, {
-      state: { module: type, currency },
+      state: { ...crt, module: type, currency },
     });
   };
   return orderData?.map((item: ExtractAndRechargeType) => (

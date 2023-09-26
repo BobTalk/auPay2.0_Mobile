@@ -108,9 +108,38 @@ const getQueryObject = (url: string): object => {
   return obj
 }
 // 日期处理
-const timeFormate = (time: string,format:string='YYYY-MM-DD'): string => {
+const timeFormate = (time: string, format: string = 'YYYY-MM-DD'): string => {
   return dayjs(time).format(format)
 }
+// 单位处理
+let formatUnit = (id: number, chain?: number) => {
+  let unit = "EOS";
+  let num = 0;
+  if (id === 1) {
+    unit = "BTC";
+    num = 6;
+  } else if (id === 2) {
+    unit = "ETH";
+    num = 6;
+  } else if (id === 3) {
+    if (chain === 1) {
+      unit = "USDT-OMNI";
+      num = 6;
+    }
+    if (chain === 2) {
+      unit = "USDT-ERC20";
+      num = 6;
+    }
+    if (chain === 3) {
+      unit = "USDT-TRC20";
+      num = 19;
+    }
+  } else {
+    unit = "TRX";
+    num = 19;
+  }
+  return { unit, num };
+};
 export {
   mergeClassName,
   encrypt,
@@ -122,5 +151,6 @@ export {
   getSession,
   removeSession,
   encryptByDES,
-  timeFormate
+  timeFormate,
+  formatUnit
 }

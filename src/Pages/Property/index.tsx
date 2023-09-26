@@ -23,6 +23,7 @@ const PropertyComp = (props: PropertyComp) => {
     if (id === 1) unit = "BTC";
     if (id === 2) unit = "ETH";
     if (id === 3) unit = "USDT";
+    if (id === 4) unit = "TRX";
     return unit;
   }
   // icon图标

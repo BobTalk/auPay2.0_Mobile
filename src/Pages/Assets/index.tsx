@@ -6,13 +6,23 @@ import { HeadConfig } from "@/Assets/config/head";
 import { mergeClassName } from "@/utils/base";
 import PropertyComp from "../Property";
 const Assets = () => {
-  let headData = Object.assign(HeadConfig, { title: "资产", back: "" });
+  let headData = Object.assign(HeadConfig, {
+    title: "资产",
+    back: "",
+    className: "text-[#333]",
+  });
   const navigate = useNavigate();
   const toDetail = (crt: any) => {
-    console.log(crt);
-    let { currencyChain, currencyId, flag: title, realM, rmbM,userId } = crt ?? {};
+    let {
+      currencyChain,
+      currencyId,
+      flag: title,
+      realM,
+      rmbM,
+      userId,
+    } = crt ?? {};
     navigate("/assets/detail", {
-      state: { currencyChain, currencyId, title, realM, rmbM,userId },
+      state: { currencyChain, currencyId, title, realM, rmbM, userId },
     });
   };
   return (
