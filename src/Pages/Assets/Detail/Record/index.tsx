@@ -22,12 +22,8 @@ const Record = () => {
   let headData = Object.assign(HeadConfig, {
     title: "交易记录",
     back: "goBack",
-    className: "text-[#333]",
-    style: {
-      padding: ".32rem .3rem",
-      height: "auto",
-      borderBottom: "1px solid #C5CAD0",
-    },
+    className:
+      "text-[#333] p-[.32rem_.3rem_!important] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   let location = useLocation();
   let JNavBar = useRef<any>();
@@ -131,8 +127,9 @@ const Record = () => {
     setFilterData(filterDataT);
     event.nativeEvent.stopImmediatePropagation();
   };
-  const getInfo = () => {
-    navigate("/assets/detail/record/info");
+  const getInfo = (e: any, crt: any) => {
+    e.stopPropagation();
+    navigate("/assets/detail/record/info", { state: crt });
   };
   // 交易记录
   async function getTradeRecord(obj: {
@@ -303,7 +300,7 @@ const Record = () => {
         className="assets_detail_record overflow-y-auto"
       >
         {capital?.map((item: any) => (
-          <li onClick={getInfo}>
+          <li onClick={(e) => getInfo(e, item)}>
             <div className="assets_detail_record_left">
               <img src={item?.tradeType === 1 ? DepositImg : DrawImg} alt="" />
               <div className="assets_detail_record_left_order">

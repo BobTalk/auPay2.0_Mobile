@@ -13,11 +13,8 @@ const BussionRecords = () => {
   let headerInfo = Object.assign(HeadConfig, {
     title: HeadTitle["bussionRecord"],
     back: "goBack",
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   let [recordPagination, setRecordPagination] = useState({
     pageNo: 1,
@@ -81,11 +78,13 @@ const BussionRecords = () => {
         <PublicCopy
           className="px-[.2rem] py-[.16rem] grid-cols-[76%_20%] justify-between gap-0"
           textClassName="text-[#333] text-[.26rem]"
-          info={conditions.beginTime && conditions.endTime
-            ? timeFormate(conditions.beginTime, "YYYY/MM/DD") +
-              " -- " +
-              timeFormate(conditions.endTime, "YYYY/MM/DD")
-            : "时间"}
+          info={
+            conditions.beginTime && conditions.endTime
+              ? timeFormate(conditions.beginTime, "YYYY/MM/DD") +
+                " -- " +
+                timeFormate(conditions.endTime, "YYYY/MM/DD")
+              : "时间"
+          }
           iconBoxClassName="border-[0] text-[.24rem]  w-[auto] h-[auto]"
         >
           <i className="iconfont icon-zhankai" />
@@ -125,10 +124,10 @@ const OrderItem = (props: any) => {
       state: { module: type, currency },
     });
   };
-  return orderData.map((item: any, index:number) => (
+  return orderData.map((item: any, index: number) => (
     <li
       className="flex justify-between py-[.29rem] border-solid border-b-[1px] border-b-[#DBDBDB]"
-      key={item.id+"_"+index}
+      key={item.id + "_" + index}
       onClick={() => toInfo(item)}
     >
       <div className="flex items-center gap-x-[.24rem]">

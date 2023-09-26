@@ -149,11 +149,8 @@ const AccountInformation = () => {
   const HeadData = Object.assign(HeadConfig, {
     title: "账户信息",
     back: "goBack",
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   let [popupVisible, setPopupVisible] = useState<boolean>(false);
   

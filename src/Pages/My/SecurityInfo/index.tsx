@@ -2,19 +2,15 @@ import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
 import { useNavigate } from "react-router-dom";
 import { InfoSecurity } from "../../Enum";
+import { HeadConfig } from "@/Assets/config/head";
 
 const SecurityInfo = () => {
-  const HeadData = {
+  const HeadData = Object.assign(HeadConfig, {
     title: "安全信息",
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+  });
   let listInfo = [
     {
       id: "1",

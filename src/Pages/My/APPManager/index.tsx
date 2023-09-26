@@ -3,26 +3,27 @@ import { Avatar } from "antd-mobile";
 import { MouseEvent, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InfoSecurity } from "../../Enum";
+import { HeadConfig } from "@/Assets/config/head";
 
 const AppManager = (props: any) => {
   const HeaderEl = useRef();
   const Navigate = useNavigate();
   let { state: urlParams }: any = useLocation();
-  let headInfo = {
+  let headInfo = Object.assign(HeadConfig, {
     title: props.headTitle ?? urlParams?.headTitle,
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+  });
   function unBind(e: MouseEvent, crt: object) {
-    Navigate("/resetpwd", { state: {crt:{
-      type: InfoSecurity['unbind']
-    },headTitle:'解除绑定'} });
+    Navigate("/resetpwd", {
+      state: {
+        crt: {
+          type: InfoSecurity["unbind"],
+        },
+        headTitle: "解除绑定",
+      },
+    });
   }
 
   return (

@@ -59,7 +59,7 @@ const RouteList = [
   { label: '应用管理', isAuth: true, path: 'my/app-manage', element: <AppManager /> },
 
   { label: '交易记录', isAuth: true, path: 'my/records', element: <AssetsDetailRecord /> },
-  { label: '交易记录详情', isAuth: true, path: 'my/records/records-detail', element: <AssetsDetailRecordInfo /> },
+  // { label: '交易记录详情', isAuth: true, path: 'my/records/records-detail', element: <AssetsDetailRecordInfo /> },
 ]
 
 

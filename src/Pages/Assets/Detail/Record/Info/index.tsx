@@ -1,21 +1,18 @@
 import PublicHead from "@/Components/PublicHead";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import styleScope from "./index.module.scss";
 import { HeadConfig } from "@/Assets/config/head";
 const Info = () => {
   // 根据传进来的数据判断是充币详情还是提币详情
-  let headData = Object.assign(HeadConfig,{
+  let headData = Object.assign(HeadConfig, {
     title: "交易记录详情",
     back: "goBack",
-    className:'text-[#fff]'
+    className: "text-[#fff]",
+    
   });
-
-  const params = useParams();
-  const [id, setId] = useState("");
-  useEffect(() => {
-    setId(String(params.id)); // 用这个id获取数据
-  }, []);
+  let { state: urlParams } = useLocation();
+  console.log(urlParams)
   return (
     <div className={styleScope["assets_info"]}>
       <PublicHead {...headData} />
@@ -23,9 +20,9 @@ const Info = () => {
         <div className={styleScope["assets_info_form_head"]}>
           <div className={styleScope["assets_info_form_head_status"]}>
             {/* 此处根据传进来的数据判断用哪个icon  进行中、成功、失败 */}
-            <i className="iconfont icon-chenggong" />
-            {/* <i className="iconfont icon-top" /> */}
-            {/* <i className="iconfont icon-shibai" /> */}
+            {/* <i className="iconfont icon-chenggong text-[#53c31b]  text-[.9rem]" /> */}
+            <i className="iconfont icon-top text-[#1b64ff] text-[.9rem]" />
+            {/* <i className="iconfont icon-shibai text-[#e84335]  text-[.9rem]" /> */}
           </div>
           <p>交易完成</p>
         </div>
@@ -63,7 +60,9 @@ const Info = () => {
             </li>
             <li>
               <p>数量</p>
-              <span className={styleScope["assets_info_form_li_money"]}>23</span>
+              <span className={styleScope["assets_info_form_li_money"]}>
+                23
+              </span>
             </li>
             <li>
               <p>状态</p>

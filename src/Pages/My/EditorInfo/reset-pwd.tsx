@@ -5,21 +5,17 @@ import PublicInput from "@/Components/PublicInput";
 import { Button } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
 import { useState } from "react";
+import { HeadConfig } from "@/Assets/config/head";
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   let InfoSecurity1 = JSON.parse(JSON.stringify(InfoSecurity));
-  const HeadInfo = {
+  const HeadInfo = Object.assign(HeadConfig, {
     title: urlParams.headTitle ?? props.headTitle,
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+  });
   const [formInitVal, setFormInitVal] = useState({
     email: "12838923834@qq.com",
   });

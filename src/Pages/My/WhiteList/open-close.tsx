@@ -6,25 +6,20 @@ import { Button } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
 import { useState } from "react";
 import { getSession, setSession } from "@/utils/base";
+import { HeadConfig } from "@/Assets/config/head";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
   let { state: urlInof }: any = useLocation();
   let WhiteListEnum1 = JSON.parse(JSON.stringify(WhiteListEnum));
-  const HeadInfo = {
+  const HeadInfo = Object.assign(HeadConfig, {
     title: urlInof?.headTitle ?? props.headTitle,
     back: () => {
-      console.log(!getSession("isOpenWhiteList"));
       setSession("isOpenWhiteList", Boolean(!getSession("isOpenWhiteList")));
       window.history.back();
     },
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+  });
   const [formInitVal, setFormInitVal] = useState({
     email: "12838923834@qq.com",
   });

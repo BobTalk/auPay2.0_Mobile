@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import MoneyPwd from "./money_pwd";
 import GoogleValidator from "./google-validator";
 import LoginPwd from "./login_pwd";
+import { HeadConfig } from "@/Assets/config/head";
 
 const EditorInfo = (props: any) => {
   let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
@@ -60,17 +61,12 @@ const EditorInfo = (props: any) => {
     ],
   ]);
   const { state = {} } = useLocation();
-  let headInfo = {
+  let headInfo = Object.assign(HeadConfig, {
     title: HeadTitle1[state["type"]] ?? "编辑昵称",
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className:
+      "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+  });
   const [headData, setHeadData] = useState(headInfo);
   const [popupVisible, setPopupVisible] = useState(false);
   const [defaultCountryCode, setDefaultCountryCode] = useState<any>("China");
@@ -115,10 +111,11 @@ const EditorInfo = (props: any) => {
         // 资金密码设置/修改
         ["securityPwd", "updateSecurityPwd"].includes(state["type"]) ? (
           <MoneyPwd ref={moneyPwd} crt={state} />
-        ) : ["siginPwd", "updateSiginPwd"].includes(state["type"]) ? <>
-          <LoginPwd/>
-        </> 
-        : state["type"] == "googleValidator" ? (
+        ) : ["siginPwd", "updateSiginPwd"].includes(state["type"]) ? (
+          <>
+            <LoginPwd />
+          </>
+        ) : state["type"] == "googleValidator" ? (
           // google验证器、修改
           <>
             <GoogleValidator />
