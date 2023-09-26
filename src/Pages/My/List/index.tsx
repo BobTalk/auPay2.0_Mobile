@@ -1,6 +1,6 @@
 import { Avatar, Card, Popup } from "antd-mobile";
 import styleScope from "./index.module.scss";
-import { mergeClassName } from "@/utils/base";
+import { mergeClassName, removeSession } from "@/utils/base";
 import whiteImg from "../Assets/images/white-menu.png";
 import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
@@ -8,15 +8,17 @@ import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
 import { memo, useState } from "react";
 import { InfoSecurity } from "../../Enum";
+import { Logout } from "@/Api";
+import { replace } from "lodash";
 const MyList = () => {
-  const navigate = useNavigate();
+  let navigate = useNavigate();
   let listInfo = [
     {
       id: "1",
       icon: "icon-jilu",
       title: "交易记录",
       showArrow: true,
-      type: InfoSecurity['bussionRecord'],
+      type: InfoSecurity["bussionRecord"],
       style: {},
       path: "records",
       className: "",
@@ -40,7 +42,7 @@ const MyList = () => {
       showArrow: true,
       path: "accountInfor",
       title: "账户信息",
-      type: InfoSecurity['accountInfo'],
+      type: InfoSecurity["accountInfo"],
       style: {},
       className: "",
       itemStyle: {
@@ -63,7 +65,7 @@ const MyList = () => {
       showArrow: true,
       title: "安全信息",
       path: "security-info",
-      type: InfoSecurity['secureInfo'],
+      type: InfoSecurity["secureInfo"],
       style: {},
       className: "",
       itemStyle: {
@@ -88,7 +90,7 @@ const MyList = () => {
       title: "用户协议",
       showArrow: true,
       style: {},
-      type: InfoSecurity['userAgree'],
+      type: InfoSecurity["userAgree"],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -111,7 +113,7 @@ const MyList = () => {
       title: "隐私政策",
       showArrow: true,
       style: {},
-      type: InfoSecurity['privacyPolicy'],
+      type: InfoSecurity["privacyPolicy"],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -134,7 +136,7 @@ const MyList = () => {
       title: "关于我们",
       showArrow: true,
       style: {},
-      type: InfoSecurity['aboutAs'],
+      type: InfoSecurity["aboutAs"],
       className: "",
       itemStyle: {
         fontSize: ".3rem",
@@ -157,7 +159,7 @@ const MyList = () => {
       title: "联系我们",
       showArrow: true,
       style: {},
-      type: InfoSecurity['aboutAs'],
+      type: InfoSecurity["aboutAs"],
       className: "",
       imgStyle: {
         width: ".4rem",
@@ -179,7 +181,7 @@ const MyList = () => {
       icon: require("../Assets/images/Ozfund.png"),
       title: "Ozfund",
       style: {},
-      type: InfoSecurity['Ozfund'],
+      type: InfoSecurity["Ozfund"],
       showArrow: true,
       className: "",
       itemStyle: {
@@ -204,7 +206,7 @@ const MyList = () => {
       icon: "icon-tuichudenglu",
       title: "退出登录",
       showArrow: true,
-      type: InfoSecurity['loginOut'],
+      type: InfoSecurity["loginOut"],
       style: {},
       className: "",
       itemStyle: {
@@ -228,7 +230,7 @@ const MyList = () => {
   }
   function appManage(e: any, crt: Object) {
     e.preventDefault();
-    console.log(crt)
+    console.log(crt);
     navigate("/my/app-manage", { state: crt });
   }
   const [popupVisible, setPopupVisible] = useState(false);
@@ -240,6 +242,10 @@ const MyList = () => {
   };
   const signOut = () => {
     setPopupVisible(!popupVisible);
+    Logout().then((res) => {
+      removeSession("token");
+      navigate("/login",{replace:true});
+    });
   };
   return (
     <>
@@ -307,11 +313,15 @@ const MyList = () => {
         <PublicList
           arrowStyle={{ fontSize: ".2rem" }}
           arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
-          click={signOut}
+          click={() => setPopupVisible(!popupVisible)}
           className="my-[.3rem]"
           list={listInfo2}
         />
-        <PopupComp visible={popupVisible} cancle={() => signOut()} />
+        <PopupComp
+          visible={popupVisible}
+          click={signOut}
+          cancle={() => setPopupVisible(!popupVisible)}
+        />
       </div>
       <PublicFoo />
     </>

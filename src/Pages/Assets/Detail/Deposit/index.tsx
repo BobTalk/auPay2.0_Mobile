@@ -11,6 +11,7 @@ const Deposit = () => {
   let headData = Object.assign(HeadConfig, {
     title: "充币USDT-ERC20",
     back: "goBack",
+    className:'text-[#333]'
   });
   const iconClick = (e: any) => {
     console.log(e, "----");
