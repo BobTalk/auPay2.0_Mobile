@@ -5,6 +5,8 @@ import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { WhiteListInfo } from "../../Enum";
 import { getSession, setSession } from "@/utils/base";
+import { HeadConfig } from "@/Assets/config/head";
+import { DeleteWithdrawAddress, GetUserWithdrawAddress } from "@/Api";
 
 const WhiteList = (props: any) => {
   const HeaderEl = useRef<any>({});
@@ -12,20 +14,21 @@ const WhiteList = (props: any) => {
   let [headerH, setHeaderH] = useState<number>(0);
   let { state } = useLocation();
   const [isOpen] = useState<boolean>(getSession("isOpenWhiteList"));
-  let headInfo = {
+  let headInfo = Object.assign(HeadConfig, {
     title: props.headTitle ?? state.headTitle,
     back: "goBack",
-    titleStyle: { fontSize: ".34rem", color: "#333" },
-    iconStyle: { fontSize: ".34rem", left: ".15rem" },
-    style: {
-      padding: ".32rem .3rem",
-      borderBottom: "1px solid rgba(197,202,208,1)",
-      height: "auto",
-    },
-  };
+    className: "text-[#333]",
+  });
+  // 获取白名单地址
+  async function getPageInfo() {
+    let addr = await GetUserWithdrawAddress();
+    console.log("addr>> ", addr);
+  }
+
   useEffect(() => {
     let { height } = HeaderEl.current?.getBoundingClientRect?.();
     setHeaderH(() => height);
+    getPageInfo();
   }, []);
   function switchChangeCb(val: boolean) {
     setSession("isOpenWhiteList", val);
@@ -86,7 +89,13 @@ const DrawalMoney = (props: any) => {
   function deleteWhiteListUrl(e: any, crt: any) {
     e.stopPropagation();
     setVisible(() => !visible);
-    setDeleteItemCrt(()=> crt)
+    setDeleteItemCrt(() => crt);
+  }
+  // 删除白名单地址
+  async function deleteItem() {
+    let deleteRes = await DeleteWithdrawAddress("");
+    console.log("deleteRes>> ", deleteRes);
+    setVisible(() => !visible)
   }
   return (
     <>
@@ -152,7 +161,12 @@ const DrawalMoney = (props: any) => {
           },
         ]}
       />
-      <PopupComp visible={visible} crt={deleteItemCrt} cancel={() => setVisible(() => !visible)} />
+      <PopupComp
+        visible={visible}
+        crt={deleteItemCrt}
+        ok={deleteItem}
+        cancel={() => setVisible(() => !visible)}
+      />
     </>
   );
 };
@@ -173,9 +187,16 @@ const PopupComp = memo(
       >
         <ul>
           <li className="grid h-[1.24rem] bg-[#fff] text-[.24rem] text-[#666]  place-items-center border-b-[1px] border-b-[#dbdbdb]">
-            删除{props?.crt?.title ?? "--"}白名单地址:【{props?.crt?.addr ?? "--"}】
+            删除{props?.crt?.title ?? "--"}白名单地址:【
+            {props?.crt?.addr ?? "--"}】
           </li>
-          <li className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center">
+          <li
+            onClick={(e) => {
+              e.stopPropagation();
+              props.ok?.();
+            }}
+            className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center"
+          >
             删除
           </li>
           <li

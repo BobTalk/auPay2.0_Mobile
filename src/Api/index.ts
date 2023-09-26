@@ -273,5 +273,12 @@ export const GetUSDTTickers = () => {
     url: `/operate/operation/getUSDTTickers`
   })
 }
+// 文件上传
+export const FileUpload=(file:any)=>{
+  return _http.postReq({
+    url: '/operate/operation/upload',
+    data:{file}
+  })
+}
 
 

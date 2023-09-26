@@ -22,7 +22,7 @@ import ResetPwd from '@/Pages/My/EditorInfo/reset-pwd'
 import WhiteList from '@/Pages/My/WhiteList'
 import OpenOrCloseWhiteList from '@/Pages/My/WhiteList/open-close'
 import AppManager from '@/Pages/My/APPManager'
-import BussionRecords from '@/Pages/My/Transaction'
+// import BussionRecords from '@/Pages/My/Transaction'
 
 // import { Navigate } from 'react-router-dom'
 
@@ -57,8 +57,8 @@ const RouteList = [
   { label: '开启/关闭白明白', isAuth: true, path: 'my/white-list/:flag', element: <OpenOrCloseWhiteList /> },
   { label: '重置密码', isAuth: true, path: 'resetpwd', element: <ResetPwd /> },
   { label: '应用管理', isAuth: true, path: 'my/app-manage', element: <AppManager /> },
-  { label: '交易记录', isAuth: true, path: 'my/records', element: <BussionRecords /> },
-  { label: '交易记录', isAuth: true, path: 'my/records', element: <BussionRecords /> },
+
+  { label: '交易记录', isAuth: true, path: 'my/records', element: <AssetsDetailRecord /> },
   { label: '交易记录详情', isAuth: true, path: 'my/records/records-detail', element: <AssetsDetailRecordInfo /> },
 ]
 

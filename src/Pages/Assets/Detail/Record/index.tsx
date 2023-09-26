@@ -1,9 +1,15 @@
 import PublicHead from "@/Components/PublicHead";
 import DepositImg from "@/Assets/images/assets/deposit.png";
 import DrawImg from "@/Assets/images/assets/draw.png";
-import { Picker, DatePicker, InfiniteScroll, DotLoading } from "antd-mobile";
+import {
+  Picker,
+  DatePicker,
+  InfiniteScroll,
+  DotLoading,
+  NavBar,
+} from "antd-mobile";
 import styleScope from "./index.module.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { currencyFil } from "@/Libs/filters";
 import { currencyData } from "@/Libs/publicData";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,9 +29,11 @@ const Record = () => {
       borderBottom: "1px solid #C5CAD0",
     },
   });
-  useLocation();
   let location = useLocation();
-  console.log(location);
+  let JNavBar = useRef<any>();
+  let JHeader = useRef<any>();
+  let [headerAndNavH, setHeaderAndNavH] = useState<number>();
+  let [isMyBussionReecord] = useState(() => location.pathname == "/my/records");
   let navigate = useNavigate();
   let [conditions, setConditions] = useState<any>({
     currencyChain: undefined,
@@ -43,12 +51,14 @@ const Record = () => {
   let [dateVisible, setDateVisible] = useState(false);
   let [endDateVisible, setEndDateVisible] = useState(false);
   let [currencyVisible, setCurrencyVisible] = useState(false);
+  let [bussionVisible, setBussionVisible] = useState(false);
   // 交易记录分页
   let [recordPagination, setRecordPagination] = useState({
     pageNo: 1,
     pageSize: 10,
   });
   let [hasLoadMore, setHasLoadMore] = useState(false);
+  let [bussionFilter, setBussionFilter] = useState();
   // 资产数据
   let [capital, setCapital] = useState<any>([]);
   const [filterData, setFilterData] = useState({ date: "", currency: "" });
@@ -59,22 +69,22 @@ const Record = () => {
     setConditions((val: any) => ({ ...val, beginTime: t }));
   };
   const endDateConfirm = (v: any) => {
-   
     let t = timeFormate(v, "YYYY-MM-DD HH:mm:ss");
-    let cpTime = cloneDeep({...conditions,endTime: t});
-    
+    let cpTime = cloneDeep({ ...conditions, endTime: t });
+
     setFilterData({ ...filterData, date: t });
     setConditions((val: any) => ({ ...val, endTime: t }));
     setCopyConditions(cpTime);
-    getTradeRecord({
-      ...recordPagination,
-      conditions: {
-        ...conditions,
-        endTime: t,
-      },
-    }).then((res) => {
-      interfaceInfoFormat(res);
-    });
+    // getTradeRecord({
+    //   ...recordPagination,
+    //   conditions: {
+    //     ...conditions,
+    //     tradeType: bussionFilter,
+    //     endTime: t,
+    //   },
+    // }).then((res) => {
+    //   interfaceInfoFormat(res);
+    // });
   };
   const currencyConfirm = (v: any) => {
     setFilterData({ ...filterData, currency: currencyFil(v[0]) });
@@ -84,27 +94,41 @@ const Record = () => {
       currencyChain: valSplit[1] ?? undefined,
       currencyId: valSplit[0] ?? undefined,
     }));
-    getTradeRecord({
-      ...recordPagination,
-      conditions: {
-        ...conditions,
-        currencyChain: valSplit[1] ? +valSplit[1] : undefined,
-        currencyId: +valSplit[0] ?? undefined,
-      },
-    }).then((res) => {
-      interfaceInfoFormat(res);
-    });
+    // getTradeRecord({
+    //   ...recordPagination,
+    //   conditions: {
+    //     ...conditions,
+    //     tradeType: bussionFilter,
+    //     currencyChain: valSplit[1] ? +valSplit[1] : undefined,
+    //     currencyId: +valSplit[0] ?? undefined,
+    //   },
+    // }).then((res) => {
+    //   interfaceInfoFormat(res);
+    // });
   };
   const filter = (e: any, k: String) => {
     e.stopPropagation();
     if (k === "date") return setDateVisible(true);
     if (k === "currency") return setCurrencyVisible(true);
+    if (k === "bussion") return setBussionVisible(true);
   };
   const close = (k: any, event: any) => {
-    let filterDataT: any = JSON.parse(JSON.stringify(filterData));
-    filterDataT[k] = "";
-    setFilterData(filterDataT);
     event.stopPropagation();
+    if (k === "bussion") {
+      setBussionFilter(undefined);
+      return;
+    }
+    if (k === "date") {
+      setConditions((val: Object) => ({
+        ...val,
+        beginTime: undefined,
+        endTime: undefined,
+      }));
+      return;
+    }
+    let filterDataT: any = JSON.parse(JSON.stringify(filterData));
+    filterDataT[k] = undefined;
+    setFilterData(filterDataT);
     event.nativeEvent.stopImmediatePropagation();
   };
   const getInfo = () => {
@@ -134,17 +158,37 @@ const Record = () => {
     setHasLoadMore(() => pageSize * pageNo < total);
   }
   useEffect(() => {
+    let headH = JHeader.current?.getBoundingClientRect()?.height ?? 0;
+    let navH = JNavBar.current?.getBoundingClientRect()?.height ?? 0;
+    setHeaderAndNavH(() => headH + navH);
+  }, []);
+  useLayoutEffect(() => {
     getTradeRecord({
       ...recordPagination,
-      conditions,
+      conditions: {
+        ...conditions,
+        tradeType: bussionFilter,
+      },
     }).then((res) => {
       interfaceInfoFormat(res);
     });
-  }, [recordPagination]);
+  }, [
+    recordPagination,
+    bussionFilter,
+    conditions.currencyChain,
+    conditions.currencyId,
+    conditions.endTime,
+  ]);
+  function bussionConfirm(val: any) {
+    setBussionFilter(val[0]);
+  }
+  function timeElShow() {
+    return conditions.beginTime && conditions.endTime;
+  }
   return (
     <div className={styleScope["assets_record"]}>
-      <PublicHead {...headData} />
-      <ul className="public_filter">
+      <PublicHead ref={JHeader} {...headData} />
+      <ul ref={JNavBar} className="public_filter">
         <li onClick={(e) => filter(e, "currency")} className="public_filter_i">
           <p>{filterData.currency ? filterData.currency : "货币类型"}</p>
           {filterData.currency ? (
@@ -156,15 +200,33 @@ const Record = () => {
             <i className="iconfont icon-xiangyou1" />
           )}
         </li>
+        {isMyBussionReecord ? (
+          <li onClick={(e) => filter(e, "bussion")} className="public_filter_i">
+            <p>
+              {bussionFilter == 1
+                ? "充值"
+                : (bussionFilter == 2 ? "提币" : null) ?? "交易类型"}
+            </p>
+            {bussionFilter ? (
+              <i
+                onClick={(event) => close("bussion", event)}
+                className="iconfont icon-guanbi"
+              />
+            ) : (
+              <i className="iconfont icon-xiangyou1" />
+            )}
+          </li>
+        ) : null}
+
         <li onClick={(e) => filter(e, "date")} className="public_filter_i">
           <p>
-            {conditions.beginTime && conditions.endTime
+            {timeElShow()
               ? timeFormate(conditions.beginTime, "YYYY/MM/DD") +
                 " -- " +
                 timeFormate(conditions.endTime, "YYYY/MM/DD")
               : "时间"}
           </p>
-          {filterData.date ? (
+          {timeElShow() ? (
             <i
               onClick={(event) => close("date", event)}
               className="iconfont icon-guanbi"
@@ -182,6 +244,19 @@ const Record = () => {
         }}
         onConfirm={currencyConfirm}
       />
+      <Picker
+        columns={[
+          [
+            { label: "充值", value: 1 },
+            { label: "提取", value: 2 },
+          ],
+        ]}
+        visible={bussionVisible}
+        onClose={() => {
+          setBussionVisible(false);
+        }}
+        onConfirm={bussionConfirm}
+      />
       {/* 开始时间 */}
       <DatePicker
         title="开始时间"
@@ -192,8 +267,11 @@ const Record = () => {
           setDateVisible(false);
         }}
         onCancel={() => {
-          console.log('copyConditions',copyConditions)
-          setConditions(copyConditions)
+          console.log("copyConditions", copyConditions);
+          setConditions((val: Object) => ({
+            ...val,
+            beginTime: copyConditions.beginTime,
+          }));
         }}
         precision="second"
         onConfirm={dateConfirm}
@@ -209,12 +287,21 @@ const Record = () => {
           setEndDateVisible(false);
         }}
         onCancel={() => {
-          setConditions(copyConditions);
+          setConditions((val: Object) => ({
+            ...val,
+            beginTime: copyConditions.beginTime,
+            endTime: copyConditions.endTime,
+          }));
         }}
         precision="second"
         onConfirm={endDateConfirm}
       />
-      <ul className="assets_detail_record">
+      <ul
+        style={{
+          height: `calc(100vh - ${headerAndNavH}px)`,
+        }}
+        className="assets_detail_record overflow-y-auto"
+      >
         {capital?.map((item: any) => (
           <li onClick={getInfo}>
             <div className="assets_detail_record_left">
