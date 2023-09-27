@@ -2,7 +2,10 @@ import { Input } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
-import { forwardRef, useRef, useState } from "react";
+import { forwardRef, memo, useRef, useState } from "react";
+import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
+import { Outlet } from "react-router-dom";
+
 type propsVolit = {
   top?: any;
   prefix?: any;
@@ -26,14 +29,16 @@ type propsVolit = {
   minLength?: number | undefined;
   name?: string | undefined;
   rules?: Array<object>;
-  [key:string]:any
+  [key: string]: any;
+  type: string;
 };
-const PublicInput = (props: propsVolit, ref:any):any => {
+const PublicInput = (props: propsVolit, ref: any): any => {
   const [isClear, setIsClear] = useState(false);
+  const [visible, setVisible] = useState(false);
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
     setIsClear(() => !!val);
-    props.input?.(val);
+    props.onChange ? props.onChange?.(val, val) : props.input?.(val, val);
   }, 1000);
   const selectChange = (e: any) => {
     e.stopPropagation();
@@ -70,19 +75,44 @@ const PublicInput = (props: propsVolit, ref:any):any => {
       >
         {props.prefix}
         {!props.isSelect ? (
-          <Input
-            onFocus={inputFocus}
-            onBlur={inputBlur}
-            ref={inputRef}
-            className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
-            style={props.inputStyle}
-            placeholder={props.placeholder}
-            defaultValue={props['value']}
-            maxLength={props.maxLength}
-            minLength={props.minLength}
-            onChange={valChange}
-            disabled={props.disabled}
-          />
+          props.type === "password" ? (
+            <div className={styleScope.password}>
+              <Input
+                className={mergeClassName(
+                  `${styleScope.input},${props.inputClassName}`
+                )}
+                style={props.inputStyle}
+                placeholder={props.placeholder}
+                maxLength={props.maxLength}
+                minLength={props.minLength}
+                defaultValue={props["value"]}
+                onChange={valChange}
+                disabled={props.disabled}
+                type={visible ? "text" : "password"}
+              />
+              <div className={styleScope.eye}>
+                {!visible ? (
+                  <EyeInvisibleOutline onClick={() => setVisible(true)} />
+                ) : (
+                  <EyeOutline onClick={() => setVisible(false)} />
+                )}
+              </div>
+            </div>
+          ) : (
+            <Input
+              onFocus={inputFocus}
+              onBlur={inputBlur}
+              ref={inputRef}
+              className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
+              style={props.inputStyle}
+              placeholder={props.placeholder}
+              defaultValue={props["value"]}
+              maxLength={props.maxLength}
+              minLength={props.minLength}
+              onChange={valChange}
+              disabled={props.disabled}
+            />
+          )
         ) : (
           <div className="flex-1 mr-[8px]" onClick={(e) => selectChange(e)}>
             {props.value ? (
@@ -121,6 +151,7 @@ const PublicInput = (props: propsVolit, ref:any):any => {
     </div>
   );
 };
+
 // PublicInput.defaultProps = {
 //   top: <Outlet />,
 //   prefix: <Outlet />,

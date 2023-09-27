@@ -74,6 +74,13 @@ function setSession(name: string, value: any) {
 function removeSession(name: string) {
   return SessionStorage.removeItem(name)
 }
+/**
+ * 
+ * @returns 移除全部session
+ */
+function clearSession(){
+  return SessionStorage.clear()
+}
 
 /**
  * @summary 千分符参数
@@ -152,5 +159,6 @@ export {
   removeSession,
   encryptByDES,
   timeFormate,
-  formatUnit
+  formatUnit,
+  clearSession
 }

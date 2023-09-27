@@ -52,7 +52,16 @@ instance.interceptors.response.use(
       })
       removeSession('token')
       window.history.forward()
-      return
+      return {
+        status: errorCode,
+        data: {}
+      }
+    }
+    if (errorCode === 1001) {
+      return {
+        status: errorCode,
+        data: { message: response.data.message }
+      }
     }
     return response;
   },

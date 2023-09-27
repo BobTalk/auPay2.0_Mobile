@@ -1,9 +1,19 @@
 import { dataType } from "@/utils/base";
 import { Form } from "antd-mobile";
+import { forwardRef } from "react";
 import styled from "styled-components";
 
-const PublicForm = (props: any) => {
-  console.log(props);
+const PublicForm = (props: any, ref: any) => {
+  console.log(props?.children)
+  const defaultProps = {
+    disabled: false,
+    initialValues: {},
+    footer: <></>,
+    layout: "horizontal", // 'vertical' | 'horizontal'
+    mode: "default", // 'default' | 'card'
+    onFinish: () => {},
+  };
+  props = Object.assign(defaultProps, props);
   function validataCb(obj: Object): void {
     props.finish(obj);
   }
@@ -22,6 +32,7 @@ const PublicForm = (props: any) => {
   return (
     <Box>
       <Form
+        ref={ref}
         style={props.style}
         disabled={props.disabled}
         initialValues={props.initialValues}
@@ -62,12 +73,12 @@ const PublicForm = (props: any) => {
     </Box>
   );
 };
-PublicForm.defaultProps = {
-  disabled: false,
-  initialValues: {},
-  footer: <></>,
-  layout: "horizontal", // 'vertical' | 'horizontal'
-  mode: "default", // 'default' | 'card'
-  onFinish: () => {},
-};
-export default PublicForm;
+// PublicForm.defaultProps = {
+//   disabled: false,
+//   initialValues: {},
+//   footer: <></>,
+//   layout: "horizontal", // 'vertical' | 'horizontal'
+//   mode: "default", // 'default' | 'card'
+//   onFinish: () => {},
+// };
+export default forwardRef(PublicForm);

@@ -39,14 +39,14 @@ class BaseHttp {
           });
         } else {
           resolve({
-            status: false,
-            message: res.data?.errorMessage || (url + '请求失败'),
+            status: res.status,
+            message: res.data?.message || (url + '请求失败'),
           });
         }
       }).catch((err: any) => {
-        const message = err?.data?.errorMessage || err?.message || (url + '请求失败');
+        const message = err?.data?.message || (url + '请求失败');
         // eslint-disable-next-line
-        reject({ status: false, message, data: null });
+        reject({ status: err.status, message, data: null });
       });
     });
   }

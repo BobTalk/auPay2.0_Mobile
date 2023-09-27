@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Swiper } from "antd-mobile";
 import PublicFoo from "@/Components/PublicFoo";
 import { useEffect, useState } from "react";
-import { mergeClassName, thousands } from "@/utils/base";
+import { mergeClassName, setSession, thousands } from "@/utils/base";
 import {
   GetAssetsInfo,
   GetUSDTTickers,
@@ -30,7 +30,7 @@ const Home = () => {
   async function initPageInfo() {
     let userInfo = await GetUserInfo();
     let notice = await ViewAnnouncement({ pageNo: 1, pageSize: 10 });
-
+    setSession('userInfo', userInfo)
     setNotice(notice);
     setUserInfo(userInfo);
   }

@@ -3,6 +3,7 @@ import PublicList from "@/Components/PublicList";
 import { useNavigate } from "react-router-dom";
 import { InfoSecurity } from "../../Enum";
 import { HeadConfig } from "@/Assets/config/head";
+import { getSession } from "@/utils/base";
 
 const SecurityInfo = () => {
   const HeadData = Object.assign(HeadConfig, {
@@ -11,6 +12,7 @@ const SecurityInfo = () => {
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
+  const userInfo = getSession("userInfo");
   let listInfo = [
     {
       id: "1",
@@ -58,9 +60,9 @@ const SecurityInfo = () => {
       id: "3",
       showArrow: true,
       title: "Google验证器",
-      flag: 1, // 0 设置 1 修改
+      flag: +userInfo["bindGoogleAuth"], // 0 设置 1 修改
       type: InfoSecurity["updateGoogleValidator"], //InfoSecurity["googleValidator"],
-      subTitle: "重置", // "绑定",
+      subTitle: userInfo["bindGoogleAuth"] ? "重置" : "绑定", // "绑定", 重置
       subTitleClassName: "text-[#666] mr-[.1rem]",
       path: "security-info",
       itemStyle: {
@@ -90,7 +92,6 @@ const SecurityInfo = () => {
       });
       return;
     }
-
     Navigator("/my/editorInfo", { state: crt });
   };
 

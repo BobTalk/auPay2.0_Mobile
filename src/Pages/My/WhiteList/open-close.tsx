@@ -19,9 +19,11 @@ const OpenOrCloseWhiteList = (props: any) => {
     },
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
+      style:{}
   });
+  let userInfo = getSession('userInfo')
   const [formInitVal, setFormInitVal] = useState({
-    email: "12838923834@qq.com",
+    email: userInfo.email,
   });
   function submitCb(val: any) {
     console.log(val);
@@ -30,7 +32,7 @@ const OpenOrCloseWhiteList = (props: any) => {
     <>
       <PublicHead {...HeadInfo} />
       {!!WhiteListEnum1[urlInof.crt.type] ? (
-        <p className="grid items-center px-[.3rem] h-[.7rem] text-[.24rem] text-[#222] bg-[#E9ECF2]">
+        <p className="grid items-center p-[.1rem_.3rem] min-h-[.7rem] text-[.24rem] text-[#222] bg-[#E9ECF2]">
           {WhiteListEnum1[urlInof.crt.type]}
         </p>
       ) : null}

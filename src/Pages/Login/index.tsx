@@ -2,13 +2,13 @@ import { useRef, useState, useEffect } from "react";
 import PublicHead from "@/Components/PublicHead";
 import Logo from "@/Assets/images/logo.png";
 import CloseImg from "@/Assets/images/close.png";
-import { Form, Input, Button } from "antd-mobile";
+import { Form, Input, Button, Toast } from "antd-mobile";
 import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetAccessKey, GetCode, LoginI } from "@/Api";
 import PublicToast from "@/Components/PublicToast";
-import {encryptByDES, setSession } from "@/utils/base";
+import { encryptByDES, setSession } from "@/utils/base";
 const Login = () => {
   let [timeDown, setTimeDown] = useState(60);
   let [formVal, setFormVal] = useState({
@@ -68,8 +68,14 @@ const Login = () => {
         });
       })
       .then((finallyRes) => {
-        setSession('token', finallyRes.value)
-        navigate('/home')
+        if (finallyRes.status === 1001) {
+          Toast.show({
+            content: finallyRes.message,
+          });
+          return;
+        }
+        setSession("token", finallyRes.value);
+        navigate("/home");
       });
   };
   const forget = () => {
