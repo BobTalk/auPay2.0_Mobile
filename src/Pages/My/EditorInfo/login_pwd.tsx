@@ -136,7 +136,7 @@ const LoginPwd = () => {
         inputClassName="text-[.3rem] text-[#222]"
       />
       <PublicInput
-        value={formInitVal.oldPwd}
+        value={formInitVal.confirmPwd}
         rules={[
           {
             required: true,

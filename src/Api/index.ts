@@ -291,7 +291,7 @@ export const VerifyAssetsPassword = ({ assetsPwd, operationId }: any) => {
     url: `${PublicPrefix}/verifyAssetsPassword?assetsPassword=${assetsPwd}&operationId=  ${operationId}`,
   })
 }
-export const VerifyGoogle = ({ googleCode, operationId }: any) => {
+export const VerifyGoogle = (googleCode: string, operationId: number) => {
   return _http.getReq({
     url: `${PublicPrefix}/verifyGoogle?googleCode=${googleCode}&operationId=${operationId}`,
   })
@@ -301,9 +301,9 @@ export const SendEmailCode = (operationId: number) => {
     url: `${PublicPrefix}/sendEmailCode?operationId=${operationId}`,
   })
 }
-export const VerifyEmail = (operationId: any) => {
+export const VerifyEmail = (emailCode: string, operationId: any) => {
   return _http.getReq({
-    url: `${PublicPrefix}/verifyEmail?emailCode=&operationId=${operationId}`,
+    url: `${PublicPrefix}/verifyEmail?emailCode=${emailCode}&operationId=${operationId}`,
   })
 }
 export const BindGoogleAuth = () => {

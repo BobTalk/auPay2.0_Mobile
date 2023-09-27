@@ -7,7 +7,12 @@ import PublicForm from "@/Components/PublicForm";
 import { useState } from "react";
 import { HeadConfig } from "@/Assets/config/head";
 import { getSession } from "@/utils/base";
-import { SendEmailCode } from "@/Api";
+import {
+  ResetAssetsPassword,
+  SendEmailCode,
+  VerifyEmail,
+  VerifyGoogle,
+} from "@/Api";
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
@@ -26,18 +31,35 @@ const ResetPwd = (props: any) => {
     emailCode: "",
     GoogleCode: "",
   });
-  function submitCb(val: any) {
-    console.log(val);
+  async function submitCb(obj: any) {
+    let { emailCode, GoogleCode } = obj.values;
+
+    let emailToken = await VerifyEmail(emailCode, 47);
+    let googleToken = await VerifyGoogle(GoogleCode, 47);
+    ResetAssetsPassword({
+      googleToken: googleToken.value,
+      emailToken: emailToken.value,
+    }).then((res) => {
+      if(res.status){
+        Toast.show({
+          content: res.message
+        })
+        setTimeout(()=>{
+          window.history.back()
+        }, 3000)
+      }else{
+        Toast.show({
+          content: '验证失败'
+        })
+      }
+    });
   }
-  function getEMailCode() {
-    console.log(formInitVal)
+  function getEMailCode(e: any) {
+    e.stopPropagation();
+    if(emailBtn)return
     setEmailBtn(true);
     SendEmailCode(47)
-      .then((res) => {
-        Toast.show({
-          content: res.message,
-        });
-      })
+      .then()
       .finally(() => {
         setTimeout(() => setEmailBtn(false), 3000);
       });
@@ -88,7 +110,11 @@ const ResetPwd = (props: any) => {
         <PublicInput
           key="emailCode"
           name="emailCode"
+          value={formInitVal.emailCode}
           placeholder="请输入邮箱验证码"
+          onChange={(value: string) =>
+            setFormInitVal((init) => ({ ...init, emailCode: value }))
+          }
           inputStyle={{
             "--text-align": "right",
           }}
@@ -103,15 +129,13 @@ const ResetPwd = (props: any) => {
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
-          <Button
+          <p
             onClick={getEMailCode}
-            disabled={emailBtn}
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
+            className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
             color="primary"
-            fill="none"
           >
             获取
-          </Button>
+          </p>
         </PublicInput>
         {urlParams.crt.type == InfoSecurity1["updateGoogleValidator"] ? (
           <>
@@ -150,7 +174,7 @@ const ResetPwd = (props: any) => {
               borderBottom: "1px solid #E6E6E6",
               borderRadius: 0,
             }}
-            input={(value: string) =>
+            onChange={(value: string) =>
               setFormInitVal((init) => ({ ...init, GoogleCode: value }))
             }
             inputClassName="text-[.3rem] text-[#222]"
