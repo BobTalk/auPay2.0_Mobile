@@ -1,6 +1,6 @@
 import { Input } from "antd-mobile";
 import styleScope from "./index.module.scss";
-import { mergeClassName } from "@/utils/base";
+import { dataType, mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
 import { forwardRef, memo, useRef, useState } from "react";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
@@ -38,7 +38,13 @@ const PublicInput = (props: propsVolit, ref: any): any => {
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
     setIsClear(() => !!val);
-    props.onChange ? props.onChange?.(val, val) : props.input?.(val, val);
+    console.log(val);
+    console.log(props);
+    if (dataType(props.onChange) === "function") {
+      props.onChange?.(val, val);
+    } else {
+      dataType(props.input) === "function" && props.input?.(val, val);
+    }
   }, 1000);
   const selectChange = (e: any) => {
     e.stopPropagation();

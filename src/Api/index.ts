@@ -185,7 +185,7 @@ export const GetAssetsInfo = () => {
 export const FindTradeRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: object|undefined;
+  conditions?: object | undefined;
 }) => {
   return _http.postReq(
     {
@@ -202,7 +202,7 @@ export const FindTradeRecordList = (obj: {
 export const FindRechargeRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: object|undefined;
+  conditions?: object | undefined;
 }) => {
   return _http.postReq(
     {
@@ -219,7 +219,7 @@ export const FindRechargeRecordList = (obj: {
 export const FindWithdrawRecordList = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?:object| undefined;
+  conditions?: object | undefined;
 }) => {
   return _http.postReq(
     {
@@ -237,7 +237,7 @@ export const FindWithdrawRecordList = (obj: {
 export const FindAssetsChangeRecord = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: object|undefined;
+  conditions?: object | undefined;
 }) => {
   return _http.postReq(
     {
@@ -254,7 +254,7 @@ export const FindAssetsChangeRecord = (obj: {
 export const ViewAnnouncement = (obj: {
   pageNo: number | undefined;
   pageSize: number | undefined;
-  conditions?: object|undefined;
+  conditions?: object | undefined;
 }) => {
   return _http.postReq(
     {
@@ -274,16 +274,41 @@ export const GetUSDTTickers = () => {
   })
 }
 // 文件上传
-export const FileUpload=(file:any)=>{
+export const FileUpload = (file: any) => {
   return _http.postReq({
     url: '/operate/operation/upload',
-    data:{file}
+    data: { file }
   })
 }
 // 交易记录详情
-export const TradeRecordDetail=(id:any)=>{
+export const TradeRecordDetail = (id: any) => {
   return _http.getReq({
     url: `${PublicPrefix}/checkTradeRecordDetail?id=${id}`,
+  })
+}
+export const VerifyAssetsPassword = ({ assetsPwd, operationId }: any) => {
+  return _http.getReq({
+    url: `${PublicPrefix}/verifyAssetsPassword?assetsPassword=${assetsPwd}&operationId=  ${operationId}`,
+  })
+}
+export const VerifyGoogle = ({ googleCode, operationId }: any) => {
+  return _http.getReq({
+    url: `${PublicPrefix}/verifyGoogle?googleCode=${googleCode}&operationId=${operationId}`,
+  })
+}
+export const SendEmailCode = (operationId: number) => {
+  return _http.getReq({
+    url: `${PublicPrefix}/sendEmailCode?operationId=${operationId}`,
+  })
+}
+export const VerifyEmail = (operationId: any) => {
+  return _http.getReq({
+    url: `${PublicPrefix}/verifyEmail?emailCode=&operationId=${operationId}`,
+  })
+}
+export const BindGoogleAuth = () => {
+  return _http.getReq({
+    url: `${PublicPrefix}/bindGoogleAuth`,
   })
 }
 

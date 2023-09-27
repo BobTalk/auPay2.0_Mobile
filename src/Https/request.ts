@@ -57,7 +57,7 @@ instance.interceptors.response.use(
         data: {}
       }
     }
-    if (errorCode === 1001) {
+    if ([1001, 1013].includes(errorCode)) {
       return {
         status: errorCode,
         data: { message: response.data.message }

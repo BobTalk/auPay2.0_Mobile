@@ -61,7 +61,9 @@ const SecurityInfo = () => {
       showArrow: true,
       title: "Google验证器",
       flag: +userInfo["bindGoogleAuth"], // 0 设置 1 修改
-      type: InfoSecurity["updateGoogleValidator"], //InfoSecurity["googleValidator"],
+      type: userInfo["bindGoogleAuth"]
+        ? InfoSecurity["updateGoogleValidator"]
+        : InfoSecurity["googleValidator"],
       subTitle: userInfo["bindGoogleAuth"] ? "重置" : "绑定", // "绑定", 重置
       subTitleClassName: "text-[#666] mr-[.1rem]",
       path: "security-info",

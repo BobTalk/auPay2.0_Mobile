@@ -35,18 +35,20 @@ class BaseHttp {
           resolve({
             ...(dataType(res?.data?.data) === 'object' ? res?.data?.data : { value: res?.data?.data }),
             status: true,
-            message: res?.data?.message ?? "成功"
+            message: res?.data?.message ?? "成功",
+            code: 200,
           });
         } else {
           resolve({
-            status: res.status,
+            status: false,
             message: res.data?.message || (url + '请求失败'),
+            code: res.status
           });
         }
       }).catch((err: any) => {
         const message = err?.data?.message || (url + '请求失败');
         // eslint-disable-next-line
-        reject({ status: err.status, message, data: null });
+        reject({ code: err.status, status: false, message, data: null });
       });
     });
   }

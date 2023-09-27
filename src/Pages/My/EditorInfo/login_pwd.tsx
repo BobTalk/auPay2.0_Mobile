@@ -8,22 +8,25 @@ import { useNavigate } from "react-router-dom";
 
 const LoginPwd = () => {
   const JFormRef = useRef<any>();
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   // 修改登陆密码
   function submitCb({ values }: any) {
     console.log(values, "submit");
     UpdatePassword({
       oldPassword: values.oldPwd,
-      newPassword: values.confirmPwd
+      newPassword: values.confirmPwd,
     })
       .then((result) => {
-        if(result.status){
+        if (result.status) {
           Toast.show({
-            content:result.message
-          })
+            content: result.message,
+          });
+
+          setTimeout(() => {
+            clearSession();
+            navigate("/login", { replace: true });
+          }, 3000);
         }
-        clearSession()
-        navigate('/login', {replace: true})
       })
       .catch((err) => {});
   }
@@ -50,7 +53,6 @@ const LoginPwd = () => {
           return Promise.resolve();
         }
       } else if (field === "confirmPwd") {
-        console.log(formInitVal);
         if (formInitVal.newPwd != val) {
           return Promise.reject(new Error(WarnMessage[field]));
         } else {
@@ -62,6 +64,7 @@ const LoginPwd = () => {
         }
       } else {
         setFormInitVal((formInitVal) => ({ ...formInitVal, oldPwd: val }));
+        return Promise.resolve();
       }
     }
     return Promise.resolve();

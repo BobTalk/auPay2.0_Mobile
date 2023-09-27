@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
   const Navigator = useNavigate();
-  console.log(props);
   let {
     crt: { flag: flagScope },
   } = props ?? {};
@@ -16,8 +15,8 @@ const MoneyPwd = (props: any, ref: any) => {
   useImperativeHandle(
     ref,
     () => ({
-      newPwd: "4444444",
-      confirmPwd: "444444",
+      newPwd: "",
+      confirmPwd: "",
     }),
     []
   );
@@ -94,8 +93,9 @@ const OldPwdValid = (props: any) => {
 
   function ResetPwd(e: any) {
     e.stopPropagation();
-    console.log('>>>>>',props)
-    props.navigator?.("/resetpwd", { state: {...props.crt, headTitle:'重置资金密码'} });
+    props.navigator?.("/resetpwd", {
+      state: { ...props.crt, headTitle: "重置资金密码" },
+    });
   }
 
   return (
