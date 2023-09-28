@@ -77,7 +77,7 @@ const PublicList = (props: Omit<publicListType, "itemInfo">) => {
       )}
       style={props.style}
     >
-      {props.list.map((item: any) => (
+      {props.list.map((item: itemType) => (
         <ListItem
           onClick={(crt: listItemType) => listItemCb(crt)}
           key={item.id}

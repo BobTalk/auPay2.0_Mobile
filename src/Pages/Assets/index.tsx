@@ -39,7 +39,7 @@ const Assets = () => {
           </div>
           <i className={styleScope["assets_banner_line"]}></i>
           <span className={styleScope["assets_banner_record"]}>
-            最近交易：2020-09-17 09:29:08 充币13USDT-TRC20
+            最近交易：2020-09-17  充币 13USDT-TRC20
           </span>
         </div>
         <PropertyComp onClick={(crt: any) => toDetail(crt)} />

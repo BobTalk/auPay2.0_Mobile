@@ -14,10 +14,11 @@ const WhiteList = (props: any) => {
   let [headerH, setHeaderH] = useState<number>(0);
   let { state } = useLocation();
   const [isOpen] = useState<boolean>(getSession("isOpenWhiteList"));
+  console.log(isOpen,'isOpen')
   let headInfo = Object.assign(HeadConfig, {
     title: props.headTitle ?? state.headTitle,
     back: "goBack",
-    className: "text-[#333]",
+    className: "text-[#333] p-[.32rem_.3rem]",
   });
   // 获取白名单地址
   async function getPageInfo() {
@@ -31,7 +32,7 @@ const WhiteList = (props: any) => {
     getPageInfo();
   }, []);
   function switchChangeCb(val: boolean) {
-    setSession("isOpenWhiteList", val);
+    // setSession("isOpenWhiteList", val);
     Navigate(`${val}`, {
       state: {
         headTitle: (val ? "开启" : "关闭") + "白名单",

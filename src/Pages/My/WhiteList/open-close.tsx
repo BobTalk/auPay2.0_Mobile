@@ -13,19 +13,29 @@ const OpenOrCloseWhiteList = (props: any) => {
   let WhiteListEnum1 = JSON.parse(JSON.stringify(WhiteListEnum));
   const HeadInfo = Object.assign(HeadConfig, {
     title: urlInof?.headTitle ?? props.headTitle,
-    back: () => {
-      setSession("isOpenWhiteList", Boolean(!getSession("isOpenWhiteList")));
-      window.history.back();
-    },
+    back: "goBack",
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
-      style:{}
+    style: {},
   });
-  let userInfo = getSession('userInfo')
-  const [formInitVal, setFormInitVal] = useState({
-    email: userInfo.email,
+  let userInfo = getSession("userInfo");
+  const [formInitVal, setFormInitVal] = useState(() => {
+    let obj: any = {
+      email: userInfo.email,
+      assetsPwd: "",
+      emailCode: "",
+      googleCode: "",
+    };
+    if (urlParams.flag == "add") {
+      obj = Object.assign(obj, {
+        notes: "",
+        addr: "",
+      });
+    }
+    return obj;
   });
   function submitCb(val: any) {
+    setSession("isOpenWhiteList", Boolean(!getSession("isOpenWhiteList")));
     console.log(val);
   }
   return (
@@ -57,6 +67,8 @@ const OpenOrCloseWhiteList = (props: any) => {
           <>
             <PublicInput
               placeholder="备注信息"
+              name="notes"
+              value={formInitVal.notes}
               inputStyle={{
                 "--text-align": "right",
               }}
@@ -72,6 +84,7 @@ const OpenOrCloseWhiteList = (props: any) => {
             />
             <PublicInput
               placeholder="请输入地址"
+              name="addr"
               inputStyle={{
                 "--text-align": "right",
               }}
@@ -89,6 +102,7 @@ const OpenOrCloseWhiteList = (props: any) => {
         ) : null}
         <PublicInput
           placeholder="请输入资金密码"
+          name="assetsPwd"
           inputStyle={{
             "--text-align": "right",
           }}
@@ -135,13 +149,12 @@ const OpenOrCloseWhiteList = (props: any) => {
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
-          <Button
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
+          <p
+            className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
             color="primary"
-            fill="none"
           >
             获取
-          </Button>
+          </p>
         </PublicInput>
         <PublicInput
           placeholder="请输入Google验证码"
@@ -159,15 +172,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           prefix={
             <span className="text-[.3rem] text-[#222]">Google验证码</span>
           }
-        >
-          <Button
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF]"
-            color="primary"
-            fill="none"
-          >
-            发送
-          </Button>
-        </PublicInput>
+        ></PublicInput>
       </PublicForm>
     </>
   );

@@ -53,8 +53,9 @@ instance.interceptors.response.use(
       removeSession('token')
       window.history.forward()
       return {
-        status: errorCode,
-        data: {}
+        status: false,
+        data: {message: response.data.message},
+        code:errorCode
       }
     }
     if ([1001, 1013, 1017,1007].includes(errorCode)) {

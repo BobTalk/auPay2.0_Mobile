@@ -4,7 +4,6 @@ import { dataType, mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
 import { forwardRef, memo, useRef, useState } from "react";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
-import { Outlet } from "react-router-dom";
 
 type propsVolit = {
   top?: any;
@@ -32,14 +31,12 @@ type propsVolit = {
   [key: string]: any;
   type: string;
 };
-const PublicInput = (props: propsVolit, ref: any): any => {
+const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   const [isClear, setIsClear] = useState(false);
   const [visible, setVisible] = useState(false);
   const inputRef: any = useRef();
   const valChange = debounce((val) => {
     setIsClear(() => !!val);
-    console.log(val);
-    console.log(props);
     if (dataType(props.onChange) === "function") {
       props.onChange?.(val, val);
     } else {
@@ -157,7 +154,7 @@ const PublicInput = (props: propsVolit, ref: any): any => {
       {props.bottom}
     </div>
   );
-};
+});
 
 // PublicInput.defaultProps = {
 //   top: <Outlet />,
@@ -185,4 +182,6 @@ const PublicInput = (props: propsVolit, ref: any): any => {
 //   name: undefined,
 //   rules: [],
 // };
-export default forwardRef(PublicInput);
+export default memo(PublicInput,(prv,next)=>{
+  return prv.value == next.value
+});
