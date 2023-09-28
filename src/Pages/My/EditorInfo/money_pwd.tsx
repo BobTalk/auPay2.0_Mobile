@@ -1,7 +1,7 @@
 import PublicForm from "@/Components/PublicForm";
 import PublicInput from "@/Components/PublicInput";
-import { Button } from "antd-mobile";
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { Button, Toast } from "antd-mobile";
+import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
@@ -155,8 +155,17 @@ const MoneyPwd = (props: any, ref: any) => {
   );
 };
 const OldPwdValid = (props: any) => {
+  let payPwd = useRef<any>();
   function nextStep(e: any): void {
     e.stopPropagation();
+    console.log(payPwd.current.nativeElement.value);
+    if(!payPwd.current.nativeElement.value){
+      // 应该校验原始密码是否正确
+      Toast.show({
+        content:'原始密码不能为空'
+      })
+      return
+    }
     props.onClick?.();
   }
 
@@ -170,6 +179,7 @@ const OldPwdValid = (props: any) => {
   return (
     <>
       <PublicInput
+        ref={payPwd}
         placeholder="原始密码"
         maxLength={6}
         type="password"
@@ -185,7 +195,6 @@ const OldPwdValid = (props: any) => {
           fontSize: ".34rem",
           color: "#E6E6E6",
         }}
-        clearable={true}
         inputClassName="text-[.3rem] text-[#222]"
       />
       <div className="px-[.3rem]">

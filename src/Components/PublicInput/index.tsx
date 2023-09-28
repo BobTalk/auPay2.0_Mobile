@@ -84,6 +84,7 @@ const PublicInput = (props: propsVolit, ref: any): any => {
           props.type === "password" ? (
             <div className={styleScope.password}>
               <Input
+                ref={ref}
                 className={mergeClassName(
                   `${styleScope.input},${props.inputClassName}`
                 )}

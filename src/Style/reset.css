@@ -43,3 +43,6 @@ input {
 }
 /*在firefox下移除input[number]的上下箭头*/
 input[type = 'number'] { -moz-appearance: textfield; }
+input:-internal-autofill-selected{
+  background-color: transparent !important;
+}

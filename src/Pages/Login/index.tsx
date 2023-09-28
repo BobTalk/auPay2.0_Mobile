@@ -68,7 +68,8 @@ const Login = () => {
         });
       })
       .then((finallyRes) => {
-        if (finallyRes.status === 1001) {
+        console.log(finallyRes)
+        if (!finallyRes.status) {
           Toast.show({
             content: finallyRes.message,
           });
