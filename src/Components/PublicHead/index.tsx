@@ -38,8 +38,8 @@ const PublicHead = (props: propsTs, ref: any) => {
       style={props.style}
       className={mergeClassName(
         props.textColor === "white"
-          ? "public_head public_head_white items-center"
-          : "public_head items-center",
+          ? "_public_head_white items-center"
+          : "_public_head items-center",
         `${props.className}`
       )}
     >

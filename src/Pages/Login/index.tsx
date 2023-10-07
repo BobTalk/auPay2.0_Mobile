@@ -11,19 +11,23 @@ import PublicToast from "@/Components/PublicToast";
 import { encryptByDES, setSession } from "@/utils/base";
 const Login = () => {
   let [timeDown, setTimeDown] = useState(60);
+  let [contentH, setContentH] = useState();
   let [formVal, setFormVal] = useState({
     username: "",
     password: "",
     code: "",
   });
+  let JHeader: any = useRef();
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
+    style: {},
+    className: "p-[.3rem]",
   });
   const navigate = useNavigate();
   const formRef: any = useRef(null);
   const closePassword = () => {
-    formRef && formRef.current && formRef.current.setFieldValue("password", "");
+    formRef?.current?.setFieldValue("password", "");
   };
   // 倒计时
   const Timeout = (delay: number) => {
@@ -68,7 +72,7 @@ const Login = () => {
         });
       })
       .then((finallyRes) => {
-        console.log(finallyRes)
+        console.log(finallyRes);
         if (!finallyRes.status) {
           Toast.show({
             content: finallyRes.message,
@@ -82,59 +86,69 @@ const Login = () => {
   const forget = () => {
     navigate("/reset/user");
   };
+  useEffect(() => {
+    let Hh = JHeader.current?.getBoundingClientRect()?.height ?? 0;
+    setContentH(Hh);
+  }, []);
   return (
-    <div className="login_wrap px-[.3rem]">
-      <PublicHead {...headData} />
-      <img
-        className="w-[3rem] h-[.95rem] mt-[.7rem] mb-[.9rem] m-[0_auto]"
-        src={Logo}
-        alt=""
-      />
-      <Form
-        className="login_form mx-[.1rem]"
-        layout="horizontal"
-        initialValues={formVal}
-        onFinish={onFinish}
-        ref={formRef}
+    <div className="_login_wrap">
+      <PublicHead ref={JHeader} {...headData} />
+      <div
+        style={{
+          maxHeight: `calc(100vh - ${contentH}px)`,
+        }}
+        className="overflow-y-auto"
       >
-        <Form.Item>
-          <p className="login_form_label">用户名</p>
-          <Form.Item
-            noStyle
-            name="username"
-            rules={[{ required: true, message: "用户名不能为空" }]}
-          >
-            <Input
-              className="login_form_input"
-              onChange={(val) => setFormVal({ ...formVal, username: val })}
-              placeholder="请输入姓名"
+        <img
+          className="w-[3rem] h-[.95rem] mt-[.7rem] mb-[.9rem] m-[0_auto]"
+          src={Logo}
+          alt=""
+        />
+        <Form
+          className="login_form p-[0_.4rem]"
+          layout="horizontal"
+          initialValues={formVal}
+          onFinish={onFinish}
+          ref={formRef}
+        >
+          <Form.Item>
+            <p className="login_form_label">用户名</p>
+            <Form.Item
+              noStyle
+              name="username"
+              rules={[{ required: true, message: "用户名不能为空" }]}
+            >
+              <Input
+                className="login_form_input"
+                onChange={(val) => setFormVal({ ...formVal, username: val })}
+                placeholder="请输入姓名"
+              />
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item>
+            <p className="login_form_label">登陆密码</p>
+            <Form.Item
+              noStyle
+              name="password"
+              rules={[{ required: true, message: "登陆密码不能为空" }]}
+            >
+              <Input
+                type="password"
+                onChange={(val) => setFormVal({ ...formVal, password: val })}
+                className="login_form_input"
+                placeholder="请输入登陆密码"
+              />
+            </Form.Item>
+            <img
+              onClick={closePassword}
+              className="login_form_close"
+              src={CloseImg}
+              alt=""
             />
           </Form.Item>
-        </Form.Item>
 
-        <Form.Item>
-          <p className="login_form_label">登陆密码</p>
-          <Form.Item
-            noStyle
-            name="password"
-            rules={[{ required: true, message: "登陆密码不能为空" }]}
-          >
-            <Input
-              type="password"
-              onChange={(val) => setFormVal({ ...formVal, password: val })}
-              className="login_form_input"
-              placeholder="请输入登陆密码"
-            />
-          </Form.Item>
-          <img
-            onClick={closePassword}
-            className="login_form_close"
-            src={CloseImg}
-            alt=""
-          />
-        </Form.Item>
-
-        {/* <Form.Item>
+          {/* <Form.Item>
           <p className="login_form_label">邮箱验证码</p>
           <Form.Item
             noStyle
@@ -156,24 +170,25 @@ const Login = () => {
           )}
         </Form.Item> */}
 
-        <div onClick={forget} className="login_form_forget">
-          <p>忘记密码</p>
-        </div>
+          <div onClick={forget} className="login_form_forget">
+            <p>忘记密码</p>
+          </div>
 
-        <Form.Item>
-          <Button
-            className="login_form_btn before:bg-transparent"
-            block
-            type="submit"
-            color="primary"
-          >
-            登录
-          </Button>
-        </Form.Item>
-      </Form>
-      <p className="foo_tips">
-        还没账号, <Link to="/register">去注册</Link>
-      </p>
+          <Form.Item>
+            <Button
+              className="login_form_btn"
+              block
+              type="submit"
+              color="primary"
+            >
+              登录
+            </Button>
+          </Form.Item>
+        </Form>
+        <p className="foo_tips">
+          还没账号, <Link to="/register">去注册</Link>
+        </p>
+      </div>
     </div>
   );
 };
