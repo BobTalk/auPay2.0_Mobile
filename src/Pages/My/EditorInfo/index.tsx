@@ -64,7 +64,6 @@ const EditorInfo = (props: any) => {
   let headInfo = Object.assign(HeadConfig, {
     title: HeadTitle1[state["type"]] ?? "编辑昵称",
     back: "goBack",
-    style: {},
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });

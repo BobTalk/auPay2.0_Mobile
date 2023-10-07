@@ -21,7 +21,7 @@ const Info = () => {
     Object.assign(HeadConfig, {
       title: `${currencyFlag}${moduleFlag == 1 ? "充币" : "提币"}详情`,
       back: "goBack",
-      className: "text-[#fff]",
+      className: "text-[#fff] py-[.32rem] h-[ayto]",
     })
   );
   // icon图标

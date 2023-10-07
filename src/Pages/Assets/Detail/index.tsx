@@ -30,12 +30,12 @@ const Detail = () => {
   let headData = Object.assign(HeadConfig, {
     title: location.state.title,
     back: "goBack",
-    className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden",
-    style: {
-      padding: ".32rem 0",
-      height: "auto",
-      borderBottom: 0,
-    },
+    className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden py-[.32rem] h-[ayto] border-b-[0]",
+    // style: {
+    //   padding: ".32rem 0",
+    //   height: "auto",
+    //   borderBottom: 0,
+    // },
   });
   let nav = [
     { label: "全部", value: "all" },

@@ -16,7 +16,6 @@ const OpenOrCloseWhiteList = (props: any) => {
     back: "goBack",
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
-    style: {},
   });
   let userInfo = getSession("userInfo");
   const [formInitVal, setFormInitVal] = useState(() => {

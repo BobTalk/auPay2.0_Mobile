@@ -21,8 +21,6 @@ const Login = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
-    style: {},
-    className: "p-[.3rem]",
   });
   const navigate = useNavigate();
   const formRef: any = useRef(null);
@@ -106,10 +104,19 @@ const Login = () => {
         />
         <Form
           className="login_form p-[0_.4rem]"
-          layout="horizontal"
           initialValues={formVal}
           onFinish={onFinish}
           ref={formRef}
+          footer={
+            <Button
+              className="login_form_btn"
+              block
+              type="submit"
+              color="primary"
+            >
+              登录
+            </Button>
+          }
         >
           <Form.Item>
             <p className="login_form_label">用户名</p>
@@ -173,17 +180,6 @@ const Login = () => {
           <div onClick={forget} className="login_form_forget">
             <p>忘记密码</p>
           </div>
-
-          <Form.Item>
-            <Button
-              className="login_form_btn"
-              block
-              type="submit"
-              color="primary"
-            >
-              登录
-            </Button>
-          </Form.Item>
         </Form>
         <p className="foo_tips">
           还没账号, <Link to="/register">去注册</Link>

@@ -9,7 +9,6 @@ const Assets = () => {
   let headData = Object.assign(HeadConfig, {
     title: "资产",
     back: "",
-    className: "text-[#333]",
   });
   const navigate = useNavigate();
   const toDetail = (crt: any) => {
