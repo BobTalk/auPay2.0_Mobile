@@ -41,7 +41,7 @@ const Login = () => {
   };
   const getEmailCode = (e: any) => {
     stop(e, () => {
-      if(codeMessage !== '获取验证码') return
+      if (codeMessage !== "获取验证码") return;
       if (!formVal.username) {
         PublicToast({ message: "请输入用户名！" });
         return;
@@ -150,7 +150,7 @@ const Login = () => {
             />
           </Form.Item>
 
-          <Form.Item>
+          {/* <Form.Item>
             <p className="login_form_label">邮箱验证码</p>
             <Form.Item
               noStyle
@@ -164,10 +164,10 @@ const Login = () => {
               />
             </Form.Item>
 
-            {/* <p onClick={(e) => getEmailCode(e)} className="login_form_get_code whitespace-nowrap">
+            <p onClick={(e) => getEmailCode(e)} className="login_form_get_code whitespace-nowrap">
               {codeMessage}
-            </p> */}
-          </Form.Item>
+            </p>
+          </Form.Item> */}
 
           <div onClick={forget} className="login_form_forget">
             <p>忘记密码</p>
