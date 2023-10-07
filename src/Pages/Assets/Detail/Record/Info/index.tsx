@@ -9,7 +9,7 @@ const Info = () => {
   let headData = Object.assign(HeadConfig, {
     title: "交易记录详情",
     back: "goBack",
-    className: "text-[#fff] py-[.32rem] h-[ayto]",
+    className: "text-[#fff] py-[.32rem] h-[auto]",
   });
   let { state: urlParams } = useLocation();
   let [pageInfo, setPageInfo] = useState<any>({});

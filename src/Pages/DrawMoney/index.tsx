@@ -16,7 +16,7 @@ const DrawMoney = () => {
   let headInfo = Object.assign(HeadConfig,{
     title: "提币USDT-ERC20",
     back: "goBack",
-    className:'text-[#333] py-[.32rem] h-[ayto]'
+    className:'text-[#333] py-[.32rem] h-[auto]'
   })
   const [popupVisible, setPopupVisible] = useState(false);
   const [isSelect, setIsSelect] = useState(true);

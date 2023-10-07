@@ -9,9 +9,21 @@ import { HeadConfig } from "@/Assets/config/head";
 import { GetAccessKey, GetCode, LoginI } from "@/Api";
 import PublicToast from "@/Components/PublicToast";
 import { encryptByDES, setSession } from "@/utils/base";
+import { useCountDown } from "@/Hooks/Countdown";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Login = () => {
-  let [timeDown, setTimeDown] = useState(60);
-  let [contentH, setContentH] = useState();
+  let [codeMessage, setCodeMessage] = useState("获取验证码");
+  let [stop] = useStopPropagation();
+  let { start, count: timeDown } = useCountDown(
+    59,
+    () => {
+      setCodeMessage(`${timeDown}s`);
+    },
+    () => {
+      setCodeMessage("获取验证码");
+    }
+  );
+  let [contentH, setContentH] = useState(0);
   let [formVal, setFormVal] = useState({
     username: "",
     password: "",
@@ -27,35 +39,18 @@ const Login = () => {
   const closePassword = () => {
     formRef?.current?.setFieldValue("password", "");
   };
-  // 倒计时
-  const Timeout = (delay: number) => {
-    let timer: number;
-    const stime = +new Date();
-    const loop = () => {
-      const etime = +new Date();
-      if (stime + delay <= etime) {
-        if (timeDown > -1) {
-          setTimeDown(--timeDown);
-          Timeout(1000);
-          return;
-        }
-        cancelAnimationFrame(timer);
-        setTimeDown(60);
+  const getEmailCode = (e: any) => {
+    stop(e, () => {
+      if(codeMessage !== '获取验证码') return
+      if (!formVal.username) {
+        PublicToast({ message: "请输入用户名！" });
         return;
       }
-      timer = requestAnimationFrame(loop);
-    };
-    timer = requestAnimationFrame(loop);
-  };
-  const getEmailCode = (e: any) => {
-    e.stopPropagation();
-    if (!formVal.username) {
-      PublicToast({ message: "请输入用户名！" });
-      return;
-    }
-    GetCode(formVal.username).then((res) => {
-      PublicToast({
-        message: res.message,
+      start();
+      GetCode(formVal.username).then((res) => {
+        PublicToast({
+          message: res.message,
+        });
       });
     });
   };
@@ -155,27 +150,24 @@ const Login = () => {
             />
           </Form.Item>
 
-          {/* <Form.Item>
-          <p className="login_form_label">邮箱验证码</p>
-          <Form.Item
-            noStyle
-            name="code"
-            rules={[{ required: false, message: "邮箱验证码不能为空" }]}
-          >
-            <Input
-              onChange={(val) => setFormVal({ ...formVal, code: val })}
-              className="login_form_input"
-              placeholder="请输入邮箱验证码"
-            />
+          <Form.Item>
+            <p className="login_form_label">邮箱验证码</p>
+            <Form.Item
+              noStyle
+              name="code"
+              rules={[{ required: false, message: "邮箱验证码不能为空" }]}
+            >
+              <Input
+                onChange={(val) => setFormVal({ ...formVal, code: val })}
+                className="login_form_input"
+                placeholder="请输入邮箱验证码"
+              />
+            </Form.Item>
+
+            {/* <p onClick={(e) => getEmailCode(e)} className="login_form_get_code whitespace-nowrap">
+              {codeMessage}
+            </p> */}
           </Form.Item>
-          {0 <= timeDown && timeDown < 60 ? (
-            <p className="login_form_get_code">{timeDown} s</p>
-          ) : (
-            <p onClick={(e) => getEmailCode(e)} className="login_form_get_code">
-              获取验证码
-            </p>
-          )}
-        </Form.Item> */}
 
           <div onClick={forget} className="login_form_forget">
             <p>忘记密码</p>
