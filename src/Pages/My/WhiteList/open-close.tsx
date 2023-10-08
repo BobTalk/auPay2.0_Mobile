@@ -1,15 +1,24 @@
 import PublicHead from "@/Components/PublicHead";
 import { useLocation, useParams } from "react-router-dom";
-import { WhiteListEnum } from "../../Enum";
+import { OperationIdEnum, WhiteListEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
-import { Button } from "antd-mobile";
+import { Button, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
 import { useState } from "react";
 import { getSession, setSession } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
+import {
+  SendEmailCode,
+  SwitchWhiteAddress,
+  VerifyAssetsPassword,
+  VerifyEmail,
+  VerifyGoogle,
+} from "@/Api";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
+  console.log(urlParams);
   let { state: urlInof }: any = useLocation();
+  console.log(urlInof);
   let WhiteListEnum1 = JSON.parse(JSON.stringify(WhiteListEnum));
   const HeadInfo = Object.assign(HeadConfig, {
     title: urlInof?.headTitle ?? props.headTitle,
@@ -33,9 +42,34 @@ const OpenOrCloseWhiteList = (props: any) => {
     }
     return obj;
   });
-  function submitCb(val: any) {
-    setSession("isOpenWhiteList", Boolean(!getSession("isOpenWhiteList")));
-    console.log(val);
+  function submitCb({ values }: any) {
+    Promise.all([
+      VerifyGoogle(values.googleCode, OperationIdEnum["whiteListAdd"]),
+      VerifyAssetsPassword({
+        assetsPwd: values.assetsPwd,
+        operationId: OperationIdEnum["whiteListAdd"],
+      }),
+      VerifyEmail(values.emailCode, OperationIdEnum["whiteListAdd"]),
+    ]).then((res) => {
+      if (res[0].status && res[1].status && res[2].status) {
+        SwitchWhiteAddress().then(() => {
+          setSession(
+            "isOpenWhiteList",
+            Boolean(!getSession("isOpenWhiteList"))
+          );
+          Toast.show({
+            content:
+              urlInof.crt.type === "openTip" ? "开启成功！" : " 关闭成功！",
+          });
+          setTimeout(() => {
+            window.history.back();
+          }, 3000);
+        });
+      }
+    });
+  }
+  function getEmailCode() {
+    SendEmailCode(OperationIdEnum["whiteListAdd"]).then(() => {});
   }
   return (
     <>
@@ -154,6 +188,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
           <p
+            onClick={getEmailCode}
             className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
             color="primary"
           >

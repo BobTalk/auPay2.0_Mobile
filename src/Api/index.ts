@@ -292,6 +292,7 @@ export const VerifyAssetsPassword = ({ assetsPwd, operationId }: any) => {
     url: `${PublicPrefix}/verifyAssetsPassword?assetsPassword=${assetsPwd}&operationId=  ${operationId}`,
   })
 }
+// google 验证码
 export const VerifyGoogle = (googleCode: string, operationId: number) => {
   return _http.getReq({
     url: `${PublicPrefix}/verifyGoogle?googleCode=${googleCode}&operationId=${operationId}`,

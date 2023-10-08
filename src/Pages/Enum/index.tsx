@@ -28,17 +28,16 @@ enum InfoSecurity {
   updateSecurityPwd = "updateSecurityPwd",
   googleValidator = "googleValidator",
   updateGoogleValidator = "updateGoogleValidator",
-  unbind="unbind",
-  bussionRecord="bussion",
-  accountInfo="account",
-  secureInfo="secure",
-  userAgree="agree",
-  privacyPolicy="privacy",
-  aboutAs="aboutAs",
-  linkAs="linkAs",
-  Ozfund='Ozfund',
-  loginOut='loginOut'
-
+  unbind = "unbind",
+  bussionRecord = "bussion",
+  accountInfo = "account",
+  secureInfo = "secure",
+  userAgree = "agree",
+  privacyPolicy = "privacy",
+  aboutAs = "aboutAs",
+  linkAs = "linkAs",
+  Ozfund = "Ozfund",
+  loginOut = "loginOut",
 }
 enum InfoSecurityTip {
   siginPwd = "",
@@ -47,7 +46,7 @@ enum InfoSecurityTip {
   updateSecurityPwd = "资金密码重置或修改，24小时内无法进行交易",
   googleValidator = "",
   updateGoogleValidator = "",
-  unbind="解除与Ozbet账号：rose的绑定状态，解除后将无法进行快捷支付"
+  unbind = "解除与Ozbet账号：rose的绑定状态，解除后将无法进行快捷支付",
 }
 enum HeadTitle {
   siginPwd = "设置登录密码",
@@ -56,8 +55,8 @@ enum HeadTitle {
   updateSecurityPwd = "修改资金密码",
   googleValidator = "绑定Google验证器",
   updateGoogleValidator = "修改Google验证器",
-  unbind="解除绑定",
-  bussionRecord='交易记录'
+  unbind = "解除绑定",
+  bussionRecord = "交易记录",
 }
 enum WhiteListInfo {
   open = "openTip",
@@ -69,6 +68,11 @@ enum WhiteListEnum {
   closeTip = "关闭白名单地址提币功能，开放输入地址提币",
   addTip = "温馨提示：新绑定的白名单地址24H后方可进行提币",
 }
+
+enum OperationIdEnum {
+  whiteListAdd = 91,
+  whiteListOpenOrColse = 10,
+}
 export {
   InfoType,
   CountryCode,
@@ -78,4 +82,5 @@ export {
   HeadTitle,
   WhiteListEnum,
   WhiteListInfo,
+  OperationIdEnum
 };
