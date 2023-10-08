@@ -24,7 +24,6 @@ const WhiteList = (props: any) => {
   // 获取白名单地址
   async function getPageInfo() {
     let addrList: any = await GetUserWithdrawAddress();
-    console.log("addr>> ", addrList);
     let res = (addrList.value as Array<any>).reduce((prv, next) => {
       let { unit } = formatUnit(next.currencyId, next.currencyChain);
       if (!prv[unit]) {
@@ -102,7 +101,6 @@ const WhiteList = (props: any) => {
   );
 };
 const DrawalMoney = (props: any) => {
-  console.log(props)
   let { attrKey, data } = props;
   let Navigate = useNavigate();
   let [visible, setVisible] = useState<boolean>(false);
@@ -118,7 +116,7 @@ const DrawalMoney = (props: any) => {
         subTitle: (
           <p
             className="flex items-center"
-            onClick={(e) => addWhiteList(e, { val: attrKey })}
+            onClick={(e) => addWhiteList(e, { val: attrKey,info:data[0]})}
           >
             <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
             <span className="text-[.28rem] text-[#222] ml-[.14rem]">新增</span>
@@ -145,13 +143,14 @@ const DrawalMoney = (props: any) => {
     });
     return arr;
   });
-  function addWhiteList(e: any, crt: { val: string }) {
+  function addWhiteList(e: any, crt: { val: string,info:any }) {
     e.stopPropagation();
     Navigate(`add`, {
       state: {
         headTitle: `新增白名单地址${crt?.val}`,
         crt: {
           type: WhiteListInfo["add"],
+          ...crt.info
         },
       },
     });
@@ -164,7 +163,6 @@ const DrawalMoney = (props: any) => {
   // 删除白名单地址
   async function deleteItem() {
     let deleteRes = await DeleteWithdrawAddress("");
-    console.log("deleteRes>> ", deleteRes);
     setVisible(() => !visible);
   }
   return (

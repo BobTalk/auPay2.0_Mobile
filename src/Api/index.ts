@@ -162,7 +162,7 @@ export const ResetAssetsPassword = ({ googleToken = '', emailToken = "" }) => {
   )
 }
 // 18.重置谷歌验证 PUT user / resetGoogleAuth(验证: 谷歌 邮箱) 请求头
-export const ResetGoogleAuth = ({AssetsToken='', emailToken=''}) => {
+export const ResetGoogleAuth = ({ AssetsToken = '', emailToken = '' }) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/resetGoogleAuth`,
@@ -315,14 +315,30 @@ export const BindGoogleAuth = () => {
   })
 }
 // 更新资金密码
-export const UpdateAssetsPassword = ({newPassword, assetsToken}:any) => {
+export const UpdateAssetsPassword = ({ newPassword, assetsToken }: any) => {
   return _http.putReq({
     url: `${PublicPrefix}/updateAssetsPassword`,
-    data:{newPassword},
-    headers:{
+    data: { newPassword },
+    headers: {
       "Assets-Password-Token": assetsToken
     }
   })
 }
-
+// 新增白名单
+export const AddWithdrawAddress = (data: {
+  currencyId: number,
+  currencyChain: number,
+  address: string,
+  note: string,
+}, headers: {
+  "Assets-Password-Token": string,
+  "Google-Auth-Token": string,
+  "Email-Token": string
+}) => {
+  return _http.postReq({
+    url: `${PublicPrefix}/addWithdrawAddress`,
+    data,
+    headers
+  })
+}
 
