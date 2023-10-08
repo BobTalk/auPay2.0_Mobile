@@ -7,7 +7,7 @@ import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
-  const Navigator = useNavigate();
+  const Navigate = useNavigate();
   const AssetsToken = useRef();
   const [formInitVal, setFormInitVal] = useState({
     newPwd: "",
@@ -50,6 +50,7 @@ const MoneyPwd = (props: any, ref: any) => {
       Toast.show({
         content: res.message,
       });
+      Navigate('/my/security-info')
     });
   }
   let checkPwd = ({ field }: any, val: any) => {
@@ -82,7 +83,7 @@ const MoneyPwd = (props: any, ref: any) => {
     <>
       {!showUpdatePwdEl ? (
         <OldPwdValid
-          navigator={Navigator}
+          navigate={Navigate}
           crt={props}
           onClick={(val: string) => nextStep(val)}
         />
@@ -192,7 +193,7 @@ const OldPwdValid = (props: any) => {
 
   function ResetPwd(e: any) {
     e.stopPropagation();
-    props.navigator?.("/resetpwd", {
+    props.navigate?.("/resetpwd", {
       state: { ...props.crt, headTitle: "重置资金密码" },
     });
   }

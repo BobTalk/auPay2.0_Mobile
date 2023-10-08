@@ -84,6 +84,7 @@ const OpenOrCloseWhiteList = (props: any) => {
             <PublicInput
               placeholder="请输入地址"
               name="addr"
+              rules={[{ required: true, message: "地址不能为空" }]}
               inputStyle={{
                 "--text-align": "right",
               }}
@@ -100,11 +101,13 @@ const OpenOrCloseWhiteList = (props: any) => {
           </>
         ) : null}
         <PublicInput
+          rules={[{ required: true, message: "资金密码不能为空" }]}
           placeholder="请输入资金密码"
           name="assetsPwd"
           inputStyle={{
             "--text-align": "right",
           }}
+          type="password"
           inputBoxStyle={{
             backgroundColor: "#fff",
             paddingRight: 0,
@@ -135,6 +138,8 @@ const OpenOrCloseWhiteList = (props: any) => {
         />
         <PublicInput
           placeholder="请输入邮箱验证码"
+          name="emailCode"
+          rules={[{ required: true, message: "邮箱验证码不能为空" }]}
           inputStyle={{
             "--text-align": "right",
           }}
@@ -156,7 +161,9 @@ const OpenOrCloseWhiteList = (props: any) => {
           </p>
         </PublicInput>
         <PublicInput
+          rules={[{ required: true, message: "Google验证码不能为空" }]}
           placeholder="请输入Google验证码"
+          name="googleCode"
           inputStyle={{
             "--text-align": "right",
           }}

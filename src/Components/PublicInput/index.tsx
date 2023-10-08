@@ -86,6 +86,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
                   `${styleScope.input},${props.inputClassName}`
                 )}
                 style={props.inputStyle}
+                autoComplete="new-password"
                 placeholder={props.placeholder}
                 maxLength={props.maxLength}
                 minLength={props.minLength}
@@ -183,5 +184,8 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
 //   rules: [],
 // };
 export default memo(PublicInput,(prv,next)=>{
+  console.log(prv)
+  console.log(next)
+  console.log('input-----')
   return prv.value == next.value
 });

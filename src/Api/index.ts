@@ -162,13 +162,13 @@ export const ResetAssetsPassword = ({ googleToken = '', emailToken = "" }) => {
   )
 }
 // 18.重置谷歌验证 PUT user / resetGoogleAuth(验证: 谷歌 邮箱) 请求头
-export const ResetGoogleAuth = () => {
+export const ResetGoogleAuth = ({AssetsToken='', emailToken=''}) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/resetGoogleAuth`,
       headers: {
-        "Google-Auth-Token": '',
-        "Email-Token": ''
+        "Assets-Password-Token": AssetsToken,
+        "Email-Token": emailToken
       }
     }
   )
@@ -286,6 +286,7 @@ export const TradeRecordDetail = (id: any) => {
     url: `${PublicPrefix}/checkTradeRecordDetail?id=${id}`,
   })
 }
+// 交易资金密码
 export const VerifyAssetsPassword = ({ assetsPwd, operationId }: any) => {
   return _http.getReq({
     url: `${PublicPrefix}/verifyAssetsPassword?assetsPassword=${assetsPwd}&operationId=  ${operationId}`,
@@ -301,6 +302,7 @@ export const SendEmailCode = (operationId: number) => {
     url: `${PublicPrefix}/sendEmailCode?operationId=${operationId}`,
   })
 }
+// 邮箱校验
 export const VerifyEmail = (emailCode: string, operationId: any) => {
   return _http.getReq({
     url: `${PublicPrefix}/verifyEmail?emailCode=${emailCode}&operationId=${operationId}`,
