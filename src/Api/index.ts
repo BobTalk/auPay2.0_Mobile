@@ -311,5 +311,15 @@ export const BindGoogleAuth = () => {
     url: `${PublicPrefix}/bindGoogleAuth`,
   })
 }
+// 更新资金密码
+export const UpdateAssetsPassword = ({newPassword, assetsToken}:any) => {
+  return _http.putReq({
+    url: `${PublicPrefix}/updateAssetsPassword`,
+    data:{newPassword},
+    headers:{
+      "Assets-Password-Token": assetsToken
+    }
+  })
+}
 
 

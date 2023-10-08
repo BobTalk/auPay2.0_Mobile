@@ -84,6 +84,16 @@ const Register = () => {
           onFinish={onFinish}
           initialValues={formObj}
           ref={formRef}
+          footer={
+            <Button
+              className="before:bg-transparent login_form_btn"
+              block
+              type="submit"
+              color="primary"
+            >
+              注册
+            </Button>
+          }
         >
           <Form.Item>
             <p className="login_form_label">用户名</p>
@@ -232,17 +242,6 @@ const Register = () => {
             rules={[{ required: true, message: "请选择同意《auPay用户协议》" }]}
           >
             <Checkbox>我同意《auPay用户协议》</Checkbox>
-          </Form.Item>
-
-          <Form.Item>
-            <Button
-              className="before:bg-transparent login_form_btn"
-              block
-              type="submit"
-              color="primary"
-            >
-              注册
-            </Button>
           </Form.Item>
         </Form>
         <p className="foo_tips">

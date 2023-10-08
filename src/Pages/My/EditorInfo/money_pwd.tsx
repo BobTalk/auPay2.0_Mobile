@@ -1,11 +1,14 @@
+import { UpdateAssetsPassword, VerifyAssetsPassword } from "@/Api";
 import PublicForm from "@/Components/PublicForm";
 import PublicInput from "@/Components/PublicInput";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Button, Toast } from "antd-mobile";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
   const Navigator = useNavigate();
+  const AssetsToken = useRef();
   const [formInitVal, setFormInitVal] = useState({
     newPwd: "",
     confirmPwd: "",
@@ -25,15 +28,30 @@ const MoneyPwd = (props: any, ref: any) => {
     }),
     []
   );
-  function nextStep() {
-    setShowUpdatePwdEl(() => true);
+  function nextStep(val: string) {
+    VerifyAssetsPassword({ assetsPwd: val, operationId: 491 }).then((res) => {
+      if (res.status) {
+        AssetsToken.current = res.value;
+        setShowUpdatePwdEl(() => true);
+      }
+    });
   }
   const WarnMessage: any = {
     newPwd: "6～20位大/小写字母及数字",
     confirmPwd: "两次密码输入不一致",
   };
   // 密码修改 确认
-  function submitCb() {}
+  function submitCb({ values }: any) {
+    console.log("AssetsToken.current", AssetsToken.current);
+    UpdateAssetsPassword({
+      newPassword: values.confirmPwd,
+      assetsToken: AssetsToken.current,
+    }).then((res) => {
+      Toast.show({
+        content: res.message,
+      });
+    });
+  }
   let checkPwd = ({ field }: any, val: any) => {
     if (!val) {
       return Promise.reject(new Error(WarnMessage[field]));
@@ -66,7 +84,7 @@ const MoneyPwd = (props: any, ref: any) => {
         <OldPwdValid
           navigator={Navigator}
           crt={props}
-          onClick={() => nextStep()}
+          onClick={(val: string) => nextStep(val)}
         />
       ) : null}
       {showUpdatePwdEl ? (
@@ -155,18 +173,21 @@ const MoneyPwd = (props: any, ref: any) => {
   );
 };
 const OldPwdValid = (props: any) => {
+  let [stop] = useStopPropagation();
   let payPwd = useRef<any>();
   function nextStep(e: any): void {
-    e.stopPropagation();
-    console.log(payPwd.current.nativeElement.value);
-    if(!payPwd.current.nativeElement.value){
-      // 应该校验原始密码是否正确
-      Toast.show({
-        content:'原始密码不能为空'
-      })
-      return
-    }
-    props.onClick?.();
+    stop(e, () => {
+      if (!payPwd.current.nativeElement.value) {
+        // 应该校验原始密码是否正确
+        Toast.show({
+          content: "原始密码不能为空",
+        });
+        return;
+      }
+      props.onClick?.(payPwd.current.nativeElement.value);
+    });
+
+    // console.log(payPwd.current.nativeElement.value);
   }
 
   function ResetPwd(e: any) {

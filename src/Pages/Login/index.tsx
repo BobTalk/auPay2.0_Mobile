@@ -33,7 +33,8 @@ const Login = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
-  });
+    className:'p-[.32rem_.3rem] h-auto'
+  });                 
   const navigate = useNavigate();
   const formRef: any = useRef(null);
   const closePassword = () => {
