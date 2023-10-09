@@ -52,6 +52,7 @@ type itemType = {
   vertical?: boolean;
 };
 type publicListType = {
+  isRender:boolean;
   className?: string;
   itemClass?: string;
   itemStyle?: Object;
@@ -154,6 +155,7 @@ ListItem.defaultProps = {
   },
 };
 PublicList.defaultProps = {
+  isRender:false,
   className: "",
   itemClass: "",
   itemStyle: {},
@@ -181,5 +183,8 @@ PublicList.defaultProps = {
   ],
 };
 export default memo(PublicList, (prv, next) => {
+  if(prv.isRender){
+    return false
+  }
   return prv.list.length == next.list.length;
 });

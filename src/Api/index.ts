@@ -341,4 +341,11 @@ export const AddWithdrawAddress = (data: {
     headers
   })
 }
+// 修改用户信息
+export const SetUserInfo = (data:{mobile?:string, currencyUnit?:string}) => {
+  return _http.putReq({
+    url:`${PublicPrefix}/setUserInfo`,
+    data
+  })
+}
 

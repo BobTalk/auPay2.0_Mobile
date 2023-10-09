@@ -1,13 +1,13 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
-import { Avatar, Popup } from "antd-mobile";
+import { Avatar, Popup, Toast } from "antd-mobile";
 import { memo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InfoType, MonetaryUnit } from "../../Enum";
+import { InfoType, MonetaryUnit, UnitMapNumEnum } from "../../Enum";
 import { mergeClassName } from "@/utils/base";
 import { cloneDeep } from "lodash";
 import { HeadConfig } from "@/Assets/config/head";
-import { GetUserInfo } from "@/Api";
+import { GetUserInfo, SetUserInfo } from "@/Api";
 const AccountInformation = () => {
   // const ListData = [
   //   // {
@@ -120,6 +120,7 @@ const AccountInformation = () => {
   // ];
   let [listInfo, setListInfo] = useState<Array<any>>([]);
   const MoneyUnit = JSON.parse(JSON.stringify(MonetaryUnit ?? "{}"));
+  const MpUnit = JSON.parse(JSON.stringify(UnitMapNumEnum));
   let formatData = (crt: any) => {
     let filterObjIndex = listInfo.findIndex(
       (item) => item.type == InfoType.unit
@@ -128,7 +129,14 @@ const AccountInformation = () => {
     listInfo[filterObjIndex].extra = (
       <span className="mr-[.15rem] text-[.3rem] text-[#999]">{crt.value}</span>
     );
-    setListInfo(() => listInfo);
+    SetUserInfo({ currencyUnit: MpUnit[crt.value] }).then((res) => {
+      Toast.show({
+        content: res.message,
+      });
+      setListInfo(() => listInfo);
+    });
+    console.log(listInfo);
+    
     setPopupVisible(() => false);
   };
   const EnumMap = new Map([
@@ -153,7 +161,7 @@ const AccountInformation = () => {
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   let [popupVisible, setPopupVisible] = useState<boolean>(false);
-  
+
   let [crtInfo, setCrtInfo] = useState({});
   let avatarClickEvent = (rs: boolean) => {
     setPopupVisible(rs);
@@ -248,7 +256,9 @@ const AccountInformation = () => {
           color: "#222",
         },
         extra: (
-          <span className="mr-[.15rem] text-[.3rem] text-[#999]">USD</span>
+          <span className="mr-[.15rem] text-[.3rem] text-[#999]">
+            {MpUnit[userInfo.currencyUnit]}
+          </span>
         ),
       },
     ];
@@ -262,6 +272,7 @@ const AccountInformation = () => {
       <PublicHead {...HeadData} />
       <PublicList
         list={listInfo}
+        isRender={true}
         arrowStyle={{ fontSize: ".2rem" }}
         arrowComp={<i className="iconfont icon-icon-arrow-right2"></i>}
         style={{ padding: "0 .3rem" }}

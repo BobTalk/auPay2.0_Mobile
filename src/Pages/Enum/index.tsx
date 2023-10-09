@@ -21,6 +21,10 @@ enum MonetaryUnit {
   "China" = "CNY",
   "America" = "USD",
 }
+enum UnitMapNumEnum{
+  CNY =1,
+  USD =2
+}
 enum InfoSecurity {
   siginPwd = "siginPwd",
   updateSiginPwd = "updateSiginPwd",
@@ -90,5 +94,6 @@ export {
   WhiteListEnum,
   WhiteListInfo,
   OperationIdEnum,
-  CurrencyTypeEnum
+  CurrencyTypeEnum,
+  UnitMapNumEnum
 };

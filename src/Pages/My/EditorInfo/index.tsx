@@ -1,13 +1,24 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
-import { Button, Popup } from "antd-mobile";
-import { createRef, memo, useCallback, useEffect, useState } from "react";
+import { Button, Popup, Toast } from "antd-mobile";
+import {
+  createRef,
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../../Enum";
 import { useLocation } from "react-router-dom";
 import MoneyPwd from "./money_pwd";
 import GoogleValidator from "./google-validator";
 import LoginPwd from "./login_pwd";
 import { HeadConfig } from "@/Assets/config/head";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { SetUserInfo } from "@/Api";
+import { extend } from "lodash";
+import PublicForm from "@/Components/PublicForm";
 
 const EditorInfo = (props: any) => {
   let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
@@ -71,21 +82,23 @@ const EditorInfo = (props: any) => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [defaultCountryCode, setDefaultCountryCode] = useState<any>("China");
   const [countryCode, setCountryCode] = useState<any>();
+  let CountryCodeObj = JSON.parse(JSON.stringify(CountryCode));
   useEffect(() => {
     if (typeMap.has(state?.type)) {
       typeMap.get(state?.type)?.(state);
     }
   }, []);
-  useEffect(() => {
-    let CountryCodeObj = JSON.parse(JSON.stringify(CountryCode));
-    setCountryCode(CountryCodeObj[defaultCountryCode]);
+  useLayoutEffect(() => {
+    setCountryCode(() => CountryCodeObj[defaultCountryCode]);
   }, [defaultCountryCode]);
   const InputEvent = (val: any) => {
-    setValue(val);
+    setValue({ inputValue: val });
   };
   const moneyPwd = createRef();
-  const [value, setValue] = useState(state?.value || "");
+  const [formInitVal, setValue] = useState({ inputValue: state?.value || "" });
   const popupCb = (crt: any) => {
+    console.log(crt);
+    console.log("-----99999");
     setPopupVisible(false);
     setDefaultCountryCode(crt["key"]);
     setCountryCode(crt["value"]);
@@ -95,8 +108,13 @@ const EditorInfo = (props: any) => {
     setPopupVisible(!popupVisible);
   };
   // 确认提交
-  function submitInfo(e: any) {
-    console.log(moneyPwd.current);
+  function SubmitBtnCb({values,outOfDate}: any, CountryCode?: number) {
+    if(outOfDate === false) return
+    SetUserInfo({ mobile: CountryCode + " " + values["inputValue"] }).then((res) => {
+      Toast.show({
+        content: res.message,
+      });
+    });
   }
 
   return (
@@ -121,16 +139,32 @@ const EditorInfo = (props: any) => {
             <GoogleValidator />
             <SubmitBtn
               onClick={() => {
-                window.history.back()
+                window.history.back();
               }}
             />
           </>
         ) : (
           // 电话号码 昵称等模块修改
-          <>
+          <PublicForm
+            finish={(val: string) =>
+              SubmitBtnCb(val, CountryCodeObj[defaultCountryCode])
+            }
+            initialValues={formInitVal}
+            footer={<SubmitBtn type="submit" />}
+          >
             <PublicInput
-              value={value}
+              name="inputValue"
+              value={formInitVal.inputValue}
+              rules={[
+                {
+                  required: true,
+                  message: `${
+                    InfoType.phone === state?.type ? "请输入联系方式" : "请输入"
+                  }`,
+                },
+              ]}
               input={(val: any) => InputEvent(val)}
+              isRender={true}
               maxLength={state?.maxLength}
               placeholder={
                 InfoType.phone === state?.type ? "请输入联系方式" : "请输入"
@@ -139,7 +173,7 @@ const EditorInfo = (props: any) => {
                 InfoType["phone"] === state?.type ? (
                   <CountrCode
                     onClick={() => selectCountry()}
-                    countryCode={countryCode}
+                    areaCode={CountryCodeObj[defaultCountryCode]}
                   />
                 ) : null
               }
@@ -160,21 +194,20 @@ const EditorInfo = (props: any) => {
             >
               {state?.maxLength && (
                 <p className="text-[.24rem]">
-                  <span className="text-[#1c63ff]">{value.length}</span>
+                  <span className="text-[#1c63ff]">
+                    {formInitVal.inputValue.length}
+                  </span>
                   <span className="text-[#666]">/12</span>
                 </p>
               )}
             </PublicInput>
-            <SubmitBtn onClick={() => SubmitBtn(state)} />
-          </>
+          </PublicForm>
         )
       }
-
       <PopupComp
         CountryCode={CountryCode}
-        onClick={(crt: any) => {
-          popupCb(crt);
-        }}
+        onClick={(crt: any) => popupCb(crt)}
+        cancel={() => setPopupVisible(false)}
         visible={popupVisible}
       />
     </>
@@ -190,9 +223,10 @@ const SubmitBtn = (props: any) => {
     <div className="px-[.3rem]">
       <Button
         block
+        type={props.type}
         onClick={(e) => submitInfo(e)}
         color="primary"
-        className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
+        className="text-[.3rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.3rem] before:bg-transparent"
       >
         确定
       </Button>
@@ -200,28 +234,38 @@ const SubmitBtn = (props: any) => {
   );
 };
 // 国家区号
-const CountrCode = (props: any) => {
-  const changeCountry = (e: any) => {
-    e.stopPropagation();
-    props.onClick?.();
-  };
-  return (
-    <p
-      className="flex items-center"
-      onClick={(e) => {
-        changeCountry(e);
-      }}
-    >
-      <span className="text-[.3rem] text-[#999]">+{props.countryCode}</span>
-      <i className="iconfont icon-zhankai text-[#C5CAD0] text-[.2rem] px-[.05rem]" />
-    </p>
-  );
-};
+const CountrCode = memo(
+  (props: any) => {
+    let [stop] = useStopPropagation();
+    const changeCountry = (e: any) => {
+      stop(e, () => {
+        props.onClick?.();
+      });
+    };
+    return (
+      <p
+        className="flex items-center"
+        onClick={(e) => {
+          changeCountry(e);
+        }}
+      >
+        <span className="text-[.3rem] text-[#999]">+{props.areaCode}</span>
+        <i className="iconfont icon-zhankai text-[#C5CAD0] text-[.2rem] px-[.05rem]" />
+      </p>
+    );
+  },
+  (prv, next) => {
+    return prv.areaCode === next.areaCode;
+  }
+);
 // 确认弹窗
 const PopupComp = memo(
   (props: any) => {
     let countryCode = JSON.parse(JSON.stringify(props.CountryCode ?? "{}"));
     const itemClick = useCallback((key: string) => {
+      console.log(key);
+      console.log(props);
+      console.log("------");
       props.onClick?.({ key, value: countryCode[key] });
     }, []);
     return (

@@ -184,8 +184,8 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
 //   rules: [],
 // };
 export default memo(PublicInput,(prv,next)=>{
-  console.log(prv)
-  console.log(next)
-  console.log('input-----')
+  if(prv.isRender){
+    return false
+  }
   return prv.value == next.value
 });
