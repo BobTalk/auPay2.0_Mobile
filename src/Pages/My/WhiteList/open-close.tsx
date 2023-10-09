@@ -76,7 +76,7 @@ const OpenOrCloseWhiteList = (props: any) => {
       });
       if (res.status) {
         setTimeout(() => {
-          navigate("/my/white-list", { replace: true, state: urlInof.crt?.parentInfo });
+          navigate("/my/white-list", { state: urlInof.crt?.parentInfo });
         }, 3000);
       }
 
