@@ -3,7 +3,7 @@ import PublicList from "@/Components/PublicList";
 import { Card, CenterPopup, Popup, Switch, Toast } from "antd-mobile";
 import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { WhiteListInfo } from "../../Enum";
+import { CurrencyTypeEnum, WhiteListInfo } from "../../Enum";
 import {
   formatUnit,
   getSession,
@@ -38,7 +38,9 @@ const WhiteList = (props: any) => {
       prv[unit].push(next);
       return prv;
     }, {});
-    let keyList = Object.keys(res);
+    let type = Object.keys(CurrencyTypeEnum);
+    let keyList = Object.assign(type, Object.keys(res));
+
     setInfoKeyList(keyList);
     setInfoList(res);
   }
@@ -87,7 +89,7 @@ const WhiteList = (props: any) => {
                   index === 0 || index + 1 === arr.length
                     ? "rounded-tl-[0] rounded-tr-[0]"
                     : "rounded-[0] mt-[.15rem]"
-                }`
+                } ${index + 1 === arr.length ? "mt-[.15rem]" : ""}`
               )}
               headerClassName="p-[.3rem] "
               bodyClassName="py-[0] px-[.3rem]"
@@ -113,7 +115,9 @@ const DrawalMoney = memo(
     let [visible, setVisible] = useState<boolean>(false);
     let [deleteItemCrt, setDeleteItemCrt] = useState<object>({});
     let [list, setList] = useState<any>([]);
-    function addWhiteList(e: any, crt: { val: string; info: any }) {
+    function addWhiteList(e: any, crt: { val: string }) {
+      let typeEnum = JSON.parse(JSON.stringify(CurrencyTypeEnum));
+      let [currencyId, currencyChain] = typeEnum[crt.val].split("-");
       stop(e, () => {
         Navigate(`add`, {
           state: {
@@ -121,7 +125,8 @@ const DrawalMoney = memo(
             crt: {
               type: WhiteListInfo["add"],
               parentInfo: parentInfo,
-              ...crt.info,
+              currencyId: currencyId * 1,
+              currencyChain: currencyChain ? currencyChain * 1 : undefined,
             },
           },
         });
@@ -159,7 +164,7 @@ const DrawalMoney = memo(
           subTitle: (
             <p
               className="flex items-center"
-              onClick={(e) => addWhiteList(e, { val: attrKey, info: data[0] })}
+              onClick={(e) => addWhiteList(e, { val: attrKey })}
             >
               <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
               <span className="text-[.28rem] text-[#222] ml-[.14rem]">
@@ -212,7 +217,7 @@ const DrawalMoney = memo(
     );
   },
   (prv, next) => {
-    return prv.data.length == next.data.length;
+    return prv?.data?.length === next?.data?.length;
   }
 );
 const PopupComp = memo(

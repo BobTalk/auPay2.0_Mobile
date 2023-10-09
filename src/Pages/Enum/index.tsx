@@ -73,6 +73,13 @@ enum OperationIdEnum {
   whiteListAdd = 91,
   whiteListOpenOrColse = 10,
 }
+enum CurrencyTypeEnum{
+  BTC='1',
+  ETH='2',
+  "USDT-OMNI"="3-1",
+  "USDT-ERC20"="3-2",
+  "USDT-TRC20"="3-3"
+}
 export {
   InfoType,
   CountryCode,
@@ -82,5 +89,6 @@ export {
   HeadTitle,
   WhiteListEnum,
   WhiteListInfo,
-  OperationIdEnum
+  OperationIdEnum,
+  CurrencyTypeEnum
 };
