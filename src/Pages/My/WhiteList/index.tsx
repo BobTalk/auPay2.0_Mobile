@@ -86,10 +86,12 @@ const WhiteList = (props: any) => {
               className={mergeClassName(
                 "p-[0]",
                 `${
-                  index === 0 || index + 1 === arr.length
-                    ? "rounded-tl-[0] rounded-tr-[0]"
+                  index === 0
+                    ? "rounded-[0]"
+                    : index + 1 === arr.length
+                    ? "rounded-tl-[0] rounded-tr-[0] mt-[.15rem]"
                     : "rounded-[0] mt-[.15rem]"
-                } ${index + 1 === arr.length ? "mt-[.15rem]" : ""}`
+                }`
               )}
               headerClassName="p-[.3rem] "
               bodyClassName="py-[0] px-[.3rem]"
