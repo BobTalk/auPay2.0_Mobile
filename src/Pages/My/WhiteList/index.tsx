@@ -4,7 +4,12 @@ import { Card, CenterPopup, Popup, Switch, Toast } from "antd-mobile";
 import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { WhiteListInfo } from "../../Enum";
-import { formatUnit, getSession, setSession } from "@/utils/base";
+import {
+  formatUnit,
+  getSession,
+  mergeClassName,
+  setSession,
+} from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import { DeleteWithdrawAddress, GetUserWithdrawAddress } from "@/Api";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
@@ -65,159 +70,151 @@ const WhiteList = (props: any) => {
           height: `calc(100vh - ${headerH}px)`,
         }}
       >
+        <Card
+          className="p-[0] rounded-bl-[0] rounded-br-[0]"
+          headerClassName="p-[.3rem] border-b-[1px]"
+          bodyClassName="py-[0] px-[.3rem]"
+          title={<span className="text-[.3rem] text-[#222]">提币白名单</span>}
+          extra={<Switch onChange={switchChangeCb} checked={isOpen} />}
+        ></Card>
         <>
-          {infoKeyList.map((key: string, index: number, arr: Array<string>) =>
-            index === 0 ? (
-              <Card
-                key={key}
-                className="p-[0] rounded-bl-[0] rounded-br-[0]"
-                headerClassName="p-[.3rem]"
-                bodyClassName="py-[0] px-[.3rem]"
-                title={
-                  <span className="text-[.3rem] text-[#222]">提币白名单</span>
-                }
-                extra={<Switch onChange={switchChangeCb} checked={isOpen} />}
-              >
-                <DrawalMoney
-                  parentInfo={state}
-                  refreshe={refreshCb}
-                  attrKey={key}
-                  data={infoList[key]}
-                />
-              </Card>
-            ) : index + 1 === arr.length ? (
-              <Card
-                key={key}
-                className="p-[0] rounded-tl-[0] rounded-tr-[0] mt-[.15rem]"
-                bodyClassName="py-[0] px-[.3rem]"
-              >
-                <DrawalMoney
-                  parentInfo={state}
-                  refreshe={refreshCb}
-                  attrKey={key}
-                  data={infoList[key]}
-                />
-              </Card>
-            ) : (
-              <Card
-                key={key}
-                className="p-[0] rounded-[0] mt-[.15rem]"
-                bodyClassName="py-[0] px-[.3rem]"
-              >
-                <DrawalMoney
-                  parentInfo={state}
-                  refreshe={refreshCb}
-                  attrKey={key}
-                  data={infoList[key]}
-                />
-              </Card>
-            )
-          )}
+          {infoKeyList.map((key: string, index: number, arr: Array<string>) => (
+            <Card
+              key={key}
+              className={mergeClassName(
+                "p-[0]",
+                `${
+                  index === 0 || index + 1 === arr.length
+                    ? "rounded-tl-[0] rounded-tr-[0]"
+                    : "rounded-[0] mt-[.15rem]"
+                }`
+              )}
+              headerClassName="p-[.3rem] "
+              bodyClassName="py-[0] px-[.3rem]"
+            >
+              <DrawalMoney
+                parentInfo={state}
+                refreshe={refreshCb}
+                attrKey={key}
+                data={infoList[key]}
+              />
+            </Card>
+          ))}
         </>
       </main>
     </>
   );
 };
-const DrawalMoney = (props: any) => {
-  let { attrKey, data, parentInfo } = props;
-  let Navigate = useNavigate();
-  let [stop] = useStopPropagation();
-  let [visible, setVisible] = useState<boolean>(false);
-  let [deleteItemCrt, setDeleteItemCrt] = useState<object>({});
-  let [list] = useState(() => {
-    let arr = [
-      {
-        id: "001",
-        title: (
-          <span className="text-[.32rem] text-[#222] font-[700]">
-            {attrKey}
-          </span>
-        ),
-        vertical: false,
-        subTitle: (
-          <p
-            className="flex items-center"
-            onClick={(e) => addWhiteList(e, { val: attrKey, info: data[0] })}
-          >
-            <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
-            <span className="text-[.28rem] text-[#222] ml-[.14rem]">新增</span>
-          </p>
-        ),
-      },
-    ];
-    data?.map((item: { [key: string]: any }) => {
-      arr.push({
-        id: item.id,
-        title: (
-          <span className="text-[.28rem] text-[#666]">{item.note ?? "--"}</span>
-        ),
-        vertical: true,
-        subTitle: (
-          <p className="flex justify-between">
-            <span className="text-[.28rem] text-[#666] mr-[.4rem]">
-              {item.address}
-            </span>
-            <i
-              onClick={(e) => deleteItem(e, { ...item, title: attrKey })}
-              className="iconfont icon-shanchu text-[.3rem] text-[#878787]"
-            ></i>
-          </p>
-        ),
-      });
-    });
-    return arr;
-  });
-  function addWhiteList(e: any, crt: { val: string; info: any }) {
-    stop(e, () => {
-      Navigate(`add`, {
-        state: {
-          headTitle: `新增白名单地址${crt?.val}`,
-          crt: {
-            type: WhiteListInfo["add"],
-            parentInfo: parentInfo,
-            ...crt.info,
+const DrawalMoney = memo(
+  (props: any) => {
+    let { attrKey, data, parentInfo } = props;
+    let Navigate = useNavigate();
+    let [stop] = useStopPropagation();
+    let [visible, setVisible] = useState<boolean>(false);
+    let [deleteItemCrt, setDeleteItemCrt] = useState<object>({});
+    let [list, setList] = useState<any>([]);
+    function addWhiteList(e: any, crt: { val: string; info: any }) {
+      stop(e, () => {
+        Navigate(`add`, {
+          state: {
+            headTitle: `新增白名单地址${crt?.val}`,
+            crt: {
+              type: WhiteListInfo["add"],
+              parentInfo: parentInfo,
+              ...crt.info,
+            },
           },
-        },
+        });
       });
-    });
-  }
-  // 删除白名单地址
-  function deleteItem(e: any, crt: object) {
-    stop(e, () => {
-      setDeleteItemCrt(crt);
-      setVisible(() => !visible);
-    });
-  }
-  // 删除确认
-  function deleteItemSubmit(crt: { id: string }) {
-    DeleteWithdrawAddress(crt.id).then((res) => {
-      Toast.show({
-        content: res.message,
-      });
-      if (res.status) {
+    }
+    // 删除白名单地址
+    function deleteItem(e: any, crt: object) {
+      stop(e, () => {
+        setDeleteItemCrt(crt);
         setVisible(() => !visible);
-        props?.refreshe?.();
-      }
-    });
+      });
+    }
+    // 删除确认
+    function deleteItemSubmit(crt: { id: string }) {
+      DeleteWithdrawAddress(crt.id).then((res) => {
+        Toast.show({
+          content: res.message,
+        });
+        if (res.status) {
+          setVisible(() => !visible);
+          props?.refreshe?.();
+        }
+      });
+    }
+    useEffect(() => {
+      let arr = [
+        {
+          id: "001",
+          title: (
+            <span className="text-[.32rem] text-[#222] font-[700]">
+              {attrKey}
+            </span>
+          ),
+          vertical: false,
+          subTitle: (
+            <p
+              className="flex items-center"
+              onClick={(e) => addWhiteList(e, { val: attrKey, info: data[0] })}
+            >
+              <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
+              <span className="text-[.28rem] text-[#222] ml-[.14rem]">
+                新增
+              </span>
+            </p>
+          ),
+        },
+      ];
+      data?.map((item: { [key: string]: any }) => {
+        arr.push({
+          id: item.id,
+          title: (
+            <span className="text-[.28rem] text-[#666]">
+              {item.note ?? "--"}
+            </span>
+          ),
+          vertical: true,
+          subTitle: (
+            <p className="flex justify-between">
+              <span className="text-[.28rem] text-[#666] mr-[.4rem]">
+                {item.address}
+              </span>
+              <i
+                onClick={(e) => deleteItem(e, { ...item, title: attrKey })}
+                className="iconfont icon-shanchu text-[.3rem] text-[#878787]"
+              ></i>
+            </p>
+          ),
+        });
+      });
+      setList(arr);
+    }, [data]);
+    return (
+      <>
+        <PublicList
+          style={{
+            "--padding-right": 0,
+            "--padding-left": 0,
+          }}
+          list={list}
+        />
+        <PopupComp
+          visible={visible}
+          crt={deleteItemCrt}
+          ok={deleteItemSubmit}
+          cancel={() => setVisible(() => !visible)}
+        />
+      </>
+    );
+  },
+  (prv, next) => {
+    return prv.data.length == next.data.length;
   }
-  return (
-    <>
-      <PublicList
-        style={{
-          "--padding-right": 0,
-          "--padding-left": 0,
-        }}
-        list={list}
-      />
-      <PopupComp
-        visible={visible}
-        crt={deleteItemCrt}
-        ok={deleteItemSubmit}
-        cancel={() => setVisible(() => !visible)}
-      />
-    </>
-  );
-};
+);
 const PopupComp = memo(
   (props: any) => {
     return (

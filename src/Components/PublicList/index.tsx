@@ -2,7 +2,7 @@ import { dataType, mergeClassName } from "@/utils/base";
 import { List } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import styled from "styled-components";
-import { ReactNode, useCallback } from "react";
+import { ReactNode, memo, useCallback } from "react";
 const ListComp = styled.div`
   .adm-list-item-content-arrow {
     .iconfont {
@@ -180,4 +180,6 @@ PublicList.defaultProps = {
     },
   ],
 };
-export default PublicList;
+export default memo(PublicList, (prv, next) => {
+  return prv.list.length == next.list.length;
+});
