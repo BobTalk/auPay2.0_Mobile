@@ -1,12 +1,13 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
-import { Card, CenterPopup, Popup, Switch } from "antd-mobile";
+import { Card, CenterPopup, Popup, Switch, Toast } from "antd-mobile";
 import { memo, useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { WhiteListInfo } from "../../Enum";
 import { formatUnit, getSession, setSession } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import { DeleteWithdrawAddress, GetUserWithdrawAddress } from "@/Api";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 
 const WhiteList = (props: any) => {
   const HeaderEl = useRef<any>({});
@@ -15,7 +16,7 @@ const WhiteList = (props: any) => {
   let { state } = useLocation();
   const [isOpen] = useState<boolean>(getSession("isOpenWhiteList"));
   let headInfo = Object.assign(HeadConfig, {
-    title: props.headTitle ?? state.headTitle,
+    title: props?.headTitle ?? state?.headTitle,
     back: "goBack",
     className: "text-[#333] p-[.32rem_.3rem]",
   });
@@ -36,7 +37,9 @@ const WhiteList = (props: any) => {
     setInfoKeyList(keyList);
     setInfoList(res);
   }
-
+  function refreshCb() {
+    getPageInfo();
+  }
   useEffect(() => {
     let { height } = HeaderEl.current?.getBoundingClientRect?.();
     setHeaderH(() => height);
@@ -75,7 +78,12 @@ const WhiteList = (props: any) => {
                 }
                 extra={<Switch onChange={switchChangeCb} checked={isOpen} />}
               >
-                <DrawalMoney attrKey={key} data={infoList[key]} />
+                <DrawalMoney
+                  parentInfo={state}
+                  refreshe={refreshCb}
+                  attrKey={key}
+                  data={infoList[key]}
+                />
               </Card>
             ) : index + 1 === arr.length ? (
               <Card
@@ -83,7 +91,12 @@ const WhiteList = (props: any) => {
                 className="p-[0] rounded-tl-[0] rounded-tr-[0] mt-[.15rem]"
                 bodyClassName="py-[0] px-[.3rem]"
               >
-                <DrawalMoney attrKey={key} data={infoList[key]} />
+                <DrawalMoney
+                  parentInfo={state}
+                  refreshe={refreshCb}
+                  attrKey={key}
+                  data={infoList[key]}
+                />
               </Card>
             ) : (
               <Card
@@ -91,7 +104,12 @@ const WhiteList = (props: any) => {
                 className="p-[0] rounded-[0] mt-[.15rem]"
                 bodyClassName="py-[0] px-[.3rem]"
               >
-                <DrawalMoney attrKey={key} data={infoList[key]} />
+                <DrawalMoney
+                  parentInfo={state}
+                  refreshe={refreshCb}
+                  attrKey={key}
+                  data={infoList[key]}
+                />
               </Card>
             )
           )}
@@ -101,8 +119,9 @@ const WhiteList = (props: any) => {
   );
 };
 const DrawalMoney = (props: any) => {
-  let { attrKey, data } = props;
+  let { attrKey, data, parentInfo } = props;
   let Navigate = useNavigate();
+  let [stop] = useStopPropagation();
   let [visible, setVisible] = useState<boolean>(false);
   let [deleteItemCrt, setDeleteItemCrt] = useState<object>({});
   let [list] = useState(() => {
@@ -110,13 +129,15 @@ const DrawalMoney = (props: any) => {
       {
         id: "001",
         title: (
-          <span className="text-[.32rem] text-[#222] font-[700]">{attrKey}</span>
+          <span className="text-[.32rem] text-[#222] font-[700]">
+            {attrKey}
+          </span>
         ),
         vertical: false,
         subTitle: (
           <p
             className="flex items-center"
-            onClick={(e) => addWhiteList(e, { val: attrKey,info:data[0]})}
+            onClick={(e) => addWhiteList(e, { val: attrKey, info: data[0] })}
           >
             <i className="iconfont icon-plus text-[#1C63FF] text-[.26rem]" />
             <span className="text-[.28rem] text-[#222] ml-[.14rem]">新增</span>
@@ -132,38 +153,52 @@ const DrawalMoney = (props: any) => {
         ),
         vertical: true,
         subTitle: (
-          <p className="flex">
+          <p className="flex justify-between">
             <span className="text-[.28rem] text-[#666] mr-[.4rem]">
               {item.address}
             </span>
-            <i className="iconfont icon-shanchu text-[.3rem] text-[#878787]"></i>
+            <i
+              onClick={(e) => deleteItem(e, { ...item, title: attrKey })}
+              className="iconfont icon-shanchu text-[.3rem] text-[#878787]"
+            ></i>
           </p>
         ),
       });
     });
     return arr;
   });
-  function addWhiteList(e: any, crt: { val: string,info:any }) {
-    e.stopPropagation();
-    Navigate(`add`, {
-      state: {
-        headTitle: `新增白名单地址${crt?.val}`,
-        crt: {
-          type: WhiteListInfo["add"],
-          ...crt.info
+  function addWhiteList(e: any, crt: { val: string; info: any }) {
+    stop(e, () => {
+      Navigate(`add`, {
+        state: {
+          headTitle: `新增白名单地址${crt?.val}`,
+          crt: {
+            type: WhiteListInfo["add"],
+            parentInfo: parentInfo,
+            ...crt.info,
+          },
         },
-      },
+      });
     });
   }
-  function deleteWhiteListUrl(e: any, crt: any) {
-    e.stopPropagation();
-    setVisible(() => !visible);
-    setDeleteItemCrt(() => crt);
-  }
   // 删除白名单地址
-  async function deleteItem() {
-    let deleteRes = await DeleteWithdrawAddress("");
-    setVisible(() => !visible);
+  function deleteItem(e: any, crt: object) {
+    stop(e, () => {
+      setDeleteItemCrt(crt);
+      setVisible(() => !visible);
+    });
+  }
+  // 删除确认
+  function deleteItemSubmit(crt: { id: string }) {
+    DeleteWithdrawAddress(crt.id).then((res) => {
+      Toast.show({
+        content: res.message,
+      });
+      if (res.status) {
+        setVisible(() => !visible);
+        props?.refreshe?.();
+      }
+    });
   }
   return (
     <>
@@ -177,7 +212,7 @@ const DrawalMoney = (props: any) => {
       <PopupComp
         visible={visible}
         crt={deleteItemCrt}
-        ok={deleteItem}
+        ok={deleteItemSubmit}
         cancel={() => setVisible(() => !visible)}
       />
     </>
@@ -201,12 +236,12 @@ const PopupComp = memo(
         <ul>
           <li className="grid h-[1.24rem] bg-[#fff] text-[.24rem] text-[#666]  place-items-center border-b-[1px] border-b-[#dbdbdb]">
             删除{props?.crt?.title ?? "--"}白名单地址:【
-            {props?.crt?.addr ?? "--"}】
+            {props?.crt?.note ?? "--"}】
           </li>
           <li
             onClick={(e) => {
               e.stopPropagation();
-              props.ok?.();
+              props.ok?.(props.crt);
             }}
             className="grid h-[1.02rem] bg-[#fff] text-[.32rem] text-[#E84335] font-[700] place-items-center"
           >

@@ -17,9 +17,7 @@ import {
 } from "@/Api";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
-  console.log(urlParams);
   let { state: urlInof }: any = useLocation();
-  console.log(urlInof);
   let navigate = useNavigate();
   let WhiteListEnum1 = JSON.parse(JSON.stringify(WhiteListEnum));
   const HeadInfo = Object.assign(HeadConfig, {
@@ -45,42 +43,43 @@ const OpenOrCloseWhiteList = (props: any) => {
     return obj;
   });
   // 提交
-  function submitCb({ values }: any) {
+  async function submitCb({ values }: any) {
     if (urlParams.flag == "add") {
-      let googleToken: any = VerifyGoogle(
+      let googleToken: any = await VerifyGoogle(
         values.googleCode,
         OperationIdEnum["whiteListAdd"]
       );
-      let assetsToken: any = VerifyAssetsPassword({
+      let assetsToken: any = await VerifyAssetsPassword({
         assetsPwd: values.assetsPwd,
         operationId: OperationIdEnum["whiteListAdd"],
       });
-      let emailToken: any = VerifyEmail(
+      let emailToken: any = await VerifyEmail(
         values.emailCode,
         OperationIdEnum["whiteListAdd"]
       );
-      AddWithdrawAddress(
+      let res = await AddWithdrawAddress(
         {
-          currencyId: urlInof.currencyId,
-          currencyChain: urlInof.currencyChain,
+          currencyId: urlInof.crt.currencyId,
+          currencyChain: urlInof.crt.currencyChain,
           address: values.addr,
           note: values.notes,
         },
         {
-          "Assets-Password-Token": googleToken["value"],
-          "Google-Auth-Token": assetsToken["value"],
+          "Assets-Password-Token": assetsToken["value"],
+          "Google-Auth-Token": googleToken["value"],
           "Email-Token": emailToken["value"],
         }
-      ).then((res) => {
-        if (res.status) {
-          Toast.show({
-            content: "添加成功！",
-          });
-          setTimeout(() => {
-            navigate("/my/white-list", { replace: true });
-          }, 3000);
-        }
+      );
+
+      Toast.show({
+        content: res.message,
       });
+      if (res.status) {
+        setTimeout(() => {
+          navigate("/my/white-list", { replace: true, state: urlInof.crt?.parentInfo });
+        }, 3000);
+      }
+
       return;
     }
     Promise.all([
