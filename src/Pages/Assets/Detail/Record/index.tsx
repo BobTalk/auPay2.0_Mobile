@@ -17,6 +17,7 @@ import { HeadConfig } from "@/Assets/config/head";
 import { FindTradeRecordList } from "@/Api";
 import { timeFormate } from "@/utils/base";
 import { cloneDeep } from "lodash";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 
 const Record = () => {
   let headData = Object.assign(HeadConfig, {
@@ -43,7 +44,9 @@ const Record = () => {
     beginTime: undefined,
     endTime: undefined,
   });
+  let [stop] = useStopPropagation();
   let [crtPagination, setCrtpagination] = useState<any>({});
+  let [isFilterExc , setIsFilterExc] = useState(false)
   let [dateVisible, setDateVisible] = useState(false);
   let [endDateVisible, setEndDateVisible] = useState(false);
   let [currencyVisible, setCurrencyVisible] = useState(false);
@@ -71,16 +74,6 @@ const Record = () => {
     setFilterData({ ...filterData, date: t });
     setConditions((val: any) => ({ ...val, endTime: t }));
     setCopyConditions(cpTime);
-    // getTradeRecord({
-    //   ...recordPagination,
-    //   conditions: {
-    //     ...conditions,
-    //     tradeType: bussionFilter,
-    //     endTime: t,
-    //   },
-    // }).then((res) => {
-    //   interfaceInfoFormat(res);
-    // });
   };
   const currencyConfirm = (v: any) => {
     setFilterData({ ...filterData, currency: currencyFil(v[0]) });
@@ -90,23 +83,13 @@ const Record = () => {
       currencyChain: valSplit[1] ?? undefined,
       currencyId: valSplit[0] ?? undefined,
     }));
-    // getTradeRecord({
-    //   ...recordPagination,
-    //   conditions: {
-    //     ...conditions,
-    //     tradeType: bussionFilter,
-    //     currencyChain: valSplit[1] ? +valSplit[1] : undefined,
-    //     currencyId: +valSplit[0] ?? undefined,
-    //   },
-    // }).then((res) => {
-    //   interfaceInfoFormat(res);
-    // });
   };
   const filter = (e: any, k: String) => {
-    e.stopPropagation();
-    if (k === "date") return setDateVisible(true);
-    if (k === "currency") return setCurrencyVisible(true);
-    if (k === "bussion") return setBussionVisible(true);
+    stop(e, () => {
+      if (k === "date") return setDateVisible(true);
+      if (k === "currency") return setCurrencyVisible(true);
+      if (k === "bussion") return setBussionVisible(true);
+    });
   };
   const close = (k: any, event: any) => {
     event.stopPropagation();
@@ -122,6 +105,11 @@ const Record = () => {
       }));
       return;
     }
+    setConditions((val: any) => ({
+      ...val,
+      currencyChain: undefined,
+      currencyId: undefined,
+    }));
     let filterDataT: any = JSON.parse(JSON.stringify(filterData));
     filterDataT[k] = undefined;
     setFilterData(filterDataT);
@@ -143,14 +131,21 @@ const Record = () => {
     if (!hasLoadMore) return;
     setRecordPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));
   }
-  function interfaceInfoFormat(res: {
-    pageNo: any;
-    pageSize: any;
-    total: any;
-    data: any;
-  }) {
+  function interfaceInfoFormat(
+    res: {
+      pageNo: any;
+      pageSize: any;
+      total: any;
+      data: any;
+    },
+    isClear?: boolean
+  ) {
     let { pageNo, pageSize, total, data } = res;
-    setCapital((val: any[]) => val.concat(data));
+    if (isClear) {
+      setCapital(data);
+    } else {
+      setCapital((val: any[]) => val.concat(data));
+    }
     setCrtpagination(() => ({ pageNo, pageSize, total }));
     setHasLoadMore(() => pageSize * pageNo < total);
   }
@@ -167,14 +162,26 @@ const Record = () => {
         tradeType: bussionFilter,
       },
     }).then((res) => {
+      setIsFilterExc(true)
       interfaceInfoFormat(res);
     });
+  }, [recordPagination]);
+  useLayoutEffect(() => {
+    if(!isFilterExc) return
+    getTradeRecord({
+      ...recordPagination,
+      conditions: {
+        ...conditions,
+        tradeType: bussionFilter,
+      },
+    }).then((res) => {
+      interfaceInfoFormat(res, true);
+    });
   }, [
-    recordPagination,
-    bussionFilter,
     conditions.currencyChain,
     conditions.currencyId,
     conditions.endTime,
+    bussionFilter
   ]);
   function bussionConfirm(val: any) {
     setBussionFilter(val[0]);
@@ -293,44 +300,50 @@ const Record = () => {
         precision="second"
         onConfirm={endDateConfirm}
       />
-      <ul
+      <div
         style={{
-          height: `calc(100vh - ${headerAndNavH}px)`,
+          height: `calc(100vh - ${headerAndNavH}px - 0.3rem)`,
         }}
-        className="assets_detail_record overflow-y-auto"
       >
-        {capital?.map((item: any) => (
-          <li onClick={(e) => getInfo(e, item)}>
-            <div className="assets_detail_record_left">
-              <img src={item?.tradeType === 1 ? DepositImg : DrawImg} alt="" />
-              <div className="assets_detail_record_left_order">
-                <p>{item.id}</p>
-                <span>
-                  {timeFormate(item.createTime, "YYYY-MM-DD HH:mm:ss")}
-                </span>
+        <ul className="assets_detail_record h-[inherit] overflow-y-auto">
+          {capital?.map((item: any) => (
+            <li onClick={(e) => getInfo(e, item)} key={item.id}>
+              <div className="assets_detail_record_left">
+                <img
+                  src={item?.tradeType === 1 ? DepositImg : DrawImg}
+                  alt=""
+                />
+                <div className="assets_detail_record_left_order">
+                  <p>{item.id}</p>
+                  <span>
+                    {timeFormate(item.createTime, "YYYY-MM-DD HH:mm:ss")}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="assets_detail_record_right">
-              <p>{item.amount} USDT</p>
-              <span></span>
-            </div>
-          </li>
-        ))}
-        <InfiniteScroll
-          loadMore={loadMore}
-          threshold={30}
-          hasMore={hasLoadMore}
-        >
-          {hasLoadMore ? (
-            <>
-              <span>加载中</span>
-              <DotLoading />
-            </>
-          ) : (
-            <span>--- {capital.length ? "我是有底线的" : "暂无数据"} ---</span>
-          )}
-        </InfiniteScroll>
-      </ul>
+              <div className="assets_detail_record_right">
+                <p>{item.amount} USDT</p>
+                <span></span>
+              </div>
+            </li>
+          ))}
+          <InfiniteScroll
+            loadMore={loadMore}
+            threshold={30}
+            hasMore={hasLoadMore}
+          >
+            {hasLoadMore ? (
+              <>
+                <span>加载中</span>
+                <DotLoading />
+              </>
+            ) : (
+              <span>
+                --- {capital.length ? "我是有底线的" : "暂无数据"} ---
+              </span>
+            )}
+          </InfiniteScroll>
+        </ul>
+      </div>
     </div>
   );
 };

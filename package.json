@@ -149,6 +149,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/crypto-js": "^4.1.2",
     "@types/lodash": "^4.14.198",
     "http-proxy-middleware": "^2.0.6",
