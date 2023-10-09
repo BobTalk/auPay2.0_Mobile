@@ -1,0 +1,5 @@
+.aspect-square{
+  :global(.adm-image-img){
+    object-fit: contain !important;
+  }
+}
