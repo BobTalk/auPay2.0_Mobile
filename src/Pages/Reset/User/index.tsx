@@ -2,18 +2,23 @@ import PublicHead from "@/Components/PublicHead";
 import { useNavigate } from "react-router-dom";
 import { Form, Input, Button } from "antd-mobile";
 import { HeadConfig } from "@/Assets/config/head";
+import "./index.scss";
 const User = () => {
-  const headData = Object.assign(HeadConfig, { title: "", back: "/login" });
+  const headData = Object.assign(HeadConfig, { 
+    title: "", 
+    back: "/login",
+    className:'p-[.32rem_.3rem]'
+  });
   const navigate = useNavigate();
   const onFinish = (values: Object) => {
     console.log("登陆提交数据" + values);
     navigate("/reset/verify");
   };
   return (
-    <div className="login_wrap px-[.3rem]">
+    <div className="-login_wrap">
       <PublicHead {...headData} />
       <p className="reset_tit">重置登录密码</p>
-      <Form className="login_form mx-[.1rem]" layout="horizontal" onFinish={onFinish}>
+      <Form className="login_form px-[.4rem]" layout="horizontal" onFinish={onFinish}>
         <Form.Item>
           <p className="login_form_label">用户名</p>
           <Form.Item

@@ -33,8 +33,8 @@ const Login = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
     back: "/",
-    className:'p-[.32rem_.3rem] h-auto'
-  });                 
+    className: "p-[.32rem_.3rem] h-auto",
+  });
   const navigate = useNavigate();
   const formRef: any = useRef(null);
   const closePassword = () => {
@@ -77,8 +77,11 @@ const Login = () => {
         navigate("/home");
       });
   };
-  const forget = () => {
-    navigate("/reset/user");
+  const forget = (e: any) => {
+    console.log(e)
+    stop(e, () => {
+      navigate("/reset/user");
+    });
   };
   useEffect(() => {
     let Hh = JHeader.current?.getBoundingClientRect()?.height ?? 0;

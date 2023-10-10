@@ -3,28 +3,26 @@ import { useNavigate } from "react-router-dom";
 import PublicHead from "@/Components/PublicHead";
 import { Form, Input, Button } from "antd-mobile";
 import { HeadConfig } from "@/Assets/config/head";
+import './index.scss'
+import { useCountDown } from "@/Hooks/Countdown";
+import PublicToast from "@/Components/PublicToast";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Verify = () => {
-  let headData = Object.assign(HeadConfig, { title: "", back: "/reset/user" });
+  let headData = Object.assign(HeadConfig, { title: "", back: "/reset/user",className:'p-[.32rem_.3rem]' });
   const navigate = useNavigate();
   let codeTimer: any = null;
-  const [codeData, setCodeData] = useState({
-    timer: null,
-    status: false,
-    time: 60,
-  });
-  const getEmailCode = () => {
-    codeTimer = setInterval(codeTime, 1000);
-  };
-  const codeTime = () => {
-    setCodeData((codeData) => ({
-      ...codeData,
-      status: true,
-      time: codeData.time - 1,
-    }));
-  };
-  useEffect(() => {
-    if (codeData.time < 1) return closeCodeTime();
-  }, [codeData]);
+  let [stop] = useStopPropagation();
+  let [codeMessage, setCodeMessage] = useState("获取验证码");
+  let { start, count: timeDown } = useCountDown(
+    59,
+    () => {
+      setCodeMessage(`${timeDown}s`);
+    },
+    () => {
+      setCodeMessage("获取验证码");
+    }
+  );
+
   useEffect(() => {
     return () => {
       closeCodeTime();
@@ -32,27 +30,30 @@ const Verify = () => {
   }, []);
   const closeCodeTime = () => {
     clearInterval(codeTimer);
-    setCodeData({
-      timer: null,
-      status: false,
-      time: 60,
-    });
+
   };
   const onFinish = (values: Object) => {
     console.log("登陆提交数据" + values);
     navigate("/reset/new");
   };
+  function getEmailCode(event:any): void {
+    stop(event, () => {
+      if (codeMessage !== "获取验证码") return;
+      start();
+    });
+  }
+
   return (
-    <div className="login_wrap px-[.3rem]">
+    <div className="-login_wrap ">
       <PublicHead {...headData} />
       <p className="reset_tit">安全验证</p>
       <Form
-        className="login_form reset_form mx-[.1rem]"
+        className="login_form reset_form px-[.4rem]"
         layout="horizontal"
         onFinish={onFinish}
       >
         <Form.Item>
-          <p className="login_form_label login_form_label_max">
+          <p className="login_form_label login_form_label_max whitespace-nowrap">
             js****@yeah.net
           </p>
         </Form.Item>
@@ -68,13 +69,9 @@ const Verify = () => {
               placeholder="请输入邮箱验证码"
             />
           </Form.Item>
-          {codeData.status ? (
-            <p className="login_form_get_code">{codeData.time} s</p>
-          ) : (
             <p onClick={getEmailCode} className="login_form_get_code">
-              获取验证码
+              {codeMessage}
             </p>
-          )}
         </Form.Item>
         <Form.Item>
           <p className="login_form_label">Google验证</p>

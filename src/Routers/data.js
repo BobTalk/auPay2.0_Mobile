@@ -32,9 +32,9 @@ const RouteList = [
   { label: '登陆', isAuth: false, path: 'login', element: <Login /> },
   { label: '注册', isAuth: false, path: 'register', element: <Register /> },
   {
-    label: '重置密码', isAuth: true, path: 'reset', element: <Reset />,
+    label: '重置密码', isAuth: false, path: 'reset', element: <Reset />,
     children: [
-      { label: '重置密码_用户名', isAuth: true, path: 'user', element: <ResetUser /> },
+      { label: '重置密码_用户名', isAuth: false, path: 'user', element: <ResetUser /> },
       { label: '重置密码_安全验证', isAuth: true, path: 'verify', element: <ResetVerify /> },
       { label: '重置密码_设置新密码', isAuth: true, path: 'new', element: <ResetNew /> },
       { label: '重置密码_回执', isAuth: true, path: 'receipt', element: <ResetReceipt /> }
