@@ -35,6 +35,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   const [isClear, setIsClear] = useState(false);
   const [visible, setVisible] = useState(false);
   const inputRef: any = useRef();
+  const inputCompRef: any = useRef();
   const valChange = debounce((val) => {
     setIsClear(() => !!val);
     if (dataType(props.onChange) === "function") {
@@ -43,6 +44,11 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
       dataType(props.input) === "function" && props.input?.(val, val);
     }
   }, 1000);
+  const pwdChange = (value: string) => {
+    props?.formRef?.current?.setFieldValue(props["name"], value);
+    props?.formRef?.current?.validateFields([props["name"]]);
+  };
+
   const selectChange = (e: any) => {
     e.stopPropagation();
     props.click?.(e);
@@ -61,6 +67,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   };
   return (
     <div
+      ref={inputCompRef}
       className={mergeClassName(
         styleScope["input-module"],
         `${props?.className ?? ""}`
@@ -91,6 +98,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
                 maxLength={props.maxLength}
                 minLength={props.minLength}
                 defaultValue={props["value"]}
+                onChange={pwdChange}
                 disabled={props.disabled}
                 type={visible ? "text" : "password"}
               />
@@ -182,9 +190,9 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
 //   name: undefined,
 //   rules: [],
 // };
-export default memo(PublicInput,(prv,next)=>{
-  if(prv.isRender){
-    return false
+export default memo(PublicInput, (prv, next) => {
+  if (prv.isRender) {
+    return false;
   }
-  return prv.value == next.value
+  return prv.value == next.value;
 });

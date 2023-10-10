@@ -1,16 +1,13 @@
 import { UpdatePassword } from "@/Api";
 import { clearSession } from "@/utils/base";
 import { Button, Form, Input, Toast } from "antd-mobile";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import '../../../Assets/style/form.scss';
+import "../../../Assets/style/form.scss";
 const LoginPwd = () => {
-  const oldPwd = useRef<any>();
-  const newPwd = useRef<any>();
-  const confirmPwd = useRef<any>();
   let navigate = useNavigate();
   // 修改登陆密码
-  function submitCb({ values }: any) {
+  function submitCb(values: any) {
     UpdatePassword({
       oldPassword: values.oldPwd,
       newPassword: values.confirmPwd,
@@ -27,7 +24,7 @@ const LoginPwd = () => {
           }, 3000);
         }
       })
-      .catch((err) => {});
+      .catch(() => {});
   }
   const [formInitVal, setFormInitVal] = useState({
     oldPwd: "",
@@ -70,6 +67,7 @@ const LoginPwd = () => {
   };
   return (
     <Form
+      className="reset-form"
       style={{
         margin: "0 .3rem",
       }}

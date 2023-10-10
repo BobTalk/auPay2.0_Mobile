@@ -4,7 +4,7 @@ import { InfoSecurityTip, InfoSecurity } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Input, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { HeadConfig } from "@/Assets/config/head";
 import { getSession } from "@/utils/base";
 import {
@@ -18,6 +18,7 @@ import {
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
   let navigate = useNavigate();
+  let formRef = useRef();
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   let InfoSecurity1 = JSON.parse(JSON.stringify(InfoSecurity));
   let [emailBtn, setEmailBtn] = useState(false);
@@ -29,6 +30,11 @@ const ResetPwd = (props: any) => {
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   let userInfo = getSession("userInfo");
+  const InputChinaName: any = {
+    emailCode: "邮箱验证码",
+    GoogleCode: "Google验证码",
+    assetsPwd: "资金密码",
+  };
   let [formInitVal, setFormInitVal] = useState<{
     email?: string;
     emailCode?: string;
@@ -92,6 +98,12 @@ const ResetPwd = (props: any) => {
       }
     });
   }
+  function checkPwd({ field }: any, value: string) {
+    if (!value) {
+      return Promise.reject(new Error(`${InputChinaName[field]}不能为空`));
+    }
+    return Promise.resolve();
+  }
   function getEMailCode(e: any) {
     e.stopPropagation();
     if (emailBtn) return;
@@ -111,6 +123,7 @@ const ResetPwd = (props: any) => {
         </p>
       ) : null}
       <PublicForm
+        ref={formRef}
         style={{
           margin: "0 .3rem",
         }}
@@ -148,14 +161,11 @@ const ResetPwd = (props: any) => {
         <PublicInput
           key="emailCode"
           name="emailCode"
-          value={formInitVal.emailCode}
           placeholder="请输入邮箱验证码"
-          onChange={(value: string) =>
-            setFormInitVal((init: {}) => ({ ...init, emailCode: value }))
-          }
           inputStyle={{
             "--text-align": "right",
           }}
+          formRef={formRef}
           inputBoxStyle={{
             backgroundColor: "#fff",
             paddingRight: 0,
@@ -163,7 +173,7 @@ const ResetPwd = (props: any) => {
             borderBottom: "1px solid #E6E6E6",
             borderRadius: 0,
           }}
-          rules={[{ required: true, message: "邮箱验证码不能为空" }]}
+          rules={[{ required: true, message: "" }, { validator: checkPwd }]}
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
@@ -180,11 +190,9 @@ const ResetPwd = (props: any) => {
             key="assetsPwd"
             name="assetsPwd"
             type="password"
+            formRef={formRef}
             value={formInitVal.assetsPwd}
-            rules={[{ required: true, message: "资金密码不能为空" }]}
-            onChange={(value: string) =>
-              setFormInitVal((init: {}) => ({ ...init, assetsPwd: value }))
-            }
+            rules={[{ required: true, message: "" }, { validator: checkPwd }]}
             placeholder="请输入资金密码"
             inputStyle={{
               "--text-align": "right",
@@ -203,8 +211,8 @@ const ResetPwd = (props: any) => {
           <PublicInput
             key="GoogleCode"
             name="GoogleCode"
-            value={formInitVal.GoogleCode}
-            rules={[{ required: true, message: "Google验证码不能为空" }]}
+            formRef={formRef}
+            rules={[{ required: true, message: "" }, { validator: checkPwd }]}
             placeholder="请输入Google验证码"
             inputStyle={{
               "--text-align": "right",
@@ -216,9 +224,6 @@ const ResetPwd = (props: any) => {
               borderBottom: "1px solid #E6E6E6",
               borderRadius: 0,
             }}
-            onChange={(value: string) =>
-              setFormInitVal((init: {}) => ({ ...init, GoogleCode: value }))
-            }
             inputClassName="text-[.3rem] text-[#222]"
             prefix={
               <span className="text-[.3rem] text-[#222]">Google验证码</span>
