@@ -10,7 +10,7 @@ import {
   useState,
 } from "react";
 import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../../Enum";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import MoneyPwd from "./money_pwd";
 import GoogleValidator from "./google-validator";
 import LoginPwd from "./login_pwd";
@@ -20,7 +20,7 @@ import { SetUserInfo } from "@/Api";
 import { extend } from "lodash";
 import PublicForm from "@/Components/PublicForm";
 
-const EditorInfo = (props: any) => {
+const EditorInfo = () => {
   let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   const typeMap = new Map([
@@ -80,9 +80,10 @@ const EditorInfo = (props: any) => {
   });
   const [headData, setHeadData] = useState(headInfo);
   const [popupVisible, setPopupVisible] = useState(false);
-  const [defaultCountryCode, setDefaultCountryCode] = useState<any>("China");
-  const [countryCode, setCountryCode] = useState<any>();
+  const [defaultCountryCode, setDefaultCountryCode] = useState<any>(state.code);
+  const [, setCountryCode] = useState<any>();
   let CountryCodeObj = JSON.parse(JSON.stringify(CountryCode));
+  let navigate = useNavigate();
   useEffect(() => {
     if (typeMap.has(state?.type)) {
       typeMap.get(state?.type)?.(state);
@@ -108,13 +109,20 @@ const EditorInfo = (props: any) => {
     setPopupVisible(!popupVisible);
   };
   // 确认提交
-  function SubmitBtnCb({values,outOfDate}: any, CountryCode?: number) {
-    if(outOfDate === false) return
-    SetUserInfo({ mobile: CountryCode + " " + values["inputValue"] }).then((res) => {
-      Toast.show({
-        content: res.message,
-      });
-    });
+  function SubmitBtnCb({ values, outOfDate }: any, CountryCode?: number) {
+    if (outOfDate === false) return;
+    SetUserInfo({ mobile: CountryCode + " " + values["inputValue"] }).then(
+      (res) => {
+        Toast.show({
+          content: res.message,
+        });
+        if (res.status) {
+          setTimeout(() => {
+            navigate("/my/accountInfor", { state: { HeadTitle: "账户信息" } });
+          }, 3000);
+        }
+      }
+    );
   }
 
   return (

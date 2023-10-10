@@ -100,7 +100,8 @@ export const GetUserApplyApplication = () => {
   )
 }
 // 12.解绑授权应用 PUT user/unbindUserApplyApplication?id=ID
-export const UnbindUserApplyApplication = (id: string|number, headers:{}) => {
+export const UnbindUserApplyApplication = (id: string|number, headers:{ "Google-Auth-Token": string,
+"Email-Token": string}) => {
   return _http.putReq(
     {
       url: `${PublicPrefix}/unbindUserApplyApplication?id=${id}`,

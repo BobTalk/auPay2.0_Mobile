@@ -3,121 +3,17 @@ import PublicList from "@/Components/PublicList";
 import { Avatar, Popup, Toast } from "antd-mobile";
 import { memo, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { InfoType, MonetaryUnit, UnitMapNumEnum } from "../../Enum";
+import {
+  CountryCode,
+  InfoType,
+  MonetaryUnit,
+  UnitMapNumEnum,
+} from "../../Enum";
 import { mergeClassName } from "@/utils/base";
-import { cloneDeep } from "lodash";
+import { cloneDeep, forIn } from "lodash";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetUserInfo, SetUserInfo } from "@/Api";
 const AccountInformation = () => {
-  // const ListData = [
-  //   // {
-  //   //   id: "00",
-  //   //   title: "头像",
-  //   //   type: InfoType.headSculpture,
-  //   //   showArrow: true,
-  //   //   value: "imgUrl",
-  //   //   itemStyle: {
-  //   //     padding: ".08rem 0",
-  //   //     "--border-inner": 0,
-  //   //     borderBottom: "1px solid rgba(230,230,230,1)",
-  //   //     fontSize: ".3rem",
-  //   //     color: "#222",
-  //   //   },
-  //   //   extra: <AvatarComp click={(rs: boolean) => avatarClickEvent(rs)} />,
-  //   // },
-  //   // {
-  //   //   id: "01",
-  //   //   title: "昵称",
-  //   //   type: InfoType.nickName,
-  //   //   value: "西尾猫的世界",
-  //   //   showArrow: true,
-  //   //   maxLength: 12,
-  //   //   itemStyle: {
-  //   //     padding: ".08rem 0",
-  //   //     "--border-inner": 0,
-  //   //     borderBottom: "1px solid rgba(230,230,230,1)",
-  //   //     fontSize: ".3rem",
-  //   //     color: "#222",
-  //   //   },
-  //   //   extra: (
-  //   //     <span className="mr-[.15rem] text-[.3rem] text-[#999]">
-  //   //       西尾猫的世界
-  //   //     </span>
-  //   //   ),
-  //   // },
-  //   {
-  //     id: "05",
-  //     title: "用户名",
-  //     showArrow: false,
-  //     type: InfoType.userName,
-  //     value: "username",
-  //     itemStyle: {
-  //       padding: ".08rem 0",
-  //       "--border-inner": 0,
-  //       borderBottom: "1px solid rgba(230,230,230,1)",
-  //       fontSize: ".3rem",
-  //       color: "#222",
-  //     },
-  //     extra: (
-  //       <span className="mr-[.15rem] text-[.3rem] text-[#999]">
-  //         西尾猫的世界
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     id: "06",
-  //     title: "邮箱",
-  //     type: InfoType.eMail,
-  //     showArrow: false,
-  //     value: "email",
-  //     itemStyle: {
-  //       padding: ".08rem 0",
-  //       "--border-inner": 0,
-  //       borderBottom: "1px solid rgba(230,230,230,1)",
-  //       fontSize: ".3rem",
-  //       color: "#222",
-  //     },
-  //     extra: (
-  //       <span className="mr-[.15rem] text-[.3rem] text-[#999]">
-  //         12838923834@qq.com
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     id: "07",
-  //     title: "联系方式",
-  //     type: InfoType.phone,
-  //     showArrow: true,
-  //     value: "mobile",
-  //     itemStyle: {
-  //       padding: ".08rem 0",
-  //       "--border-inner": 0,
-  //       borderBottom: "1px solid rgba(230,230,230,1)",
-  //       fontSize: ".3rem",
-  //       color: "#222",
-  //     },
-  //     extra: (
-  //       <span className="mr-[.15rem] text-[.3rem] text-[#999]">
-  //         13193898989
-  //       </span>
-  //     ),
-  //   },
-  //   {
-  //     id: "08",
-  //     title: "货币单位",
-  //     type: InfoType.unit,
-  //     showArrow: true,
-  //     value: "USD",
-  //     itemStyle: {
-  //       padding: ".08rem 0",
-  //       "--border-inner": 0,
-  //       borderBottom: "1px solid rgba(230,230,230,1)",
-  //       fontSize: ".3rem",
-  //       color: "#222",
-  //     },
-  //     extra: <span className="mr-[.15rem] text-[.3rem] text-[#999]">USD</span>,
-  //   },
-  // ];
   let [listInfo, setListInfo] = useState<Array<any>>([]);
   const MoneyUnit = JSON.parse(JSON.stringify(MonetaryUnit ?? "{}"));
   const MpUnit = JSON.parse(JSON.stringify(UnitMapNumEnum));
@@ -136,7 +32,7 @@ const AccountInformation = () => {
       setListInfo(() => listInfo);
     });
     console.log(listInfo);
-    
+
     setPopupVisible(() => false);
   };
   const EnumMap = new Map([
@@ -176,14 +72,35 @@ const AccountInformation = () => {
     if (InfoType["headSculpture"] == crt["type"]) return;
     let crtCopy = cloneDeep(crt);
     Reflect.deleteProperty(crtCopy, "extra");
-    crt.showArrow && navigator("/my/editorInfo", { state: crtCopy });
+    console.log(crtCopy);
+    let [code, phone] = crtCopy.value.split(" ");
+    crt.showArrow &&
+      navigator("/my/editorInfo", {
+        state: {
+          code: codeMapCountry(code) || "China",
+          ...crtCopy,
+          value: phone,
+        },
+      });
   };
   let itemClickCb = (crt: any) => {
     EnumMap.get(MoneyUnit[crt["key"]])?.(crt);
   };
+  function codeMapCountry(code: number): string {
+    let codeList = JSON.parse(JSON.stringify(CountryCode));
+    let country: string = "";
+    for (const key in codeList) {
+      if (Object.prototype.hasOwnProperty.call(codeList, key)) {
+        const element = codeList[key];
+        if (element === code) {
+          country = key;
+        }
+      }
+    }
+    return country;
+  }
   let getPageInfo = async () => {
     let userInfo = await GetUserInfo();
-    console.log("用户信息：", userInfo);
     const ListData = [
       {
         id: "05",

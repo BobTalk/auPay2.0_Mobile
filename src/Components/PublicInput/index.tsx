@@ -45,6 +45,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
     }
   }, 1000);
   const pwdChange = (value: string) => {
+    if (!props["name"]) return;
     props?.formRef?.current?.setFieldValue(props["name"], value);
     props?.formRef?.current?.validateFields([props["name"]]);
   };
