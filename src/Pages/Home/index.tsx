@@ -12,6 +12,7 @@ import {
   ViewAnnouncement,
 } from "@/Api";
 import PropertyComp from "../Property";
+import PublicScroll from "@/Components/PublicScroll";
 
 const Home = () => {
   let [hide, setHide] = useState(false);
@@ -30,7 +31,7 @@ const Home = () => {
   async function initPageInfo() {
     let userInfo = await GetUserInfo();
     let notice = await ViewAnnouncement({ pageNo: 1, pageSize: 10 });
-    setSession('userInfo', userInfo)
+    setSession("userInfo", userInfo);
     setNotice(notice);
     setUserInfo(userInfo);
   }
@@ -40,7 +41,7 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <PublicScroll>
       <div className={styleScope["home_wrap"]}>
         <div
           className={mergeClassName(styleScope["home_banner"], "px-[.3rem]")}
@@ -69,7 +70,7 @@ const Home = () => {
           </ul>
         </div>
 
-        <div className="px-[.3rem]">
+        <div className="p-[0_.3rem_.3rem]">
           <div className={styleScope["home_news"]}>
             <p>
               最近一笔交易记录：2020-09-17 09:29:08
@@ -130,12 +131,11 @@ const Home = () => {
               </Link>
             </div>
           </div>
-
           <PropertyComp />
         </div>
       </div>
       <PublicFoo />
-    </>
+    </PublicScroll>
   );
 };
 

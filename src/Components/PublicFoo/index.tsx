@@ -28,6 +28,7 @@ const PublicFoo = (props: any) => {
       )}
       style={props.style}
     >
+      <div className="h-full"></div>
       <ul
         className="public_foo_nav"
         style={{

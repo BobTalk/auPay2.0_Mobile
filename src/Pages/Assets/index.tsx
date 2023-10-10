@@ -5,10 +5,12 @@ import { useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { mergeClassName } from "@/utils/base";
 import PropertyComp from "../Property";
+import PublicScroll from "@/Components/PublicScroll";
 const Assets = () => {
   let headData = Object.assign(HeadConfig, {
     title: "资产",
     back: "",
+    className: "text-[#333] p-[.32rem_.3rem]",
   });
   const navigate = useNavigate();
   const toDetail = (crt: any) => {
@@ -25,7 +27,7 @@ const Assets = () => {
     });
   };
   return (
-    <>
+    <PublicScroll>
       <div
         className={mergeClassName(styleScope["assets_w"], "p-[0_.3rem_.3rem]")}
       >
@@ -38,13 +40,13 @@ const Assets = () => {
           </div>
           <i className={styleScope["assets_banner_line"]}></i>
           <span className={styleScope["assets_banner_record"]}>
-            最近交易：2020-09-17  充币 13USDT-TRC20
+            最近交易：2020-09-17 充币 13USDT-TRC20
           </span>
         </div>
         <PropertyComp onClick={(crt: any) => toDetail(crt)} />
       </div>
       <PublicFoo />
-    </>
+    </PublicScroll>
   );
 };
 

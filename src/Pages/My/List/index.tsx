@@ -10,6 +10,7 @@ import { memo, useState } from "react";
 import { InfoSecurity } from "../../Enum";
 import { Logout } from "@/Api";
 import { replace } from "lodash";
+import PublicScroll from "@/Components/PublicScroll";
 const MyList = () => {
   let navigate = useNavigate();
   let listInfo = [
@@ -244,11 +245,11 @@ const MyList = () => {
     setPopupVisible(!popupVisible);
     Logout().then((res) => {
       removeSession("token");
-      navigate("/login",{replace:true});
+      navigate("/login", { replace: true });
     });
   };
   return (
-    <>
+    <PublicScroll>
       <div
         className={mergeClassName(
           styleScope["list_box"],
@@ -324,7 +325,7 @@ const MyList = () => {
         />
       </div>
       <PublicFoo />
-    </>
+    </PublicScroll>
   );
 };
 const Menu = (props: any) => {
