@@ -91,7 +91,6 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
                 maxLength={props.maxLength}
                 minLength={props.minLength}
                 defaultValue={props["value"]}
-                onChange={valChange}
                 disabled={props.disabled}
                 type={visible ? "text" : "password"}
               />

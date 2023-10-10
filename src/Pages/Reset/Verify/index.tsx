@@ -1,17 +1,24 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import PublicHead from "@/Components/PublicHead";
 import { Form, Input, Button } from "antd-mobile";
 import { HeadConfig } from "@/Assets/config/head";
-import './index.scss'
+import "./index.scss";
 import { useCountDown } from "@/Hooks/Countdown";
-import PublicToast from "@/Components/PublicToast";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { GetUserBlurEmail, SendEmailCode, SendResetPasswordEmailCode } from "@/Api";
+import { OperationIdEnum } from "@/Pages/Enum";
 const Verify = () => {
-  let headData = Object.assign(HeadConfig, { title: "", back: "/reset/user",className:'p-[.32rem_.3rem]' });
+  let headData = Object.assign(HeadConfig, {
+    title: "",
+    back: "/reset/user",
+    className: "p-[.32rem_.3rem]",
+  });
   const navigate = useNavigate();
+  let { state: urlParams } = useLocation();
   let codeTimer: any = null;
   let [stop] = useStopPropagation();
+  let [likeEmail, setLikeEmail] = useState();
   let [codeMessage, setCodeMessage] = useState("获取验证码");
   let { start, count: timeDown } = useCountDown(
     59,
@@ -22,24 +29,23 @@ const Verify = () => {
       setCodeMessage("获取验证码");
     }
   );
-
+  function getEmail() {
+    GetUserBlurEmail(urlParams.username).then((res) => {
+      setLikeEmail(res.value);
+    });
+  }
   useEffect(() => {
-    return () => {
-      closeCodeTime();
-    };
+    getEmail();
   }, []);
-  const closeCodeTime = () => {
-    clearInterval(codeTimer);
-
-  };
   const onFinish = (values: Object) => {
-    console.log("登陆提交数据" + values);
-    navigate("/reset/new");
+    console.log(values);
+    navigate("/reset/new",{state: {...values,username:urlParams.username }});
   };
-  function getEmailCode(event:any): void {
+  function getEmailCode(event: any): void {
     stop(event, () => {
       if (codeMessage !== "获取验证码") return;
       start();
+      SendResetPasswordEmailCode(urlParams.username).then()
     });
   }
 
@@ -54,7 +60,7 @@ const Verify = () => {
       >
         <Form.Item>
           <p className="login_form_label login_form_label_max whitespace-nowrap">
-            js****@yeah.net
+            {likeEmail}
           </p>
         </Form.Item>
         <Form.Item>
@@ -69,15 +75,15 @@ const Verify = () => {
               placeholder="请输入邮箱验证码"
             />
           </Form.Item>
-            <p onClick={getEmailCode} className="login_form_get_code">
-              {codeMessage}
-            </p>
+          <p onClick={getEmailCode} className="login_form_get_code">
+            {codeMessage}
+          </p>
         </Form.Item>
         <Form.Item>
           <p className="login_form_label">Google验证</p>
           <Form.Item
             noStyle
-            name="username"
+            name="googleCode"
             rules={[{ required: true, message: "Google验证码不能为空" }]}
           >
             <Input

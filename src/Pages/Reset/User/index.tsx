@@ -10,9 +10,8 @@ const User = () => {
     className:'p-[.32rem_.3rem]'
   });
   const navigate = useNavigate();
-  const onFinish = (values: Object) => {
-    console.log("登陆提交数据" + values);
-    navigate("/reset/verify");
+  const onFinish = ({username}:{[key:string]:any}) => {
+    navigate("/reset/verify", {state: {username}});
   };
   return (
     <div className="-login_wrap">

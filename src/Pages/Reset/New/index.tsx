@@ -1,14 +1,37 @@
 import PublicHead from "@/Components/PublicHead";
-import { useNavigate } from "react-router-dom";
-import { Form, Input, Button } from "antd-mobile";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Form, Input, Button, Toast } from "antd-mobile";
 import { HeadConfig } from "@/Assets/config/head";
-import './index.scss'
+import "./index.scss";
+import { ResetPassword } from "@/Api";
 const New = () => {
-  let headData = Object.assign(HeadConfig, { title: "", back: "/login",className:'p-[.32rem_.3rem]' });
+  let headData = Object.assign(HeadConfig, {
+    title: "",
+    back: "/login",
+    className: "p-[.32rem_.3rem]",
+  });
   const navigate = useNavigate();
-  const onFinish = (values: Object) => {
-    console.log("登陆提交数据" + values);
-    navigate({ pathname: "/reset/receipt" }, { state: { type: "success" } });
+  let { state: urlParams } = useLocation();
+  const onFinish = (values: { newPassword: any }) => {
+    // console.log("登陆提交数据" + values);
+    ResetPassword({
+      username: urlParams.username,
+      password: values.newPassword,
+      emailCode: urlParams.code,
+      googleCode: urlParams.googleCode,
+    }).then((res) => {
+      Toast.show({
+        content: res.message,
+      });
+      if (res.status) {
+        setTimeout(() =>
+          navigate(
+            { pathname: "/reset/receipt" },
+            { state: { type: "success" } }
+          )
+        );
+      }
+    });
   };
   return (
     <div className="-login_wrap">

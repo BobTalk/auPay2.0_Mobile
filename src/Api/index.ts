@@ -298,6 +298,7 @@ export const VerifyGoogle = (googleCode: string, operationId: number) => {
     url: `${PublicPrefix}/verifyGoogle?googleCode=${googleCode}&operationId=${operationId}`,
   })
 }
+// 邮箱验证码
 export const SendEmailCode = (operationId: number) => {
   return _http.getReq({
     url: `${PublicPrefix}/sendEmailCode?operationId=${operationId}`,

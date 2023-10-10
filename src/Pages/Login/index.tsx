@@ -78,7 +78,6 @@ const Login = () => {
       });
   };
   const forget = (e: any) => {
-    console.log(e)
     stop(e, () => {
       navigate("/reset/user");
     });

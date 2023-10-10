@@ -75,7 +75,7 @@ enum WhiteListEnum {
 
 enum OperationIdEnum {
   whiteListAdd = 91,
-  whiteListOpenOrColse = 10,
+  whiteListOpenOrColse = 10
 }
 enum CurrencyTypeEnum{
   BTC='1',
