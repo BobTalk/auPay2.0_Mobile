@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { InfoSecurity } from "../../Enum";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetUserApplyApplication } from "@/Api";
-import appLogo from '../../../Assets/images/app_logo.png'
+import appLogo from "../../../Assets/images/app_logo.png";
 import styleScope from "./index.module.scss";
 
 const AppManager = (props: any) => {
@@ -19,11 +19,14 @@ const AppManager = (props: any) => {
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
-  function unBind(e: MouseEvent, crt: object) {
+  function unBind(e: MouseEvent, crt: { applicaitonId: string }) {
+    console.log("crt: ", crt);
+
     Navigate("/resetpwd", {
       state: {
         crt: {
           type: InfoSecurity["unbind"],
+          id: crt.applicaitonId,
         },
         headTitle: "解除绑定",
       },
@@ -50,7 +53,7 @@ const AppManager = (props: any) => {
               <Avatar
                 src={appLogo}
                 style={{ "--size": ".8rem", "--border-radius": ".16rem" }}
-                className={styleScope["aspect-square"]+" "+"mr-[.24rem]"}
+                className={styleScope["aspect-square"] + " " + "mr-[.24rem]"}
               />
               <p className="flex flex-col justify-center">
                 <span className="text-[.3rem] text-[#333] font-[700]">

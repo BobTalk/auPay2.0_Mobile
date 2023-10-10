@@ -1,6 +1,6 @@
 import PublicHead from "@/Components/PublicHead";
 import { useLocation, useNavigate } from "react-router-dom";
-import { InfoSecurityTip, InfoSecurity } from "../../Enum";
+import { InfoSecurityTip, InfoSecurity, OperationIdEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Input, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
@@ -11,6 +11,7 @@ import {
   ResetAssetsPassword,
   ResetGoogleAuth,
   SendEmailCode,
+  UnbindUserApplyApplication,
   VerifyAssetsPassword,
   VerifyEmail,
   VerifyGoogle,
@@ -21,6 +22,7 @@ const ResetPwd = (props: any) => {
   let formRef = useRef();
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
   let InfoSecurity1 = JSON.parse(JSON.stringify(InfoSecurity));
+  let OperationIdEnum1 = JSON.parse(JSON.stringify(OperationIdEnum));
   let [emailBtn, setEmailBtn] = useState(false);
   const HeadInfo = Object.assign(HeadConfig, {
     title: urlParams.headTitle ?? props.headTitle,
@@ -48,14 +50,34 @@ const ResetPwd = (props: any) => {
   });
   // 提交
   async function submitCb(obj: any) {
-    console.log(obj);
-    if (obj.outOfDate === false) return;
     let { emailCode, GoogleCode, assetsPwd } = obj.values;
+    if (urlParams.crt.type === "unbind") {
+      let id = OperationIdEnum1[urlParams.crt.type];
+      let email = await VerifyEmail(emailCode, id);
+      let google = await VerifyGoogle(GoogleCode, id);
+      UnbindUserApplyApplication(urlParams.crt.id, {
+        "Google-Auth-Token": google.value,
+        "Email-Token": email.value,
+      }).then((res) => {
+        Toast.show({
+          content: res.message,
+        });
+        if (res.status) {
+          setTimeout(() => {
+            navigate("/my/app-manage", { state: { headTitle: "应用管理" } });
+          }, 3000);
+        }
+      });
+      return;
+    }
+    if (obj.outOfDate === false) return;
+
     if (urlParams.crt.type === "updateGoogleValidator") {
-      let emailToken = await VerifyEmail(emailCode, 48);
+      let id = OperationIdEnum1[urlParams.crt.type];
+      let emailToken = await VerifyEmail(emailCode, id);
       let assetsPwdToken = await VerifyAssetsPassword({
         assetsPwd,
-        operationId: 48,
+        operationId: id,
       });
       if (!emailToken.status || !assetsPwdToken.status) {
         Toast.show({
@@ -106,9 +128,16 @@ const ResetPwd = (props: any) => {
   }
   function getEMailCode(e: any) {
     e.stopPropagation();
+    console.log(urlParams.crt.type);
     if (emailBtn) return;
     setEmailBtn(true);
-    SendEmailCode(urlParams.crt.type === "updateGoogleValidator" ? 48 : 47)
+    SendEmailCode(
+      urlParams.crt.type === "updateGoogleValidator"
+        ? OperationIdEnum1["updateGoogleValidator"]
+        : urlParams.crt.type === "unbind"
+        ? OperationIdEnum1["unbind"]
+        : OperationIdEnum1["updateSecurityPwd"]
+    )
       .then()
       .finally(() => {
         setTimeout(() => setEmailBtn(false), 3000);

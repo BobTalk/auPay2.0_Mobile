@@ -100,10 +100,11 @@ export const GetUserApplyApplication = () => {
   )
 }
 // 12.解绑授权应用 PUT user/unbindUserApplyApplication?id=ID
-export const UnbindUserApplyApplication = (id: string) => {
+export const UnbindUserApplyApplication = (id: string|number, headers:{}) => {
   return _http.putReq(
     {
-      url: `${PublicPrefix}/unbindUserApplyApplication?id=${id}`
+      url: `${PublicPrefix}/unbindUserApplyApplication?id=${id}`,
+      headers
     }
   )
 }
