@@ -44,17 +44,7 @@ const OpenOrCloseWhiteList = (props: any) => {
     }
     return obj;
   });
-  let [codeMessage, setCodeMessage] = useState("获取");
-  let [mask, setMask] = useState(false);
-  let { start, count: timeDown } = useCountDown(
-    59,
-    () => {
-      setCodeMessage(`${timeDown}s`);
-    },
-    () => {
-      setCodeMessage("获取");
-    }
-  );
+
   // 提交
   async function submitCb({ values }: any) {
     if (urlParams.flag == "add") {
@@ -121,15 +111,6 @@ const OpenOrCloseWhiteList = (props: any) => {
     });
   }
 
-  function getEmailCode() {
-    let id =
-      urlParams.flag == "add"
-        ? OperationIdEnum["whiteListAdd"]
-        : OperationIdEnum["whiteListOpenOrColse"];
-    start(() => {
-      SendEmailCode(id).then();
-    });
-  }
   return (
     <>
       <PublicHead {...HeadInfo} />
@@ -160,6 +141,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           <PublicInput
             placeholder="备注信息"
             name="notes"
+            delay={0}
             formRef={formRef}
             inputStyle={{
               "--text-align": "right",
@@ -179,6 +161,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           <PublicInput
             placeholder="请输入地址"
             name="addr"
+            delay={0}
             formRef={formRef}
             rules={[{ required: true, message: "地址不能为空" }]}
             inputStyle={{
@@ -197,6 +180,7 @@ const OpenOrCloseWhiteList = (props: any) => {
         ) : null}
         <PublicInput
           formRef={formRef}
+          delay={0}
           rules={[{ required: true, message: "资金密码不能为空" }]}
           placeholder="请输入资金密码"
           name="assetsPwd"
@@ -235,6 +219,7 @@ const OpenOrCloseWhiteList = (props: any) => {
         <PublicInput
           placeholder="请输入邮箱验证码"
           name="emailCode"
+          delay={0}
           formRef={formRef}
           rules={[{ required: true, message: "邮箱验证码不能为空" }]}
           inputStyle={{
@@ -250,16 +235,11 @@ const OpenOrCloseWhiteList = (props: any) => {
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
-          <p
-            onClick={getEmailCode}
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
-            color="primary"
-          >
-            {codeMessage}
-          </p>
+          <GetEmailCodeBtn urlParams={urlParams} />
         </PublicInput>
         <PublicInput
           formRef={formRef}
+          delay={0}
           rules={[{ required: true, message: "Google验证码不能为空" }]}
           placeholder="请输入Google验证码"
           name="googleCode"
@@ -280,6 +260,38 @@ const OpenOrCloseWhiteList = (props: any) => {
         ></PublicInput>
       </PublicForm>
     </>
+  );
+};
+// 获取邮箱验证码
+const GetEmailCodeBtn = (props: any) => {
+  let { urlParams } = props;
+  let [codeMessage, setCodeMessage] = useState("获取");
+  let { start, count: timeDown } = useCountDown(
+    59,
+    () => {
+      setCodeMessage(`${timeDown}s`);
+    },
+    () => {
+      setCodeMessage("获取");
+    }
+  );
+  function getEmailCode() {
+    let id =
+      urlParams.flag == "add"
+        ? OperationIdEnum["whiteListAdd"]
+        : OperationIdEnum["whiteListOpenOrColse"];
+    start(() => {
+      SendEmailCode(id).then();
+    });
+  }
+  return (
+    <p
+      onClick={getEmailCode}
+      className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
+      color="primary"
+    >
+      {codeMessage}
+    </p>
   );
 };
 OpenOrCloseWhiteList.defaultProps = {

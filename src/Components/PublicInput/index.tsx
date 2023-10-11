@@ -43,14 +43,14 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   const [visible, setVisible] = useState(false);
 
   const inputCompRef: any = useRef();
-  const valChange = (val:any) => {
+  const valChange = debounce((val:any) => {
     if (dataType(props.onChange) === "function") {
       props.onChange?.(val, val);
     } else {
       dataType(props.input) === "function" && props.input?.(val, val);
     }
     setIsClear(() => !!val);
-  }
+  }, props.delay ?? 1000)
   const pwdChange = (value: string) => {
     if (!props["name"]) return;
     props?.formRef?.current?.setFieldValue(props["name"], value);
@@ -173,6 +173,9 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
 });
 
 export default memo(PublicInput, (prv, next) => {
+  console.log('next: ', next);
+  console.log('-----input -----');
+  console.log('prv: ', prv);
   if (prv.isRender) {
     return false;
   }
