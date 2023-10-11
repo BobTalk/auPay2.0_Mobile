@@ -2,7 +2,7 @@ import { Input } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { dataType, mergeClassName } from "@/utils/base";
 import { debounce } from "lodash";
-import { forwardRef, memo, useRef, useState } from "react";
+import { forwardRef, memo, useImperativeHandle, useRef, useState } from "react";
 import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
 
 type propsVolit = {
@@ -32,18 +32,27 @@ type propsVolit = {
   type: string;
 };
 const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
+  console.log("props---input: ", props);
+  const [, setRefresh] = useState({});
+  const inputRef: any = useRef();
+  // 暴露给父级
+  useImperativeHandle(ref, () => ({
+    getVal: () => inputRef.current.nativeElement.value,
+    setVal: (val: string | undefined | number) =>
+      (inputRef.current.nativeElement.value = val),
+  }));
   const [isClear, setIsClear] = useState(false);
   const [visible, setVisible] = useState(false);
-  const inputRef: any = useRef();
+
   const inputCompRef: any = useRef();
   const valChange = debounce((val) => {
-    setIsClear(() => !!val);
     if (dataType(props.onChange) === "function") {
       props.onChange?.(val, val);
     } else {
       dataType(props.input) === "function" && props.input?.(val, val);
     }
-  }, 1000);
+    setIsClear(() => !!val);
+  }, props.delay ?? 1000);
   const pwdChange = (value: string) => {
     if (!props["name"]) return;
     props?.formRef?.current?.setFieldValue(props["name"], value);
@@ -119,7 +128,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
               className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
               style={props.inputStyle}
               placeholder={props.placeholder}
-              defaultValue={props["value"]}
+              value={props["value"]}
               maxLength={props.maxLength}
               minLength={props.minLength}
               onChange={valChange}
@@ -165,32 +174,6 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   );
 });
 
-// PublicInput.defaultProps = {
-//   top: <Outlet />,
-//   prefix: <Outlet />,
-//   bottom: <Outlet />,
-//   children: <Outlet />,
-//   style: {},
-//   placeholder: "请输入",
-//   value: undefined,
-//   disabled: false,
-//   inputStyle: {},
-//   input: () => {},
-//   className: "",
-//   isSelect: false,
-//   inputBoxStyle: {},
-//   click: () => {},
-//   inputBoxClassName: "",
-//   inputClassName: "",
-//   clearable: false,
-//   maxLength: null,
-//   minLength: 0,
-//   clearStyle: {
-//     fontSize: "1em",
-//   },
-//   name: undefined,
-//   rules: [],
-// };
 export default memo(PublicInput, (prv, next) => {
   if (prv.isRender) {
     return false;

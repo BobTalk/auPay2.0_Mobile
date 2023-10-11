@@ -358,3 +358,8 @@ export const GetCurrencyAssetsInfo = (obj:{currencyChain:number|undefined,curren
   })
 }
 
+export const GetCurrencyDrawFee = (obj:{currencyChain:number|undefined,currencyId:number })=>{
+  return _http.getReq({
+    url:`operate/sys/getCurrencyWithdrawFee?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
+  })
+}

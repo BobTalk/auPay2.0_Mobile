@@ -7,9 +7,18 @@ import PublicScroll from "@/Components/PublicScroll";
 import PublicSummary from "@/Components/PublicSummary";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { Button, Popup } from "antd-mobile";
-import { memo, useEffect, useLayoutEffect, useState } from "react";
+import {
+  createContext,
+  memo,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useLocation } from "react-router-dom";
 import { CurrencyTypeEnum } from "../Enum";
+const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
   visible: boolean;
@@ -28,9 +37,13 @@ const DrawMoney = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [addrVisible, setAddrVisible] = useState(false);
   const [drawAddr, setDrawAddr] = useState("");
+  const [drawNum, setDrawNum] = useState<string | undefined | number>(
+    undefined
+  );
+  let drawNumRef = useRef<any>();
   const [isSelect, setIsSelect] = useState(true);
   const [addrList, setAddrList] = useState([]);
-
+  const [assetsInfo, setAssetsInfo] = useState<{ [key: string]: any }>({});
   let [stop] = useStopPropagation();
   const submitDraw = () => {
     setPopupVisible(!popupVisible);
@@ -42,6 +55,24 @@ const DrawMoney = () => {
     submitDraw();
   };
 
+  async function getCurrentAssets() {
+    let currencyType = JSON.parse(JSON.stringify(CurrencyTypeEnum));
+    let title = state.title;
+    let currencyTypeCode = "";
+    for (const key in currencyType) {
+      if (Object.prototype.hasOwnProperty.call(currencyType, key)) {
+        if (title == key) {
+          currencyTypeCode = currencyType[key];
+        }
+      }
+    }
+    let [currencyId, currencyChain] = currencyTypeCode.split("-");
+    let res = await GetCurrencyAssetsInfo({
+      currencyId: +currencyId,
+      currencyChain: currencyChain ? +currencyChain : 0,
+    });
+    setAssetsInfo(() => res);
+  }
   async function getDrawAdrrList() {
     let { value } = await GetUserWithdrawAddress();
     let frs = value.map((item: { address: any; id: any }) => ({
@@ -53,6 +84,7 @@ const DrawMoney = () => {
   }
   useLayoutEffect(() => {
     getDrawAdrrList();
+    getCurrentAssets();
   }, []);
   function showSelectList(e: any) {
     stop(e, () => {
@@ -63,79 +95,91 @@ const DrawMoney = () => {
     setAddrVisible(false);
     setDrawAddr(res.title);
   }
+  function drawAll(e: any) {
+    stop(e, () => {
+      setDrawNum(assetsInfo.availableBalance);
+    });
+  }
   return (
     <PublicScroll>
       <PublicHead {...headInfo} />
       <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
-        <PublicInput
-          placeholder={`请${isSelect ? "选择" : "输入"}提币地址`}
-          className="mt-[.25rem]"
-          isSelect={isSelect}
-          value={drawAddr}
-          inputStyle={{
-            height: ".4rem",
-            fontSize: ".28rem",
-          }}
-          top={<TopScopeAddr isSelect={isSelect} />}
-        >
-          {isSelect && (
-            <i
-              onClick={(e) => showSelectList(e)}
-              className="iconfont icon-zhankai text-[.26rem]"
-            />
-          )}
-        </PublicInput>
-        <PublicInput
-          placeholder="0.00 USDT-ERC20"
-          className="mt-[.34rem]"
-          inputStyle={{
-            height: ".4rem",
-            fontSize: ".28rem",
-          }}
-          top={<TopScopeNum type={state.title} />}
-          bottom={<BottomScopeNum />}
-        >
-          <Button
-            className="text-[.26rem] text-[#1C63FF] before:bg-transparent"
-            color="primary"
-            fill="none"
+        <DrawContent.Provider value={{ ...assetsInfo }}>
+          <PublicInput
+            placeholder={`请${isSelect ? "选择" : "输入"}提币地址`}
+            className="mt-[.25rem]"
+            isSelect={isSelect}
+            value={drawAddr}
+            inputStyle={{
+              height: ".4rem",
+              fontSize: ".28rem",
+            }}
+            top={<TopScopeAddr isSelect={isSelect} />}
           >
-            全部
+            {isSelect && (
+              <i
+                onClick={(e) => showSelectList(e)}
+                className="iconfont icon-zhankai text-[.26rem]"
+              />
+            )}
+          </PublicInput>
+          <PublicInput
+            value={drawNum}
+            delay={0}
+            ref={drawNumRef}
+            onChange={(val: string) => setDrawNum(val)}
+            placeholder="0.00 USDT-ERC20"
+            className="mt-[.34rem]"
+            inputStyle={{
+              height: ".4rem",
+              fontSize: ".28rem",
+            }}
+            top={<TopScopeNum type={state.title} />}
+            bottom={<BottomScopeNum />}
+          >
+            <Button
+              onClick={drawAll}
+              className="text-[.26rem] text-[#1C63FF] before:bg-transparent"
+              color="primary"
+              fill="none"
+            >
+              全部
+            </Button>
+          </PublicInput>
+          <ul>
+            <li className="flex justify-between items-center mt-[.34rem]">
+              <span className="text-[.28rem] text-[#333] font-[700]">
+                提币手续费
+              </span>
+              <span className="text-[.28rem] text-[#666]">
+                <span>3&ensp;</span>
+                <span>USDT-ERC20</span>
+              </span>
+            </li>
+            <li className="flex justify-between items-center mt-[.34rem]">
+              <span className="text-[.28rem] text-[#333] font-[700]">
+                到账数量
+              </span>
+              <span className="text-[.28rem] text-[#666]">
+                <span>9&ensp;</span>
+                <span>USDT-ERC20</span>
+              </span>
+            </li>
+            <li className="mt-[.15rem]">
+              <span className="text-[.24rem] text-[#666]">
+                (到账数量=提币数量-提币手续费)
+              </span>
+            </li>
+          </ul>
+          <Button
+            onClick={submitDraw}
+            block
+            color="primary"
+            className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
+          >
+            确认提币
           </Button>
-        </PublicInput>
-        <ul>
-          <li className="flex justify-between items-center mt-[.34rem]">
-            <span className="text-[.28rem] text-[#333] font-[700]">
-              提币手续费
-            </span>
-            <span className="text-[.28rem] text-[#666]">
-              <span>3&ensp;</span>
-              <span>USDT-ERC20</span>
-            </span>
-          </li>
-          <li className="flex justify-between items-center mt-[.34rem]">
-            <span className="text-[.28rem] text-[#333] font-[700]">
-              到账数量
-            </span>
-            <span className="text-[.28rem] text-[#666]">
-              <span>9&ensp;</span>
-              <span>USDT-ERC20</span>
-            </span>
-          </li>
-          <li className="mt-[.15rem]">
-            <span className="text-[.24rem] text-[#666]">
-              (到账数量=提币数量-提币手续费)
-            </span>
-          </li>
-        </ul>
-        <Button
-          onClick={submitDraw}
-          block
-          color="primary"
-          className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
-        >
-          确认提币
-        </Button>
+        </DrawContent.Provider>
         <PublicSummary
           className="mt-[.7rem]"
           iconStyle={{
@@ -188,35 +232,14 @@ const TopScopeAddr = (props: { isSelect?: boolean }) => {
 // 提币数量
 const TopScopeNum = (props: any) => {
   let { type } = props;
-  const [assetsInfo, setAssetsInfo] = useState(0);
-  async function getCurrentAssets() {
-    let currencyType = JSON.parse(JSON.stringify(CurrencyTypeEnum));
-    let title = type;
-    let currencyTypeCode = "";
-    for (const key in currencyType) {
-      if (Object.prototype.hasOwnProperty.call(currencyType, key)) {
-        if (title == key) {
-          currencyTypeCode = currencyType[key];
-        }
-      }
-    }
-    let [currencyId, currencyChain] = currencyTypeCode.split("-");
-    let res = await GetCurrencyAssetsInfo({
-      currencyId: +currencyId,
-      currencyChain: currencyChain ? +currencyChain : 0,
-    });
-    setAssetsInfo(() => res.availableBalance);
-  }
-  useEffect(() => {
-    getCurrentAssets();
-  }, []);
+  let { availableBalance }: any = useContext(DrawContent);
   return (
     <div className="flex items-center justify-between text-[.28rem] font-[700] text-[#333] mb-[.17rem]">
       <p>提币数量</p>
       <p className="text-[.26rem] text-[#666]">
         <span>可用资产：</span>
         <span>
-          {assetsInfo || "--"} {type}
+          {availableBalance || "--"} {type}
         </span>
       </p>
     </div>
