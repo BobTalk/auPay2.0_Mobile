@@ -116,7 +116,7 @@ const Detail = () => {
     return setNavK(k);
   };
   const toDeposit = () => {
-    navigate(location.pathname + "/deposit");
+    navigate(location.pathname + "/deposit",{state:{title}});
   };
   const toDraw = () => {
     navigate("/draw",{state:{title}});

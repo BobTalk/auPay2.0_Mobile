@@ -6,11 +6,14 @@ import PublicCopy from "@/Components/PublicCopy";
 import PublicSummary from "@/Components/PublicSummary";
 import { HeadConfig } from "@/Assets/config/head";
 import { mergeClassName } from "@/utils/base";
+import { useLocation } from "react-router-dom";
 
 const Deposit = () => {
+  let {state:urlParams} = useLocation()
   let headData = Object.assign(HeadConfig, {
-    title: "充币USDT-ERC20",
+    title: `充币${urlParams.title}`,
     back: "goBack",
+    className: "text-[#333] py-[.32rem]",
   });
   const iconClick = (e: any) => {
     console.log(e, "----");
