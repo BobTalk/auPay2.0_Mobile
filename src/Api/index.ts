@@ -352,3 +352,9 @@ export const SetUserInfo = (data:{mobile?:string, currencyUnit?:string}) => {
   })
 }
 
+export const GetCurrencyAssetsInfo = (obj:{currencyChain:number|undefined,currencyId:number }) => {
+  return _http.getReq({
+    url:`${PublicPrefix}/getCurrencyAssetsInfo?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`,
+  })
+}
+

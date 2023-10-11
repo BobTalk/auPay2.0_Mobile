@@ -4,7 +4,7 @@ import { OperationIdEnum, WhiteListEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { getSession, setSession } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import {
@@ -19,6 +19,7 @@ const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
   let { state: urlInof }: any = useLocation();
   let navigate = useNavigate();
+  let formRef = useRef();
   let WhiteListEnum1 = JSON.parse(JSON.stringify(WhiteListEnum));
   const HeadInfo = Object.assign(HeadConfig, {
     title: urlInof?.headTitle ?? props.headTitle,
@@ -123,6 +124,7 @@ const OpenOrCloseWhiteList = (props: any) => {
         </p>
       ) : null}
       <PublicForm
+        ref={formRef}
         style={{
           margin: "0 .3rem",
         }}
@@ -191,6 +193,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           />
         ) : null}
         <PublicInput
+          formRef={formRef}
           rules={[{ required: true, message: "资金密码不能为空" }]}
           placeholder="请输入资金密码"
           name="assetsPwd"

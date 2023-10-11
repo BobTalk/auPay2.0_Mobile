@@ -50,6 +50,7 @@ type itemType = {
   extra?: any;
   showArrow?: boolean;
   vertical?: boolean;
+  align?: boolean
 };
 type publicListType = {
   isRender:boolean;
@@ -123,7 +124,7 @@ const ListItem = (props: listItemType) => {
         extra={props.iteminfo.extra}
         onClick={(e) => listItemClick(e, props.iteminfo)}
       >
-        <span>{props.iteminfo.title}</span>
+        <span className={props.iteminfo.align ? 'flex items-center justify-center w-full':''}>{props.iteminfo.title}</span>
         {props.iteminfo.subTitle ? (
           <span
             className={props.iteminfo.subTitleClassName}

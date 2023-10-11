@@ -25,10 +25,10 @@ type ExtractAndRechargeType = {
 };
 const Detail = () => {
   let location = useLocation();
-  let { currencyChain, currencyId } = location.state;
+  let { currencyChain, currencyId,title } = location.state;
   let [hasLoadMore, setHasLoadMore] = useState(false);
   let headData = Object.assign(HeadConfig, {
-    title: location.state.title,
+    title,
     back: "goBack",
     className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden py-[.32rem] h-[auto] border-b-[0]",
     // style: {
@@ -119,7 +119,7 @@ const Detail = () => {
     navigate(location.pathname + "/deposit");
   };
   const toDraw = () => {
-    navigate("/draw");
+    navigate("/draw",{state:{title}});
   };
   //充币函数
   async function getDepositInfo(obj: {
