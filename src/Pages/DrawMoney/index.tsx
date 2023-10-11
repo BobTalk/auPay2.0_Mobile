@@ -1,4 +1,8 @@
-import { GetCurrencyAssetsInfo, GetUserWithdrawAddress } from "@/Api";
+import {
+  GetCurrencyAssetsInfo,
+  GetCurrencyDrawFee,
+  GetUserWithdrawAddress,
+} from "@/Api";
 import { HeadConfig } from "@/Assets/config/head";
 import PublicHead from "@/Components/PublicHead";
 import PublicInput from "@/Components/PublicInput";
@@ -18,6 +22,7 @@ import {
 } from "react";
 import { useLocation } from "react-router-dom";
 import { CurrencyTypeEnum } from "../Enum";
+import { dataType } from "@/utils/base";
 const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
@@ -37,13 +42,15 @@ const DrawMoney = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [addrVisible, setAddrVisible] = useState(false);
   const [drawAddr, setDrawAddr] = useState("");
-  const [drawNum, setDrawNum] = useState<string | undefined | number>(
-    undefined
-  );
+  const [drawNum, setDrawNum] = useState<number | string>("");
+
   let drawNumRef = useRef<any>();
   const [isSelect, setIsSelect] = useState(true);
+  const [commission, setCommission] = useState(0);
   const [addrList, setAddrList] = useState([]);
-  const [assetsInfo, setAssetsInfo] = useState<{ [key: string]: any }>({});
+  // const [assetsInfo, setAssetsInfo] = useState<any>({});
+  const assetsInfo: any = useRef(0);
+  const [assetsUse, setAssetsUse] = useState<number>(0);
   let [stop] = useStopPropagation();
   const submitDraw = () => {
     setPopupVisible(!popupVisible);
@@ -54,7 +61,11 @@ const DrawMoney = () => {
   const cancelPopup = () => {
     submitDraw();
   };
-
+  function getMoneyRatio(obj: { currencyChain: number; currencyId: number }) {
+    GetCurrencyDrawFee(obj).then((res) => {
+      setCommission(res.value);
+    });
+  }
   async function getCurrentAssets() {
     let currencyType = JSON.parse(JSON.stringify(CurrencyTypeEnum));
     let title = state.title;
@@ -67,11 +78,14 @@ const DrawMoney = () => {
       }
     }
     let [currencyId, currencyChain] = currencyTypeCode.split("-");
-    let res = await GetCurrencyAssetsInfo({
+    let params = {
       currencyId: +currencyId,
       currencyChain: currencyChain ? +currencyChain : 0,
-    });
-    setAssetsInfo(() => res);
+    };
+    let res = await GetCurrencyAssetsInfo(params);
+    // setAssetsInfo(() => res);
+    assetsInfo.current = res;
+    getMoneyRatio(params);
   }
   async function getDrawAdrrList() {
     let { value } = await GetUserWithdrawAddress();
@@ -97,14 +111,16 @@ const DrawMoney = () => {
   }
   function drawAll(e: any) {
     stop(e, () => {
-      setDrawNum(assetsInfo.availableBalance);
+      let { availableBalance } = assetsInfo.current;
+      drawNumRef.current.setVal(availableBalance);
+      setDrawNum(availableBalance);
     });
   }
   return (
     <PublicScroll>
       <PublicHead {...headInfo} />
       <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
-        <DrawContent.Provider value={{ ...assetsInfo }}>
+        <DrawContent.Provider value={{ ...assetsInfo.current, commission }}>
           <PublicInput
             placeholder={`请${isSelect ? "选择" : "输入"}提币地址`}
             className="mt-[.25rem]"
@@ -127,7 +143,17 @@ const DrawMoney = () => {
             value={drawNum}
             delay={0}
             ref={drawNumRef}
-            onChange={(val: string) => setDrawNum(val)}
+            onChange={(val: any) => {
+              let { availableBalance } = assetsInfo.current;
+              // let reg = new RegExp("([1-9]d*((.d+)*))|(0.d+)");
+              // reg.lastIndex = 0;
+              // if (!reg.test(val)) return;
+              if (+val > availableBalance) {
+                setDrawNum(drawNum);
+              } else {
+                setDrawNum(val);
+              }
+            }}
             placeholder="0.00 USDT-ERC20"
             className="mt-[.34rem]"
             inputStyle={{
@@ -138,7 +164,7 @@ const DrawMoney = () => {
             bottom={<BottomScopeNum />}
           >
             <Button
-              onClick={drawAll}
+              onClick={(e) => drawAll(e)}
               className="text-[.26rem] text-[#1C63FF] before:bg-transparent"
               color="primary"
               fill="none"
@@ -152,8 +178,8 @@ const DrawMoney = () => {
                 提币手续费
               </span>
               <span className="text-[.28rem] text-[#666]">
-                <span>3&ensp;</span>
-                <span>USDT-ERC20</span>
+                <span>{commission}&ensp;</span>
+                <span>{state.title}</span>
               </span>
             </li>
             <li className="flex justify-between items-center mt-[.34rem]">
@@ -161,8 +187,13 @@ const DrawMoney = () => {
                 到账数量
               </span>
               <span className="text-[.28rem] text-[#666]">
-                <span>9&ensp;</span>
-                <span>USDT-ERC20</span>
+                <span>
+                  {!drawNum || +drawNum - commission < 0
+                    ? 0
+                    : +drawNum - commission}
+                  &ensp;
+                </span>
+                <span>{state.title}</span>
               </span>
             </li>
             <li className="mt-[.15rem]">

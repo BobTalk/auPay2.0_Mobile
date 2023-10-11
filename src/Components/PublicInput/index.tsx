@@ -45,14 +45,14 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
   const [visible, setVisible] = useState(false);
 
   const inputCompRef: any = useRef();
-  const valChange = debounce((val) => {
+  const valChange = (val:any) => {
     if (dataType(props.onChange) === "function") {
       props.onChange?.(val, val);
     } else {
       dataType(props.input) === "function" && props.input?.(val, val);
     }
     setIsClear(() => !!val);
-  }, props.delay ?? 1000);
+  }
   const pwdChange = (value: string) => {
     if (!props["name"]) return;
     props?.formRef?.current?.setFieldValue(props["name"], value);
