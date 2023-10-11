@@ -97,9 +97,11 @@ p {
   margin: 0 .4rem;
   height: 1.35rem;
   border-bottom: 1px solid #DBDBDB;
-  &:first-child{
+
+  &:first-child {
     margin-top: .2rem;
   }
+
   // &:last-child{
   //   border-bottom: none;
   // }
@@ -128,4 +130,5 @@ p {
   @extend .assets_detail_record_left_order;
   height: .66rem;
   align-items: end;
+  white-space: nowrap;
 }

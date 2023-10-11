@@ -357,6 +357,14 @@ export const GetCurrencyAssetsInfo = (obj:{currencyChain:number|undefined,curren
     url:`${PublicPrefix}/getCurrencyAssetsInfo?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`,
   })
 }
+// 提币
+export const Withdraw = (data:{},headers:{}) => {
+  return _http.postReq({
+    url:`${PublicPrefix}/withdraw`,
+    data,
+    headers
+  })
+}
 
 export const GetCurrencyDrawFee = (obj:{currencyChain:number|undefined,currencyId:number })=>{
   return _http.getReq({

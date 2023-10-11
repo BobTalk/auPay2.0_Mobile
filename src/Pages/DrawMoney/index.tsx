@@ -2,6 +2,8 @@ import {
   GetCurrencyAssetsInfo,
   GetCurrencyDrawFee,
   GetUserWithdrawAddress,
+  VerifyAssetsPassword,
+  Withdraw,
 } from "@/Api";
 import { HeadConfig } from "@/Assets/config/head";
 import PublicHead from "@/Components/PublicHead";
@@ -10,19 +12,18 @@ import PublicList from "@/Components/PublicList";
 import PublicScroll from "@/Components/PublicScroll";
 import PublicSummary from "@/Components/PublicSummary";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { Button, Popup } from "antd-mobile";
+import { Button, Popup, Toast } from "antd-mobile";
 import {
   createContext,
   memo,
   useContext,
-  useEffect,
   useLayoutEffect,
   useRef,
   useState,
 } from "react";
-import { useLocation } from "react-router-dom";
-import { CurrencyTypeEnum } from "../Enum";
-import { dataType } from "@/utils/base";
+import { useLocation, useNavigate } from "react-router-dom";
+import { CurrencyTypeEnum, OperationIdEnum } from "../Enum";
+import PublicForm from "@/Components/PublicForm";
 const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
@@ -50,23 +51,37 @@ const DrawMoney = () => {
   const [addrList, setAddrList] = useState([]);
   // const [assetsInfo, setAssetsInfo] = useState<any>({});
   const assetsInfo: any = useRef(0);
-  const [assetsUse, setAssetsUse] = useState<number>(0);
   let [stop] = useStopPropagation();
-  const submitDraw = () => {
-    setPopupVisible(!popupVisible);
-  };
-  const submitPopup = () => {
-    submitDraw();
+  // submit
+  const submitPopup = ({ values, assetsToken }: any) => {
+    console.log("assetsToken: ", assetsToken);
+    console.log("value: ", values);
+    let { currencyId, currencyChain } = nameToCode();
+    Withdraw(
+      { currencyId, currencyChain, amount: drawNum, toAddress: drawAddr },
+      {
+        "Assets-Password-Token": assetsToken,
+      }
+    ).then((res) => {
+      console.log(res, " >>>>>>");
+      Toast.show({
+        content: res.message,
+      });
+      if (res.status) {
+        // Navigate('/assets/detail', state:{})
+        window.history.back();
+      }
+    });
   };
   const cancelPopup = () => {
-    submitDraw();
+    setPopupVisible(!popupVisible);
   };
   function getMoneyRatio(obj: { currencyChain: number; currencyId: number }) {
     GetCurrencyDrawFee(obj).then((res) => {
       setCommission(res.value);
     });
   }
-  async function getCurrentAssets() {
+  function nameToCode() {
     let currencyType = JSON.parse(JSON.stringify(CurrencyTypeEnum));
     let title = state.title;
     let currencyTypeCode = "";
@@ -78,10 +93,13 @@ const DrawMoney = () => {
       }
     }
     let [currencyId, currencyChain] = currencyTypeCode.split("-");
-    let params = {
+    return {
       currencyId: +currencyId,
       currencyChain: currencyChain ? +currencyChain : 0,
     };
+  }
+  async function getCurrentAssets() {
+    let params = nameToCode();
     let res = await GetCurrencyAssetsInfo(params);
     // setAssetsInfo(() => res);
     assetsInfo.current = res;
@@ -203,7 +221,7 @@ const DrawMoney = () => {
             </li>
           </ul>
           <Button
-            onClick={submitDraw}
+            onClick={() => setPopupVisible(!popupVisible)}
             block
             color="primary"
             className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
@@ -312,6 +330,8 @@ const AddrPopup = (props: any) => {
 const PopupComp = memo(
   (props: PopupCompType) => {
     let [stop] = useStopPropagation();
+    let formRef = useRef();
+    let [formInit] = useState({ assetsPwd: "", googlePwd: "" });
     return (
       <Popup
         visible={props.visible}
@@ -330,41 +350,66 @@ const PopupComp = memo(
         <p className="text-[.32rem] text-[#333] font-[700] text-center">
           密码验证
         </p>
-
-        <PublicInput
-          placeholder="请输入资金密码"
-          className="mt-[.25rem]"
-          inputStyle={{
-            height: ".4rem",
-            fontSize: ".28rem",
+        <PublicForm
+          ref={formRef}
+          initialValues={formInit}
+          finish={(obj: any) => {
+            console.log("obj: ", obj);
+            VerifyAssetsPassword({
+              assetsPwd: obj.values.assetsPwd,
+              operationId: OperationIdEnum["DrawMoney"],
+            }).then((res) => {
+              if (res.status) {
+                props?.submit({ ...obj, assetsToken: res.value });
+              }
+            });
           }}
-          top={
-            <p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>
+          footer={
+            <Button
+              block
+              color="primary"
+              type="submit"
+              className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
+            >
+              确认
+            </Button>
           }
-        />
-        {!props.isSelect && (
+        >
           <PublicInput
-            placeholder="请输入Google验证码"
+            formRef={formRef}
+            placeholder="请输入资金密码"
+            type="password"
+            name="assetsPwd"
+            rules={[{ required: true, message: "资金密码不能为空" }]}
             className="mt-[.25rem]"
             inputStyle={{
               height: ".4rem",
               fontSize: ".28rem",
             }}
             top={
-              <p className="text-[.28rem] text-[#333] mb-[.16rem]">
-                Google验证码
-              </p>
+              <p className="text-[.28rem] text-[#333] mb-[.16rem]">资金密码</p>
             }
           />
-        )}
-        <Button
-          onClick={() => props?.submit()}
-          block
-          color="primary"
-          className="text-[.34rem] text-[#FFF] bg-[#1C63FF] h-[.92rem] rounded-[.16rem] mt-[.5rem] before:bg-transparent"
-        >
-          确认
-        </Button>
+          {!props.isSelect && (
+            <PublicInput
+              formRef={formRef}
+              name="googlePwd"
+              type="password"
+              rules={[{ required: true, message: "Google验证码不能为空" }]}
+              placeholder="请输入Google验证码"
+              className="mt-[.25rem]"
+              inputStyle={{
+                height: ".4rem",
+                fontSize: ".28rem",
+              }}
+              top={
+                <p className="text-[.28rem] text-[#333] mb-[.16rem]">
+                  Google验证码
+                </p>
+              }
+            />
+          )}
+        </PublicForm>
       </Popup>
     );
   },

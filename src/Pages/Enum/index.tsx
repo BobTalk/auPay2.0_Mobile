@@ -1,3 +1,5 @@
+import DrawMoney from "../DrawMoney";
+
 enum InfoType {
   userName = "userName",
   eMail = "eMail",
@@ -78,7 +80,8 @@ enum OperationIdEnum {
   whiteListOpenOrColse = 10,
   unbind=12,
   updateGoogleValidator=48,
-  updateSecurityPwd = 47
+  updateSecurityPwd = 47,
+  DrawMoney = 64
 }
 enum CurrencyTypeEnum{
   BTC='1',
