@@ -193,7 +193,6 @@ const Detail = () => {
       getDrawInfo(params),
       getTradeRecord(params),
     ]).then((res) => {
-      console.log(res);
       let paginationTotal = res.reduce(
         (prv, next) => (prv.total > next.total ? prv : next),
         {
