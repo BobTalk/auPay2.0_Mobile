@@ -44,7 +44,7 @@ const AppManager = (props: any) => {
     <>
       <PublicHead {...headInfo} ref={HeaderEl} />
       <ul className="mx-[.3rem]">
-        {pageList?.map((item: any) => (
+        {pageList.length? pageList?.map((item: any) => (
           <li
             key={item.applicaitonId}
             className="flex py-[.3rem] justify-between border-b-[#DBDBDB] border-b-[1px]"
@@ -71,7 +71,7 @@ const AppManager = (props: any) => {
               解除绑定
             </span>
           </li>
-        ))}
+        )):<p className="text-[.3rem] absolute left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%]">暂无数据</p> }
       </ul>
     </>
   );
