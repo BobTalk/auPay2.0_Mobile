@@ -32,8 +32,6 @@ type propsVolit = {
   type: string;
 };
 const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
-  console.log("props---input: ", props);
-  const [, setRefresh] = useState({});
   const inputRef: any = useRef();
   // 暴露给父级
   useImperativeHandle(ref, () => ({

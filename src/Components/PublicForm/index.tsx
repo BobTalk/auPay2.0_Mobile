@@ -4,7 +4,6 @@ import { forwardRef } from "react";
 import styled from "styled-components";
 
 const PublicForm = (props: any, ref: any) => {
-  console.log(props?.children);
   const defaultProps = {
     disabled: false,
     initialValues: {},
@@ -15,9 +14,6 @@ const PublicForm = (props: any, ref: any) => {
   };
   props = Object.assign(defaultProps, props);
   function validataCb(obj: Object): void {
-    console.log(obj);
-    console.log(props.children);
-    console.log("-------form-----");
     props?.finish(obj);
   }
   const Box = styled.div`
