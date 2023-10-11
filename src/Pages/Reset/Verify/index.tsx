@@ -6,7 +6,11 @@ import { HeadConfig } from "@/Assets/config/head";
 import "./index.scss";
 import { useCountDown } from "@/Hooks/Countdown";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
-import { GetUserBlurEmail, SendEmailCode, SendResetPasswordEmailCode } from "@/Api";
+import {
+  GetUserBlurEmail,
+  SendEmailCode,
+  SendResetPasswordEmailCode,
+} from "@/Api";
 import { OperationIdEnum } from "@/Pages/Enum";
 const Verify = () => {
   let headData = Object.assign(HeadConfig, {
@@ -39,13 +43,16 @@ const Verify = () => {
   }, []);
   const onFinish = (values: Object) => {
     console.log(values);
-    navigate("/reset/new",{state: {...values,username:urlParams.username }});
+    navigate("/reset/new", {
+      state: { ...values, username: urlParams.username },
+    });
   };
   function getEmailCode(event: any): void {
     stop(event, () => {
       if (codeMessage !== "获取验证码") return;
-      start();
-      SendResetPasswordEmailCode(urlParams.username).then()
+      start(() => {
+        SendResetPasswordEmailCode(urlParams.username).then();
+      });
     });
   }
 

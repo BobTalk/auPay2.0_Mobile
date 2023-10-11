@@ -47,10 +47,11 @@ const Login = () => {
         PublicToast({ message: "请输入用户名！" });
         return;
       }
-      start();
-      GetCode(formVal.username).then((res) => {
-        PublicToast({
-          message: res.message,
+      start(() => {
+        GetCode(formVal.username).then((res) => {
+          PublicToast({
+            message: res.message,
+          });
         });
       });
     });

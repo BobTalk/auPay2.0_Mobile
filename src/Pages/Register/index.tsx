@@ -50,10 +50,11 @@ const Register = () => {
         });
         return;
       }
-      start();
-      GetRegionCode(formObj.email).then((res: any) => {
-        PublicToast({
-          message: res.message,
+      start(() => {
+        GetRegionCode(formObj.email).then((res: any) => {
+          PublicToast({
+            message: res.message,
+          });
         });
       });
     });

@@ -4,8 +4,8 @@ import { OperationIdEnum, WhiteListEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
-import { useRef, useState } from "react";
-import { getSession, setSession } from "@/utils/base";
+import { useEffect, useRef, useState } from "react";
+import { dataType, getSession, setSession } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import {
   AddWithdrawAddress,
@@ -15,6 +15,7 @@ import {
   VerifyEmail,
   VerifyGoogle,
 } from "@/Api";
+import { useCountDown } from "@/Hooks/Countdown";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
   let { state: urlInof }: any = useLocation();
@@ -43,6 +44,17 @@ const OpenOrCloseWhiteList = (props: any) => {
     }
     return obj;
   });
+  let [codeMessage, setCodeMessage] = useState("获取");
+  let [mask, setMask] = useState(false);
+  let { start, count: timeDown } = useCountDown(
+    59,
+    () => {
+      setCodeMessage(`${timeDown}s`);
+    },
+    () => {
+      setCodeMessage("获取");
+    }
+  );
   // 提交
   async function submitCb({ values }: any) {
     if (urlParams.flag == "add") {
@@ -108,12 +120,15 @@ const OpenOrCloseWhiteList = (props: any) => {
       }
     });
   }
+
   function getEmailCode() {
     let id =
       urlParams.flag == "add"
         ? OperationIdEnum["whiteListAdd"]
         : OperationIdEnum["whiteListOpenOrColse"];
-    SendEmailCode(id).then(() => {});
+    start(() => {
+      SendEmailCode(id).then();
+    });
   }
   return (
     <>
@@ -145,7 +160,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           <PublicInput
             placeholder="备注信息"
             name="notes"
-            value={formInitVal.notes}
+            formRef={formRef}
             inputStyle={{
               "--text-align": "right",
             }}
@@ -156,12 +171,6 @@ const OpenOrCloseWhiteList = (props: any) => {
               borderBottom: "1px solid #E6E6E6",
               borderRadius: 0,
             }}
-            onChange={(val: string) => {
-              setFormInitVal((initVal: { [key: string]: any }) => ({
-                ...initVal,
-                notes: val,
-              }));
-            }}
             inputClassName="text-[.3rem] text-[#222]"
             prefix={<span className="text-[.3rem] text-[#222]">备注</span>}
           />
@@ -170,13 +179,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           <PublicInput
             placeholder="请输入地址"
             name="addr"
-            value={formInitVal.addr}
-            onChange={(val: string) => {
-              setFormInitVal((initVal: { [key: string]: any }) => ({
-                ...initVal,
-                addr: val,
-              }));
-            }}
+            formRef={formRef}
             rules={[{ required: true, message: "地址不能为空" }]}
             inputStyle={{
               "--text-align": "right",
@@ -197,13 +200,6 @@ const OpenOrCloseWhiteList = (props: any) => {
           rules={[{ required: true, message: "资金密码不能为空" }]}
           placeholder="请输入资金密码"
           name="assetsPwd"
-          value={formInitVal.assetsPwd}
-          onChange={(val: string) => {
-            setFormInitVal((initVal: { [key: string]: any }) => ({
-              ...initVal,
-              assetsPwd: val,
-            }));
-          }}
           inputStyle={{
             "--text-align": "right",
           }}
@@ -221,12 +217,6 @@ const OpenOrCloseWhiteList = (props: any) => {
         <PublicInput
           disabled={true}
           value={formInitVal.email}
-          onChange={(val: string) => {
-            setFormInitVal((initVal: { [key: string]: any }) => ({
-              ...initVal,
-              email: val,
-            }));
-          }}
           rules={[{ required: true, message: "邮箱不能为空" }]}
           name="email"
           inputStyle={{
@@ -245,13 +235,7 @@ const OpenOrCloseWhiteList = (props: any) => {
         <PublicInput
           placeholder="请输入邮箱验证码"
           name="emailCode"
-          value={formInitVal.emailCode}
-          onChange={(val: string) => {
-            setFormInitVal((initVal: { [key: string]: any }) => ({
-              ...initVal,
-              emailCode: val,
-            }));
-          }}
+          formRef={formRef}
           rules={[{ required: true, message: "邮箱验证码不能为空" }]}
           inputStyle={{
             "--text-align": "right",
@@ -271,20 +255,14 @@ const OpenOrCloseWhiteList = (props: any) => {
             className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
             color="primary"
           >
-            获取
+            {codeMessage}
           </p>
         </PublicInput>
         <PublicInput
+          formRef={formRef}
           rules={[{ required: true, message: "Google验证码不能为空" }]}
           placeholder="请输入Google验证码"
           name="googleCode"
-          value={formInitVal.googleCode}
-          onChange={(val: string) => {
-            setFormInitVal((initVal: { [key: string]: any }) => ({
-              ...initVal,
-              googleCode: val,
-            }));
-          }}
           inputStyle={{
             "--text-align": "right",
           }}
