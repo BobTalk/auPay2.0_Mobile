@@ -46,7 +46,7 @@ const Record = () => {
   });
   let [stop] = useStopPropagation();
   let [crtPagination, setCrtpagination] = useState<any>({});
-  let [isFilterExc , setIsFilterExc] = useState(false)
+  let [isFilterExc, setIsFilterExc] = useState(false);
   let [dateVisible, setDateVisible] = useState(false);
   let [endDateVisible, setEndDateVisible] = useState(false);
   let [currencyVisible, setCurrencyVisible] = useState(false);
@@ -152,7 +152,8 @@ const Record = () => {
   useEffect(() => {
     let headH = JHeader.current?.getBoundingClientRect()?.height ?? 0;
     let navH = JNavBar.current?.getBoundingClientRect()?.height ?? 0;
-    setHeaderAndNavH(() => headH + navH);
+    let clientHeight = window.innerHeight;
+    setHeaderAndNavH(() => clientHeight - (headH + navH));
   }, []);
   useLayoutEffect(() => {
     getTradeRecord({
@@ -162,12 +163,12 @@ const Record = () => {
         tradeType: bussionFilter,
       },
     }).then((res) => {
-      setIsFilterExc(true)
+      setIsFilterExc(true);
       interfaceInfoFormat(res);
     });
   }, [recordPagination]);
   useLayoutEffect(() => {
-    if(!isFilterExc) return
+    if (!isFilterExc) return;
     getTradeRecord({
       ...recordPagination,
       conditions: {
@@ -181,7 +182,7 @@ const Record = () => {
     conditions.currencyChain,
     conditions.currencyId,
     conditions.endTime,
-    bussionFilter
+    bussionFilter,
   ]);
   function bussionConfirm(val: any) {
     setBussionFilter(val[0]);
@@ -302,7 +303,7 @@ const Record = () => {
       />
       <div
         style={{
-          height: `calc(100vh - ${headerAndNavH}px - 0.3rem)`,
+          height: `calc(${headerAndNavH}px - 0.3rem)`,
         }}
       >
         <ul className="assets_detail_record h-[inherit] overflow-y-auto">
