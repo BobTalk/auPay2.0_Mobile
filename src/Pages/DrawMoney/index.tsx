@@ -24,6 +24,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { CurrencyTypeEnum, OperationIdEnum } from "../Enum";
 import PublicForm from "@/Components/PublicForm";
+import TestCode from "./sao";
 const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
@@ -134,9 +135,14 @@ const DrawMoney = () => {
       setDrawNum(availableBalance);
     });
   }
+  function getRes(arg0: string): void {
+    console.log('arg0: ', arg0);
+  }
+
   return (
     <PublicScroll>
       <PublicHead {...headInfo} />
+      {/* <TestCode /> */}
       <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
         <DrawContent.Provider value={{ ...assetsInfo.current, commission }}>
           <PublicInput

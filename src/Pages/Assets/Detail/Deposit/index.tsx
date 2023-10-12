@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { GetRechargeInfo } from "@/Api";
 import { CurrencyTypeEnum } from "@/Pages/Enum";
-import QRCode  from 'qrcode.react';
+import QRCode from "qrcode.react";
 
 const Deposit = () => {
   let { state: urlParams } = useLocation();
@@ -18,7 +18,7 @@ const Deposit = () => {
     back: "goBack",
     className: "text-[#333] py-[.32rem]",
   });
-  let [qrcodeInfo, setQrcodeInfo]=useState('')
+  let [qrcodeInfo, setQrcodeInfo] = useState("");
   const iconClick = (e: any) => {
     console.log(e, "----");
   };
@@ -29,23 +29,35 @@ const Deposit = () => {
       currencyId: currencyId * 1,
       currencyChain: currencyChain ? currencyChain * 1 : undefined,
     }).then((res) => {
-      setQrcodeInfo(res.address)
+      setQrcodeInfo(res.address);
     });
   }
   useEffect(() => {
-    getPageInfo()
+    getPageInfo();
   }, []);
   return (
     <div className={styleScope["assets_deposit"]}>
       <PublicHead {...headData} />
       <p className={styleScope["assets_deposit_tit"]}>
-        这是您的USDT-ERC20钱包地址
+        这是您的{urlParams.title}钱包地址
         <br />
-        请将您的USDT-ERC20转入此地址
+        请将您的{urlParams.title}转入此地址
       </p>
       <div className={styleScope["assets_deposit_qr"]}>
         <div className={styleScope["assets_deposit_qr_info"]}>
-          <QRCode value={qrcodeInfo} className={styleScope["assets_deposit_qr_info_img"]} />
+          <QRCode
+            includeMargin={false} // 是否留边
+            level="H" // 安全等级  L M Q H 
+            value={qrcodeInfo}
+            // imageSettings={{
+            //   // 配置二维码中间出现的logo信息
+            //   src: "", // logo的地址 
+            //   width: 30, // logo的宽度 默认值是整个二维码的10% 类型为number
+            //   height: 30, // logo的高度 默认值是整个二维码的10% 类型为number
+            //   excavate: true, // 是否是镂空状态 默认值false 类型为boolean
+            // }}
+            className={styleScope["assets_deposit_qr_info_img"]}
+          />
           <img
             className={mergeClassName(
               styleScope["assets_deposit_qr_info_border"],
