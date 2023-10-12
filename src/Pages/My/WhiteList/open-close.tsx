@@ -16,6 +16,7 @@ import {
   VerifyGoogle,
 } from "@/Api";
 import { useCountDown } from "@/Hooks/Countdown";
+import GetCodeBtn from "@/Components/GetCode";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();
   let { state: urlInof }: any = useLocation();
@@ -235,7 +236,7 @@ const OpenOrCloseWhiteList = (props: any) => {
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
-          <GetEmailCodeBtn urlParams={urlParams} />
+          <GetEmailCode urlParams={urlParams} />
         </PublicInput>
         <PublicInput
           formRef={formRef}
@@ -263,36 +264,13 @@ const OpenOrCloseWhiteList = (props: any) => {
   );
 };
 // 获取邮箱验证码
-const GetEmailCodeBtn = (props: any) => {
+const GetEmailCode = (props: any) => {
   let { urlParams } = props;
-  let [codeMessage, setCodeMessage] = useState("获取");
-  let { start, count: timeDown } = useCountDown(
-    59,
-    () => {
-      setCodeMessage(`${timeDown}s`);
-    },
-    () => {
-      setCodeMessage("获取");
-    }
-  );
-  function getEmailCode() {
-    let id =
-      urlParams.flag == "add"
-        ? OperationIdEnum["whiteListAdd"]
-        : OperationIdEnum["whiteListOpenOrColse"];
-    start(() => {
-      SendEmailCode(id).then();
-    });
-  }
-  return (
-    <p
-      onClick={getEmailCode}
-      className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
-      color="primary"
-    >
-      {codeMessage}
-    </p>
-  );
+  let id =
+    urlParams?.flag == "add"
+      ? OperationIdEnum["whiteListAdd"]
+      : OperationIdEnum["whiteListOpenOrColse"];
+  return <GetCodeBtn operationId={id} />;
 };
 OpenOrCloseWhiteList.defaultProps = {
   headTitle: "",

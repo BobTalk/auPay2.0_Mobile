@@ -40,22 +40,6 @@ const Login = () => {
   const closePassword = () => {
     formRef?.current?.setFieldValue("password", "");
   };
-  const getEmailCode = (e: any) => {
-    stop(e, () => {
-      if (codeMessage !== "获取验证码") return;
-      if (!formVal.username) {
-        PublicToast({ message: "请输入用户名！" });
-        return;
-      }
-      start(() => {
-        GetCode(formVal.username).then((res) => {
-          PublicToast({
-            message: res.message,
-          });
-        });
-      });
-    });
-  };
 
   const onFinish = (obj: any) => {
     GetAccessKey()
@@ -168,9 +152,7 @@ const Login = () => {
               />
             </Form.Item>
 
-            <p onClick={(e) => getEmailCode(e)} className="login_form_get_code whitespace-nowrap">
-              {codeMessage}
-            </p>
+            <GetCodeBtn  btnName='获取验证码' username={formVal.username} module='login' />
           </Form.Item> */}
 
           <div onClick={forget} className="login_form_forget">

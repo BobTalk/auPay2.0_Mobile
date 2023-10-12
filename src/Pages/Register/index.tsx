@@ -10,6 +10,7 @@ import PublicToast from "@/Components/PublicToast";
 import "./index.scss";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useCountDown } from "@/Hooks/Countdown";
+import GetCodeBtn from "@/Components/GetCode";
 const Register = () => {
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户注册",
@@ -41,24 +42,7 @@ const Register = () => {
     if (!key) return;
     formRef && formRef.current && formRef.current.setFieldValue(key, "");
   };
-  const getEmailCode = (e: any) => {
-    stop(e, () => {
-      if (codeMessage !== "获取验证码") return;
-      if (!formObj.email) {
-        PublicToast({
-          message: "请输入邮箱！",
-        });
-        return;
-      }
-      start(() => {
-        GetRegionCode(formObj.email).then((res: any) => {
-          PublicToast({
-            message: res.message,
-          });
-        });
-      });
-    });
-  };
+
   const onFinish = (obj: any) => {
     RegisterI(obj).then((res) => {
       PublicToast({
@@ -228,12 +212,7 @@ const Register = () => {
                 />
               </Form.Item>
 
-              <p
-                onClick={(e) => getEmailCode(e)}
-                className="login_form_get_code"
-              >
-                {codeMessage}
-              </p>
+              <GetCodeBtn module="register" emailUrl={formObj.email}/>
             </div>
           </Form.Item>
 
