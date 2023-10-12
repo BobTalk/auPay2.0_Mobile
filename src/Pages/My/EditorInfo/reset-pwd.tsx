@@ -2,7 +2,7 @@ import PublicHead from "@/Components/PublicHead";
 import { useLocation, useNavigate } from "react-router-dom";
 import { InfoSecurityTip, InfoSecurity, OperationIdEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
-import { Button, Input, Toast } from "antd-mobile";
+import { Button, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
 import { useRef, useState } from "react";
 import { HeadConfig } from "@/Assets/config/head";
@@ -10,12 +10,12 @@ import { getSession } from "@/utils/base";
 import {
   ResetAssetsPassword,
   ResetGoogleAuth,
-  SendEmailCode,
   UnbindUserApplyApplication,
   VerifyAssetsPassword,
   VerifyEmail,
   VerifyGoogle,
 } from "@/Api";
+import GetCodeBtn from "@/Components/GetCode";
 const ResetPwd = (props: any) => {
   let { state: urlParams } = useLocation();
   let navigate = useNavigate();
@@ -126,23 +126,7 @@ const ResetPwd = (props: any) => {
     }
     return Promise.resolve();
   }
-  function getEMailCode(e: any) {
-    e.stopPropagation();
-    console.log(urlParams.crt.type);
-    if (emailBtn) return;
-    setEmailBtn(true);
-    SendEmailCode(
-      urlParams.crt.type === "updateGoogleValidator"
-        ? OperationIdEnum1["updateGoogleValidator"]
-        : urlParams.crt.type === "unbind"
-        ? OperationIdEnum1["unbind"]
-        : OperationIdEnum1["updateSecurityPwd"]
-    )
-      .then()
-      .finally(() => {
-        setTimeout(() => setEmailBtn(false), 3000);
-      });
-  }
+
   return (
     <>
       <PublicHead {...HeadInfo} />
@@ -206,13 +190,15 @@ const ResetPwd = (props: any) => {
           inputClassName="text-[.3rem] text-[#222]"
           prefix={<span className="text-[.3rem] text-[#222]">邮箱验证码</span>}
         >
-          <p
-            onClick={getEMailCode}
-            className="before:bg-transparent text-[.3rem] text-[#1C63FF] ml-[.3rem]"
-            color="primary"
-          >
-            获取
-          </p>
+          <GetCodeBtn
+            operationId={
+              urlParams.crt.type === "updateGoogleValidator"
+                ? OperationIdEnum1["updateGoogleValidator"]
+                : urlParams.crt.type === "unbind"
+                ? OperationIdEnum1["unbind"]
+                : OperationIdEnum1["updateSecurityPwd"]
+            }
+          />
         </PublicInput>
         {urlParams.crt.type == InfoSecurity1["updateGoogleValidator"] ? (
           <PublicInput

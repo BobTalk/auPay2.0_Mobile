@@ -1,9 +1,11 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 const PublicScroll = (props:any)=>{
   useEffect(()=>{
-    window.scrollTo(0,0)
+    window.scrollTo(0,0);
   },[])
-  return <>{props.children}</>
+  return <>
+  {props.children}
+ </>
 }
 export default PublicScroll

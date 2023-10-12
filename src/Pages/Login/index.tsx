@@ -6,23 +6,11 @@ import { Form, Input, Button, Toast } from "antd-mobile";
 import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
-import { GetAccessKey, GetCode, LoginI } from "@/Api";
-import PublicToast from "@/Components/PublicToast";
+import { GetAccessKey, LoginI } from "@/Api";
 import { encryptByDES, setSession } from "@/utils/base";
-import { useCountDown } from "@/Hooks/Countdown";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Login = () => {
-  let [codeMessage, setCodeMessage] = useState("获取验证码");
   let [stop] = useStopPropagation();
-  let { start, count: timeDown } = useCountDown(
-    59,
-    () => {
-      setCodeMessage(`${timeDown}s`);
-    },
-    () => {
-      setCodeMessage("获取验证码");
-    }
-  );
   let [contentH, setContentH] = useState(0);
   let [formVal, setFormVal] = useState({
     username: "",
@@ -76,7 +64,7 @@ const Login = () => {
       <PublicHead ref={JHeader} {...headData} />
       <div
         style={{
-          maxHeight: `calc(100vh - ${contentH}px)`,
+          maxHeight: `calc(100% - ${contentH}px)`,
         }}
         className="overflow-y-auto"
       >

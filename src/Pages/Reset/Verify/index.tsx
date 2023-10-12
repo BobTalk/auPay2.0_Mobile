@@ -4,14 +4,8 @@ import PublicHead from "@/Components/PublicHead";
 import { Form, Input, Button } from "antd-mobile";
 import { HeadConfig } from "@/Assets/config/head";
 import "./index.scss";
-import { useCountDown } from "@/Hooks/Countdown";
-import { useStopPropagation } from "@/Hooks/StopPropagation";
-import {
-  GetUserBlurEmail,
-  SendEmailCode,
-  SendResetPasswordEmailCode,
-} from "@/Api";
-import { OperationIdEnum } from "@/Pages/Enum";
+import { GetUserBlurEmail } from "@/Api";
+import GetCodeBtn from "@/Components/GetCode";
 const Verify = () => {
   let headData = Object.assign(HeadConfig, {
     title: "",
@@ -21,18 +15,7 @@ const Verify = () => {
   const navigate = useNavigate();
   let { state: urlParams } = useLocation();
   let codeTimer: any = null;
-  let [stop] = useStopPropagation();
   let [likeEmail, setLikeEmail] = useState();
-  let [codeMessage, setCodeMessage] = useState("获取验证码");
-  let { start, count: timeDown } = useCountDown(
-    59,
-    () => {
-      setCodeMessage(`${timeDown}s`);
-    },
-    () => {
-      setCodeMessage("获取验证码");
-    }
-  );
   function getEmail() {
     GetUserBlurEmail(urlParams.username).then((res) => {
       setLikeEmail(res.value);
@@ -47,14 +30,6 @@ const Verify = () => {
       state: { ...values, username: urlParams.username },
     });
   };
-  function getEmailCode(event: any): void {
-    stop(event, () => {
-      if (codeMessage !== "获取验证码") return;
-      start(() => {
-        SendResetPasswordEmailCode(urlParams.username).then();
-      });
-    });
-  }
 
   return (
     <div className="-login_wrap ">
@@ -82,9 +57,14 @@ const Verify = () => {
               placeholder="请输入邮箱验证码"
             />
           </Form.Item>
-          <p onClick={getEmailCode} className="login_form_get_code">
+          {/* <p onClick={getEmailCode} className="login_form_get_code">
             {codeMessage}
-          </p>
+          </p> */}
+          <GetCodeBtn
+            btnName="获取验证码"
+            username={urlParams.username}
+            module="resetpwd"
+          />
         </Form.Item>
         <Form.Item>
           <p className="login_form_label">Google验证</p>

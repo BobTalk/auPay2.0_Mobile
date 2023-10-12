@@ -5,6 +5,7 @@ class ErrorBoundary extends React.Component<any,any> {
     super(props);
     this.state = {
       error: false,
+      contentHeight: window.innerHeight
     };
   }
 

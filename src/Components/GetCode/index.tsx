@@ -1,4 +1,4 @@
-import { GetCode, GetRegionCode, SendEmailCode } from "@/Api";
+import { GetCode, GetRegionCode, SendEmailCode, SendResetPasswordEmailCode } from "@/Api";
 import { useCountDown } from "@/Hooks/Countdown";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useState } from "react";
@@ -20,10 +20,15 @@ const GetCodeBtn = (props: any) => {
     if (!username) return;
     GetCode(username).then((res) => onClick(res));
   }
+  function getResetCodeI(username:any){
+    if (!username) return;
+    SendResetPasswordEmailCode(username).then((res) => onClick(res));
+  }
   let moduleMap = new Map([
     ["email", getEmailCodeI],
     ["register", getRegisterCodeI],
     ["login", getLoginCodeI],
+    ['resetpwd', getResetCodeI]
   ]);
   let [stop] = useStopPropagation();
   let [codeMessage, setCodeMessage] = useState(btnName);
@@ -62,7 +67,7 @@ const GetCodeBtn = (props: any) => {
 GetCodeBtn.defaultProps = {
   operationId: undefined,
   btnName: "获取",
-  module: "email", // login register Email
+  module: "email", // login register Email resetpwd
   email: "",
   username: "",
   onClick: () => {},

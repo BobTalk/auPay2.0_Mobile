@@ -4,18 +4,16 @@ import { OperationIdEnum, WhiteListEnum } from "../../Enum";
 import PublicInput from "@/Components/PublicInput";
 import { Button, Toast } from "antd-mobile";
 import PublicForm from "@/Components/PublicForm";
-import { useEffect, useRef, useState } from "react";
-import { dataType, getSession, setSession } from "@/utils/base";
+import { useRef, useState } from "react";
+import { getSession, setSession } from "@/utils/base";
 import { HeadConfig } from "@/Assets/config/head";
 import {
   AddWithdrawAddress,
-  SendEmailCode,
   SwitchWhiteAddress,
   VerifyAssetsPassword,
   VerifyEmail,
   VerifyGoogle,
 } from "@/Api";
-import { useCountDown } from "@/Hooks/Countdown";
 import GetCodeBtn from "@/Components/GetCode";
 const OpenOrCloseWhiteList = (props: any) => {
   let urlParams: any = useParams();

@@ -11,9 +11,9 @@ import ErrorBoundary from "./error-boundary";
 function App() {
   return (
     <ErrorBoundary>
-      <Router>
-        <RouterConfigComp />
-      </Router>
+        <Router>
+          <RouterConfigComp />
+        </Router>
     </ErrorBoundary>
   );
 }
