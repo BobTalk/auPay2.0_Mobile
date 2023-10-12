@@ -6,7 +6,10 @@ import { useEffect, useState } from "react";
 import { ViewAnnouncement } from "@/Api";
 import { Ellipsis, InfiniteScroll } from "antd-mobile";
 const Notice = () => {
-  let headData = Object.assign(HeadConfig, { title: "公告列表" });
+  let headData = Object.assign(HeadConfig, {
+    title: "公告列表",
+    back: "goBack",
+  });
   let [pagination, setPagination] = useState({
     pageNo: 1,
     pageSize: 10,
@@ -52,7 +55,7 @@ const ItemComp = ({ list }: any) =>
       createTime: string;
       content: string;
       isRoll: boolean;
-      id:string
+      id: string;
     }) => (
       <li key={item.id}>
         <div className={styleScope["notice_list_tit"]}>
