@@ -1,23 +1,40 @@
 import PublicHead from "@/Components/PublicHead";
 import styleScope from "./index.module.scss";
 import DepositBorder from "@/Assets/images/assets/depositBorder.png";
-import QrImg from "@/Assets/images/test/qr.png";
 import PublicCopy from "@/Components/PublicCopy";
 import PublicSummary from "@/Components/PublicSummary";
 import { HeadConfig } from "@/Assets/config/head";
 import { mergeClassName } from "@/utils/base";
 import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { GetRechargeInfo } from "@/Api";
+import { CurrencyTypeEnum } from "@/Pages/Enum";
+import QRCode  from 'qrcode.react';
 
 const Deposit = () => {
-  let {state:urlParams} = useLocation()
+  let { state: urlParams } = useLocation();
   let headData = Object.assign(HeadConfig, {
     title: `充币${urlParams.title}`,
     back: "goBack",
     className: "text-[#333] py-[.32rem]",
   });
+  let [qrcodeInfo, setQrcodeInfo]=useState('')
   const iconClick = (e: any) => {
     console.log(e, "----");
   };
+  function getPageInfo() {
+    let typeEnum = JSON.parse(JSON.stringify(CurrencyTypeEnum));
+    let [currencyId, currencyChain] = typeEnum[urlParams.title].split("-");
+    GetRechargeInfo({
+      currencyId: currencyId * 1,
+      currencyChain: currencyChain ? currencyChain * 1 : undefined,
+    }).then((res) => {
+      setQrcodeInfo(res.address)
+    });
+  }
+  useEffect(() => {
+    getPageInfo()
+  }, []);
   return (
     <div className={styleScope["assets_deposit"]}>
       <PublicHead {...headData} />
@@ -28,11 +45,7 @@ const Deposit = () => {
       </p>
       <div className={styleScope["assets_deposit_qr"]}>
         <div className={styleScope["assets_deposit_qr_info"]}>
-          <img
-            className={styleScope["assets_deposit_qr_info_img"]}
-            src={QrImg}
-            alt=""
-          />
+          <QRCode value={qrcodeInfo} className={styleScope["assets_deposit_qr_info_img"]} />
           <img
             className={mergeClassName(
               styleScope["assets_deposit_qr_info_border"],

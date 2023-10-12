@@ -371,3 +371,8 @@ export const GetCurrencyDrawFee = (obj:{currencyChain:number|undefined,currencyI
     url:`operate/sys/getCurrencyWithdrawFee?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
   })
 }
+export const GetRechargeInfo = (obj:{currencyChain:number|undefined,currencyId:number })=>{
+  return _http.getReq({
+    url:`/wallet/getRechargeInfo?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
+  })
+}
