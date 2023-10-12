@@ -4,20 +4,21 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useState } from "react";
 
 const GetCodeBtn = (props: any) => {
-  let { operationId, btnName, module, email, username } = props;
+  let { operationId, btnName, module, email, username, onClick } = props;
   // 获取邮箱验证码
   function getEmailCodeI(id: number) {
     if (!id) return;
-    SendEmailCode(id).then();
+    SendEmailCode(id).then((res) => onClick(res));
   }
   // 获取注册验证码
   function getRegisterCodeI(emailUrl: any) {
     if (!emailUrl) return;
-    GetRegionCode(emailUrl).then();
+    GetRegionCode(emailUrl).then((res) => onClick(res));
   }
+  // 登陆验证码
   function getLoginCodeI(username: any) {
     if (!username) return;
-    GetCode(username).then();
+    GetCode(username).then((res) => onClick(res));
   }
   let moduleMap = new Map([
     ["email", getEmailCodeI],
@@ -64,5 +65,6 @@ GetCodeBtn.defaultProps = {
   module: "email", // login register Email
   email: "",
   username: "",
+  onClick: () => {},
 };
 export default GetCodeBtn;

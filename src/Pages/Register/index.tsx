@@ -212,7 +212,11 @@ const Register = () => {
                 />
               </Form.Item>
 
-              <GetCodeBtn module="register" emailUrl={formObj.email}/>
+              <GetCodeBtn
+                module="register"
+                btnName="获取验证码"
+                emailUrl={formObj.email}
+              />
             </div>
           </Form.Item>
 
