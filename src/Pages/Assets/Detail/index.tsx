@@ -199,22 +199,18 @@ const Detail = () => {
           total: 0,
         }
       );
-      console.log(paginationTotal);
       let allInfo = res
         .map((item) => item.data)
         .filter(Boolean)
         .flat();
-      console.log("allInfo,", allInfo);
       setCapital((val: any[]) => val.concat(allInfo));
       setCrtpagination(() => paginationTotal);
       let { total, pageSize, pageNo } = paginationTotal;
-      console.log(" b", pageSize * pageNo < total);
       setHasLoadMore(() => pageSize * pageNo < total);
     });
   }, [allPagination]);
 
   function loadMore(): any {
-    console.log(crtPagination);
     if (!hasLoadMore) return;
     if (navK == "draw") {
       setDrawPagination((val) => ({ ...val, pageNo: ++crtPagination.pageNo }));

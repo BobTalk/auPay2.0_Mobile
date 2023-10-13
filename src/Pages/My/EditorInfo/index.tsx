@@ -98,8 +98,6 @@ const EditorInfo = () => {
   const moneyPwd = createRef();
   const [formInitVal, setValue] = useState({ inputValue: state?.value || "" });
   const popupCb = (crt: any) => {
-    console.log(crt);
-    console.log("-----99999");
     setPopupVisible(false);
     setDefaultCountryCode(crt["key"]);
     setCountryCode(crt["value"]);
@@ -271,9 +269,6 @@ const PopupComp = memo(
   (props: any) => {
     let countryCode = JSON.parse(JSON.stringify(props.CountryCode ?? "{}"));
     const itemClick = useCallback((key: string) => {
-      console.log(key);
-      console.log(props);
-      console.log("------");
       props.onClick?.({ key, value: countryCode[key] });
     }, []);
     return (

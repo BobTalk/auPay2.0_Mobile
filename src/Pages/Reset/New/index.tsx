@@ -13,7 +13,6 @@ const New = () => {
   const navigate = useNavigate();
   let { state: urlParams } = useLocation();
   const onFinish = (values: { newPassword: any }) => {
-    // console.log("登陆提交数据" + values);
     ResetPassword({
       username: urlParams.username,
       password: values.newPassword,

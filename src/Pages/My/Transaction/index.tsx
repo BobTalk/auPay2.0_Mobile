@@ -116,8 +116,6 @@ const OrderItem = (props: any) => {
   const navigate = useNavigate();
   const location = useLocation();
   const toInfo = (crt: any) => {
-    console.log(crt);
-    return;
     let type = encrypt(crt.type + "");
     let currency = encrypt(crt.currency);
     navigate("records-detail", {

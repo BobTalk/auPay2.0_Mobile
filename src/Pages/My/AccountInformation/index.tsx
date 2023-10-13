@@ -31,7 +31,6 @@ const AccountInformation = () => {
       });
       setListInfo(() => listInfo);
     });
-    console.log(listInfo);
 
     setPopupVisible(() => false);
   };
@@ -72,7 +71,6 @@ const AccountInformation = () => {
     if (InfoType["headSculpture"] == crt["type"]) return;
     let crtCopy = cloneDeep(crt);
     Reflect.deleteProperty(crtCopy, "extra");
-    console.log(crtCopy);
     let [code, phone] = crtCopy.value.split(" ");
     crt.showArrow &&
       navigator("/my/editorInfo", {

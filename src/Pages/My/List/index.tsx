@@ -231,13 +231,11 @@ const MyList = () => {
   }
   function appManage(e: any, crt: Object) {
     e.preventDefault();
-    console.log(crt);
     navigate("/my/app-manage", { state: crt });
   }
   const [popupVisible, setPopupVisible] = useState(false);
   //每一项点击事件
   const itemClick = (crt: any) => {
-    console.log(crt, "---");
     let path = crt?.path;
     path && navigate(`/my/${path}`);
   };

@@ -87,7 +87,6 @@ const SecurityInfo = () => {
   ];
   const Navigator = useNavigate();
   let itemClick = (crt: any) => {
-    console.log(crt);
     if (crt.flag === 1 && crt.type == InfoSecurity["updateGoogleValidator"]) {
       Navigator("/resetpwd", {
         state: { crt, headTitle: "重置Google验证器" },

@@ -56,8 +56,6 @@ const DrawMoney = () => {
   let Navigate = useNavigate();
   // submit
   const submitPopup = ({ values, assetsToken }: any) => {
-    console.log("assetsToken: ", assetsToken);
-    console.log("value: ", values);
     let { currencyId, currencyChain } = nameToCode();
     Withdraw(
       { currencyId, currencyChain, amount: drawNum, toAddress: drawAddr },
@@ -65,7 +63,6 @@ const DrawMoney = () => {
         "Assets-Password-Token": assetsToken,
       }
     ).then((res) => {
-      console.log(res, " >>>>>>");
       Toast.show({
         content: res.message,
       });
@@ -366,7 +363,6 @@ const PopupComp = memo(
           ref={formRef}
           initialValues={formInit}
           finish={(obj: any) => {
-            console.log("obj: ", obj);
             VerifyAssetsPassword({
               assetsPwd: obj.values.assetsPwd,
               operationId: OperationIdEnum["DrawMoney"],

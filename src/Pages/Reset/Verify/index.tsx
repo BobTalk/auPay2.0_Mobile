@@ -25,7 +25,6 @@ const Verify = () => {
     getEmail();
   }, []);
   const onFinish = (values: Object) => {
-    console.log(values);
     navigate("/reset/new", {
       state: { ...values, username: urlParams.username },
     });

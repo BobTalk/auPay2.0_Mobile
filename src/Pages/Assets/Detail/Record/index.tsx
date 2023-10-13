@@ -272,7 +272,6 @@ const Record = () => {
           setDateVisible(false);
         }}
         onCancel={() => {
-          console.log("copyConditions", copyConditions);
           setConditions((val: Object) => ({
             ...val,
             beginTime: copyConditions.beginTime,

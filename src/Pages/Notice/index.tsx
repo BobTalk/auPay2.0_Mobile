@@ -26,7 +26,6 @@ const Notice = () => {
   useEffect(() => {
     let {height} = JHeaderRef.current.getBoundingClientRect();
     let contentH = window.innerHeight;
-    console.log("contentH: ", contentH);
     setContentHeight(contentH - height);
   }, []);
   useEffect(() => {

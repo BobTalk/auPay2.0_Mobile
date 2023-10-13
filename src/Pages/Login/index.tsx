@@ -39,7 +39,6 @@ const Login = () => {
         });
       })
       .then((finallyRes) => {
-        console.log(finallyRes);
         if (!finallyRes.status) {
           Toast.show({
             content: finallyRes.message,

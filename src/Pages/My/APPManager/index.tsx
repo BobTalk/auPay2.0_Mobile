@@ -20,8 +20,6 @@ const AppManager = (props: any) => {
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
   function unBind(e: MouseEvent, crt: { applicaitonId: string }) {
-    console.log("crt: ", crt);
-
     Navigate("/resetpwd", {
       state: {
         crt: {

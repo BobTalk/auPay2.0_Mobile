@@ -68,10 +68,6 @@ const PublicInputPwd = forwardRef((props: propsVolit, ref: any): any => {
   );
 });
 export default memo(PublicInputPwd, (prv, next) => {
-  console.log(prv);
-  console.log(next);
-  console.log("--input----");
-
   if (prv.isRender) {
     return false;
   } else if (prv.type == "password") {

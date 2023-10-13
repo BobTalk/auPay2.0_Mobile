@@ -42,7 +42,6 @@ const MoneyPwd = (props: any, ref: any) => {
   };
   // 密码修改 确认
   function submitCb({ values }: any) {
-    console.log("AssetsToken.current", AssetsToken.current);
     UpdateAssetsPassword({
       newPassword: values.confirmPwd,
       assetsToken: AssetsToken.current,
@@ -188,7 +187,6 @@ const OldPwdValid = (props: any) => {
       props.onClick?.(payPwd.current.nativeElement.value);
     });
 
-    // console.log(payPwd.current.nativeElement.value);
   }
 
   function ResetPwd(e: any) {

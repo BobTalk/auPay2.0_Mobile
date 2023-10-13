@@ -68,14 +68,7 @@
     function refreshRem() {
         var cW = docEl.getBoundingClientRect().width
         var width = cW > 750 ? 750 : cW;
-        console.log(width, '-----')
-        console.log(dpr)
-        // if (width / dpr > 540) {
-        //     width = 540 * dpr;
-        // }
-        // var rem =  width / 10;
         var rem = width == 750 ? 100 : width * 100 / 750
-        // docEl.style.fontSize = rem + 'px';
         docEl.style.cssText=`font-size:${rem}px;max-width:${width}px;margin: 0 auto;`
         flexible.rem = win.rem = rem;
     }
