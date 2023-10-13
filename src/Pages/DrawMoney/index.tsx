@@ -24,7 +24,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { CurrencyTypeEnum, OperationIdEnum } from "../Enum";
 import PublicForm from "@/Components/PublicForm";
-import TestCode from "./sao";
+import ScanQr from "./scan_qr";
 const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
@@ -53,6 +53,7 @@ const DrawMoney = () => {
   // const [assetsInfo, setAssetsInfo] = useState<any>({});
   const assetsInfo: any = useRef(0);
   let [stop] = useStopPropagation();
+  let Navigate = useNavigate();
   // submit
   const submitPopup = ({ values, assetsToken }: any) => {
     console.log("assetsToken: ", assetsToken);
@@ -136,13 +137,15 @@ const DrawMoney = () => {
     });
   }
   function getRes(arg0: string): void {
-    console.log('arg0: ', arg0);
+    console.log("arg0: ", arg0);
+  }
+  function scamQr() {
+    Navigate("/scanQr");
   }
 
   return (
     <PublicScroll>
       <PublicHead {...headInfo} />
-      {/* <TestCode /> */}
       <div className="mx-[.3rem] mb-[.3rem] mt-[.1rem]">
         <DrawContent.Provider value={{ ...assetsInfo.current, commission }}>
           <PublicInput
@@ -154,7 +157,7 @@ const DrawMoney = () => {
               height: ".4rem",
               fontSize: ".28rem",
             }}
-            top={<TopScopeAddr isSelect={isSelect} />}
+            top={<TopScopeAddr isSelect={isSelect} scamQr={scamQr} />}
           >
             {isSelect && (
               <i
@@ -276,11 +279,14 @@ const DrawMoney = () => {
   );
 };
 // 提币地址
-const TopScopeAddr = (props: { isSelect?: boolean }) => {
+const TopScopeAddr = (props: { isSelect?: boolean; scamQr: Function }) => {
+  function scanQr() {
+    props?.scamQr();
+  }
   return (
     <div className="flex items-center justify-between text-[.28rem] font-[700] text-[#333] mb-[.17rem]">
       <p>{`${props.isSelect ? "选择" : "输入"}提币地址`}</p>
-      <i className="text-[.34rem] iconfont icon-saoyisao" />
+      <i onClick={scanQr} className="text-[.34rem] iconfont icon-saoyisao" />
     </div>
   );
 };

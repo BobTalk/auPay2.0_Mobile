@@ -22,6 +22,7 @@ import ResetPwd from '@/Pages/My/EditorInfo/reset-pwd'
 import WhiteList from '@/Pages/My/WhiteList'
 import OpenOrCloseWhiteList from '@/Pages/My/WhiteList/open-close'
 import AppManager from '@/Pages/My/APPManager'
+import BarcodeScanner from '@/Pages/DrawMoney/scan_qr'
 // import BussionRecords from '@/Pages/My/Transaction'
 
 // import { Navigate } from 'react-router-dom'
@@ -48,6 +49,7 @@ const RouteList = [
   { label: '资产交易记录', isAuth: true, path: 'assets/detail/record', element: <AssetsDetailRecord /> },
   { label: '资产交易记录详情', isAuth: true, path: 'assets/detail/record/info', element: <AssetsDetailRecordInfo /> },
   { label: '充值', isAuth: true, path: 'assets/detail/deposit', element: <AssetsDetailDeposit /> },
+  {label:'扫一扫', isAuth:true, path:'scanQr', element:<BarcodeScanner/>},
   { label: '提币', isAuth: true, path: 'draw', element: <DrawMoney /> },
   { label: '我的', isAuth: true, path: 'my', element: <MyModule /> },
   { label: '账户信息', isAuth: true, path: 'my/accountInfor', element: <AccountInformation /> },

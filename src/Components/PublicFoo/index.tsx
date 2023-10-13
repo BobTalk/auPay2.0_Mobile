@@ -22,7 +22,7 @@ const PublicFoo = (props: any) => {
   return (
     <div
       className={mergeClassName(
-        "footer-nav_box grid",
+        "footer-nav_box grid relative",
         `${clientW > 750 ? "left-[50%] translate-x-[-50%]" : ""}`,
         `grid-cols-[${navList.length}]`
       )}
