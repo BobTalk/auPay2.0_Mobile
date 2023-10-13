@@ -8,7 +8,7 @@ interface QrAttr {
   height: number;
 }
 const BarcodeScanner = () => {
-  let [cameraId, setCameraId] = useState<any>(0);
+  let [cameraId, setCameraId] = useState<any>("");
   let [devices, setDevices] = useState<any>();
   // 获取设备
   function getCameras() {
@@ -28,7 +28,9 @@ const BarcodeScanner = () => {
   }
   // 开始
   function start() {
-    const html5QrCode = new Html5Qrcode("reader");
+    const html5QrCode = new Html5Qrcode("reader",{verbose:true});
+    if (!cameraId) return;
+    console.log("cameraId>>: ", cameraId);
     html5QrCode
       .start(
         cameraId,
@@ -48,7 +50,7 @@ const BarcodeScanner = () => {
         }
       )
       .catch((err) => {
-        console.error("err: ", err);
+        console.error("err>>>: ", err);
         var errMsg = "";
         if (err.indexOf("NotAllowedError") != -1) {
           errMsg = "ERROR: 您需要授予相机访问权限";
@@ -73,6 +75,8 @@ const BarcodeScanner = () => {
   // 停止
   function stop() {
     const qrInstance = new Html5Qrcode("reader");
+    console.log('------------');
+    // qrInstance.clear();
     qrInstance
       .stop()
       .then(() => {
@@ -82,16 +86,15 @@ const BarcodeScanner = () => {
         console.log("Unable to stop scanning.");
       });
   }
+  function clear(){
+    new Html5Qrcode("reader").clear()
+  }
   useEffect(() => {
     getCameras();
-    return () => stop();
-  }, []);
+    return () => clear();
+  }, [cameraId]);
 
-  return (
-    <div className={styleScode["scan--box"]}>
-      <div id="reader" className=""></div>
-    </div>
-  );
+  return <div id="reader" className={styleScode["scan--box"]}></div>;
 };
 
 export default BarcodeScanner;
