@@ -7,7 +7,7 @@ import "./index.scss";
 import { Link, useNavigate } from "react-router-dom";
 import { HeadConfig } from "@/Assets/config/head";
 import { GetAccessKey, LoginI } from "@/Api";
-import { encryptByDES, setSession } from "@/utils/base";
+import { encryptByDES, getSession, setSession } from "@/utils/base";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 const Login = () => {
   let [stop] = useStopPropagation();
@@ -57,6 +57,9 @@ const Login = () => {
   useEffect(() => {
     let Hh = JHeader.current?.getBoundingClientRect()?.height ?? 0;
     setContentH(Hh);
+    if(getSession("token")){
+      navigate("/home");
+    }
   }, []);
   return (
     <div className="_login_wrap">

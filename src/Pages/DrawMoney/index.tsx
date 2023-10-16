@@ -137,7 +137,9 @@ const DrawMoney = () => {
     console.log("arg0: ", arg0);
   }
   function scamQr() {
-    Navigate("/scanQr");
+
+    console.log('state: ', state);
+    Navigate("/scanQr", {state});
   }
 
   return (

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Html5Qrcode } from "html5-qrcode";
 import styleScode from "./scan_qr.module.scss";
 import { Toast } from "antd-mobile";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface QrAttr {
   width: number;
@@ -10,6 +11,8 @@ interface QrAttr {
 const BarcodeScanner = () => {
   let [cameraId, setCameraId] = useState<any>("");
   let [devices, setDevices] = useState<any>();
+  let { state } = useLocation();
+  let navigate = useNavigate();
   // 获取设备
   function getCameras() {
     Html5Qrcode.getCameras()
@@ -28,9 +31,8 @@ const BarcodeScanner = () => {
   }
   // 开始
   function start() {
-    const html5QrCode = new Html5Qrcode("reader",{verbose:true});
+    const html5QrCode = new Html5Qrcode("reader", { verbose: true });
     if (!cameraId) return;
-    console.log("cameraId>>: ", cameraId);
     html5QrCode
       .start(
         cameraId,
@@ -42,11 +44,17 @@ const BarcodeScanner = () => {
         (decodedText, decodedResult) => {
           console.log(decodedText);
           console.log(decodedResult);
+          stop();
+          clear();
+          navigate("/draw", { state: { ...state, result: decodedResult } });
         },
         // 失败
         (errorMessage) => {
           console.error(errorMessage);
-          // stop()
+          console.log(state);
+          stop();
+          clear();
+          navigate("/draw", { state });
         }
       )
       .catch((err) => {
@@ -75,7 +83,7 @@ const BarcodeScanner = () => {
   // 停止
   function stop() {
     const qrInstance = new Html5Qrcode("reader");
-    console.log('------------');
+    console.log("------------");
     // qrInstance.clear();
     qrInstance
       .stop()
@@ -86,10 +94,13 @@ const BarcodeScanner = () => {
         console.log("Unable to stop scanning.");
       });
   }
-  function clear(){
-    new Html5Qrcode("reader").clear()
+  function clear() {
+    console.log("---------leave");
+    new Html5Qrcode("reader").clear();
   }
   useEffect(() => {
+    console.log('----cameraId------')
+    console.log('change');
     getCameras();
     return () => clear();
   }, [cameraId]);
