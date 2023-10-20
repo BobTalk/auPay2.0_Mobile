@@ -46,6 +46,7 @@ instance.interceptors.response.use(
   (response: any) => {
     // removePending(response.config);
     const errorCode = response?.data?.code;
+    console.log('errorCode)))): ', errorCode);
     if (errorCode === 401) {
       Toast.show({
         content: '登陆信息已过期,请重新登陆'
@@ -68,6 +69,7 @@ instance.interceptors.response.use(
   },
   (error: any) => {
     const response = error.response;
+    console.log('response>>>>>>: ', response);
 
     // 根据返回的http状态码做不同的处理
     switch (response?.status) {

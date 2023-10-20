@@ -120,7 +120,7 @@ const timeFormate = (time: string, format: string = 'YYYY-MM-DD'): string => {
 }
 // 单位处理
 let formatUnit = (id: number, chain?: number) => {
-  let unit = "EOS";
+  let unit = "";
   let num = 0;
   if (id === 1) {
     unit = "BTC";

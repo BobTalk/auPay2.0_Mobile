@@ -1,15 +1,17 @@
 import { dataType } from "@/utils/base";
 import instance from "./request";
-import { AxiosRequest, CustomResponse } from "./type";
+import { AxiosRequest } from "./type";
 
 class BaseHttp {
   // 外部传入的baseUrl
-  protected baseURL: string = '/';
+  protected baseURL: string|undefined = '/'
+    ;
   // 自定义header头
   protected headers: object = {
     ContentType: 'application/json;charset=UTF-8'
   }
-  constructor() { }
+  constructor() {
+  }
   private apiAxios({
     baseURL = this.baseURL,
     headers = this.headers,

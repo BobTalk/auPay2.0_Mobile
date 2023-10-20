@@ -26,7 +26,7 @@ const Info = () => {
   );
   // icon图标
   function cssIconAndColor(id: number) {
-    let unit = "EOS";
+    let unit = "";
     let color = "";
     if (id === 1) {
       unit = "BTC";

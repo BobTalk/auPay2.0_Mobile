@@ -19,7 +19,7 @@ const PropertyComp = (props: PropertyComp) => {
   }, []);
   // icon图标
   function cssIcon(id: number): string | undefined {
-    let unit = "EOS";
+    let unit = "";
     if (id === 1) unit = "BTC";
     if (id === 2) unit = "ETH";
     if (id === 3) unit = "USDT";
@@ -37,13 +37,16 @@ const PropertyComp = (props: PropertyComp) => {
   // 处理单位
   let formatUnit = useCallback(
     (id: number, chain?: number): string | undefined => {
-      let unit = "EOS";
+      let unit = "";
       if (id === 1) unit = "BTC";
       if (id === 2) unit = "ETH";
       if (id === 3) {
         if (chain === 1) unit = "USDT-OMNI";
         if (chain === 2) unit = "USDT-ERC20";
         if (chain === 3) unit = "USDT-TRC20";
+      }
+      if(id === 4){
+        if(chain === 0) unit = "TRX"
       }
       return unit;
     },

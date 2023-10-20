@@ -1,4 +1,9 @@
-import { GetCode, GetRegionCode, SendEmailCode, SendResetPasswordEmailCode } from "@/Api";
+import {
+  GetCode,
+  GetRegionCode,
+  SendEmailCode,
+  SendResetPasswordEmailCode,
+} from "@/Api";
 import { useCountDown } from "@/Hooks/Countdown";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useState } from "react";
@@ -12,6 +17,7 @@ const GetCodeBtn = (props: any) => {
   }
   // 获取注册验证码
   function getRegisterCodeI(emailUrl: any) {
+    console.log("emailUrl: ", emailUrl);
     if (!emailUrl) return;
     GetRegionCode(emailUrl).then((res) => onClick(res));
   }
@@ -20,7 +26,7 @@ const GetCodeBtn = (props: any) => {
     if (!username) return;
     GetCode(username).then((res) => onClick(res));
   }
-  function getResetCodeI(username:any){
+  function getResetCodeI(username: any) {
     if (!username) return;
     SendResetPasswordEmailCode(username).then((res) => onClick(res));
   }
@@ -28,7 +34,7 @@ const GetCodeBtn = (props: any) => {
     ["email", getEmailCodeI],
     ["register", getRegisterCodeI],
     ["login", getLoginCodeI],
-    ['resetpwd', getResetCodeI]
+    ["resetpwd", getResetCodeI],
   ]);
   let [stop] = useStopPropagation();
   let [codeMessage, setCodeMessage] = useState(btnName);
@@ -43,13 +49,14 @@ const GetCodeBtn = (props: any) => {
   );
   function getEmailCode(e: any) {
     stop(e, () => {
+      let params =
+        module === "email"
+          ? operationId
+          : module === "login"
+          ? username
+          : email;
+      if (!params) return;
       start(() => {
-        let params =
-          module === "email"
-            ? operationId
-            : module === "login"
-            ? username
-            : email;
         moduleMap?.get(module)?.(params);
       });
     });

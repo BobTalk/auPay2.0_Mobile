@@ -208,7 +208,7 @@ const Register = () => {
                 <GetCodeBtn
                   module="register"
                   btnName="获取验证码"
-                  emailUrl={formObj.email}
+                  email={formObj.email}
                 />
               </div>
             </Form.Item>

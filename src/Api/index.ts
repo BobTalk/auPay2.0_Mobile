@@ -1,5 +1,8 @@
 import _http from '../Https'
-const PublicPrefix = '/user'
+let env = process.env.NODE_ENV == 'development'
+const PublicPrefix = env ? '/user' : '/api/user'
+const OperatePrefix = env ? '/operate' : '/api/operate'
+const WalletPrefix = env ? '/wallet' : '/api/wallet'
 // 获取登录加密key
 export const GetAccessKey = () => {
   return _http.getReq({
@@ -260,7 +263,7 @@ export const ViewAnnouncement = (obj: {
 }) => {
   return _http.postReq(
     {
-      url: `/operate/operation/viewAnnouncement`,
+      url: `${OperatePrefix}/operation/viewAnnouncement`,
       data: {
         pageNo: obj.pageNo,
         pageSize: obj.pageSize,
@@ -272,13 +275,13 @@ export const ViewAnnouncement = (obj: {
 // 数字货币汇率接口
 export const GetUSDTTickers = () => {
   return _http.getReq({
-    url: `/operate/operation/getUSDTTickers`
+    url: `${OperatePrefix}/operation/getUSDTTickers`
   })
 }
 // 文件上传
 export const FileUpload = (file: any) => {
   return _http.postReq({
-    url: '/operate/operation/upload',
+    url: `${OperatePrefix}/operation/upload`,
     data: { file }
   })
 }
@@ -368,11 +371,11 @@ export const Withdraw = (data:{},headers:{}) => {
 
 export const GetCurrencyDrawFee = (obj:{currencyChain:number|undefined,currencyId:number })=>{
   return _http.getReq({
-    url:`operate/sys/getCurrencyWithdrawFee?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
+    url:`${OperatePrefix}/sys/getCurrencyWithdrawFee?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
   })
 }
 export const GetRechargeInfo = (obj:{currencyChain:number|undefined,currencyId:number })=>{
   return _http.getReq({
-    url:`/wallet/getRechargeInfo?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
+    url:`${WalletPrefix}/getRechargeInfo?currencyId=${obj.currencyId}&currencyChain=${obj.currencyChain}`
   })
 }
