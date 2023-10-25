@@ -7,6 +7,7 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
+  useRef,
   useState,
 } from "react";
 import { InfoType, CountryCode, HeadTitle, InfoSecurityTip } from "../../Enum";
@@ -23,6 +24,7 @@ import PublicForm from "@/Components/PublicForm";
 const EditorInfo = () => {
   let HeadTitle1 = JSON.parse(JSON.stringify(HeadTitle));
   let InfoSecurityTip1 = JSON.parse(JSON.stringify(InfoSecurityTip));
+  let formRef = useRef();
   const typeMap = new Map([
     [
       InfoType.phone,
@@ -152,6 +154,7 @@ const EditorInfo = () => {
         ) : (
           // 电话号码 昵称等模块修改
           <PublicForm
+            ref={formRef}
             finish={(val: string) =>
               SubmitBtnCb(val, CountryCodeObj[defaultCountryCode])
             }
@@ -159,17 +162,18 @@ const EditorInfo = () => {
             footer={<SubmitBtn type="submit" />}
           >
             <PublicInput
+              formRef={formRef}
               name="inputValue"
               value={formInitVal.inputValue}
               rules={[
                 {
                   required: true,
+                  pattern:/^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\d{8}$/,
                   message: `${
-                    InfoType.phone === state?.type ? "请输入联系方式" : "请输入"
+                    InfoType.phone === state?.type ? "请输入正确的联系方式" : "请输入"
                   }`,
                 },
               ]}
-              input={(val: any) => InputEvent(val)}
               isRender={true}
               maxLength={state?.maxLength}
               placeholder={

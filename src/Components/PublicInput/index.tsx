@@ -126,7 +126,7 @@ const PublicInput = forwardRef((props: propsVolit, ref: any): any => {
               className={mergeClassName("mr-[8px]", `${props.inputClassName}`)}
               style={props.inputStyle}
               placeholder={props.placeholder}
-              value={props["value"]}
+              defaultValue={props["value"]}
               maxLength={props.maxLength}
               minLength={props.minLength}
               onChange={valChange}
