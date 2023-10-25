@@ -69,8 +69,8 @@ const PropertyComp = (props: PropertyComp) => {
               itemClickCb(e, {
                 ...item,
                 flag: formatUnit(item.currencyId, item.currencyChain),
-                realM: thousands(item.realBalance),
-                rmbM: thousands(rmbConvert(item.currencyId, item.realBalance)),
+                realM: thousands(item.availableBalance),
+                rmbM: thousands(rmbConvert(item.currencyId, item.availableBalance)),
               })
             }
           >
@@ -85,9 +85,9 @@ const PropertyComp = (props: PropertyComp) => {
               <p>{formatUnit(item.currencyId, item.currencyChain)}</p>
             </div>
             <div className={styleScope["currency_money"]}>
-              <p>{thousands(item.realBalance) ?? "--"} USDT</p>
+              <p>{thousands(item.availableBalance) ?? "--"} USDT</p>
               <span>
-                {thousands(rmbConvert(item.currencyId, item.realBalance))}
+                {thousands(rmbConvert(item.currencyId, item.availableBalance))}
               </span>
             </div>
           </li>

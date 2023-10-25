@@ -40,9 +40,13 @@ const Home = () => {
     setUserInfo(userInfo);
   }
   async function getAssetsInfo() {
-    let { ozBalance, list, recentAupayUserTraderRecord } =
-      await GetAssetsInfo();
-    let total = list.map((item: any) => {
+    let {
+      ozBalance = 0,
+      list = [],
+      recentAupayUserTraderRecord,
+    } = await GetAssetsInfo();
+    recentAupayUserTraderRecord = recentAupayUserTraderRecord ?? {};
+    let total = list?.map((item: any) => {
       return format(item.currencyId, item.availableBalance);
     });
     setAssets({
@@ -56,8 +60,8 @@ const Home = () => {
         recentAupayUserTraderRecord.currencyId,
         recentAupayUserTraderRecord.currencyChain
       ).unit,
-      state:recentAupayUserTraderRecord.state,
-      id:recentAupayUserTraderRecord.id,
+      state: recentAupayUserTraderRecord.state,
+      id: recentAupayUserTraderRecord.id,
       currencyId: recentAupayUserTraderRecord.currencyId,
       currencyChain: recentAupayUserTraderRecord.currencyChain,
       tradeType: recentAupayUserTraderRecord.tradeType,
@@ -73,7 +77,7 @@ const Home = () => {
     console.log(assets);
     navigate("/assets/detail/record/info", {
       state: {
-        id:assets.id,
+        id: assets.id,
         state: assets.state,
       },
     });

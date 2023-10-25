@@ -34,8 +34,9 @@ const Assets = () => {
     });
   };
   async function getAssetsInfo() {
-    let { ozBalance, list, recentAupayUserTraderRecord } =
+    let { ozBalance, list=[], recentAupayUserTraderRecord } =
       await GetAssetsInfo();
+      recentAupayUserTraderRecord = recentAupayUserTraderRecord ?? {};
     let total = list.map((item: any) => {
       return format(item.currencyId, item.availableBalance);
     });
