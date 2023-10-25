@@ -10,6 +10,7 @@ import { useRMBConversion } from "@/Hooks/RMBConversion";
 const Info = () => {
   // 根据传进来的数据判断是充币详情还是提币详情
   let { state } = useLocation();
+  console.log('state: ', state);
   let { module, currency } = state ?? {};
   let [formatInfo] = useState<{ unit: string; num: number }>(
     formatUnit(state.currencyId, state.currencyChain)
