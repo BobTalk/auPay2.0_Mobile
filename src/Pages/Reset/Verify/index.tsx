@@ -14,6 +14,7 @@ const Verify = () => {
   });
   const navigate = useNavigate();
   let { state: urlParams } = useLocation();
+  console.log('urlParams: ', urlParams);
   let codeTimer: any = null;
   let [likeEmail, setLikeEmail] = useState();
   function getEmail() {

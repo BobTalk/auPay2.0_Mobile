@@ -47,6 +47,9 @@ const Login = () => {
         }
         setSession("token", finallyRes.value);
         navigate("/home");
+      })
+      .catch((err) => {
+        console.error("err: ", err);
       });
   };
   const forget = (e: any) => {
@@ -57,7 +60,7 @@ const Login = () => {
   useEffect(() => {
     let Hh = JHeader.current?.getBoundingClientRect()?.height ?? 0;
     setContentH(Hh);
-    if(getSession("token")){
+    if (getSession("token")) {
       navigate("/home");
     }
   }, []);

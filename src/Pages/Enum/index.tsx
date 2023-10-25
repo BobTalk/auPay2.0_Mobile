@@ -88,7 +88,8 @@ enum CurrencyTypeEnum{
   ETH='2',
   "USDT-OMNI"="3-1",
   "USDT-ERC20"="3-2",
-  "USDT-TRC20"="3-3"
+  "USDT-TRC20"="3-3",
+  "TRX"='4'
 }
 export {
   InfoType,

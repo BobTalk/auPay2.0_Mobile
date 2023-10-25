@@ -10,9 +10,11 @@ import { useEffect, useState } from "react";
 import { GetRechargeInfo } from "@/Api";
 import { CurrencyTypeEnum } from "@/Pages/Enum";
 import QRCode from "qrcode.react";
+import { useStopPropagation } from "@/Hooks/StopPropagation";
 
 const Deposit = () => {
   let { state: urlParams } = useLocation();
+  let [stop] = useStopPropagation();
   let headData = Object.assign(HeadConfig, {
     title: `充币${urlParams.title}`,
     back: "goBack",
@@ -20,14 +22,16 @@ const Deposit = () => {
   });
   let [qrcodeInfo, setQrcodeInfo] = useState("");
   const iconClick = (e: any) => {
-    console.log(e, "----");
+    stop(e, () => {
+      navigator.clipboard.writeText(qrcodeInfo);
+    });
   };
   function getPageInfo() {
     let typeEnum = JSON.parse(JSON.stringify(CurrencyTypeEnum));
     let [currencyId, currencyChain] = typeEnum[urlParams.title].split("-");
     GetRechargeInfo({
       currencyId: currencyId * 1,
-      currencyChain: currencyChain ? currencyChain * 1 : undefined,
+      currencyChain: currencyChain ? currencyChain * 1 : 0,
     }).then((res) => {
       setQrcodeInfo(res.address);
     });
@@ -47,11 +51,11 @@ const Deposit = () => {
         <div className={styleScope["assets_deposit_qr_info"]}>
           <QRCode
             includeMargin={false} // 是否留边
-            level="H" // 安全等级  L M Q H 
+            level="H" // 安全等级  L M Q H
             value={qrcodeInfo}
             // imageSettings={{
             //   // 配置二维码中间出现的logo信息
-            //   src: "", // logo的地址 
+            //   src: "", // logo的地址
             //   width: 30, // logo的宽度 默认值是整个二维码的10% 类型为number
             //   height: 30, // logo的高度 默认值是整个二维码的10% 类型为number
             //   excavate: true, // 是否是镂空状态 默认值false 类型为boolean
@@ -102,7 +106,7 @@ const Deposit = () => {
         }}
         rows={2}
         style={{ marginTop: ".5rem" }}
-        info="TQCNPKq3sLCW6ffsFPd3ZqYyt6HFKNBUTbTQCNPKq3sLCW6ffsFPd3ZqYyFPd3ZqYyFPd3ZqYy"
+        info={qrcodeInfo}
         click={iconClick}
       />
       <PublicSummary

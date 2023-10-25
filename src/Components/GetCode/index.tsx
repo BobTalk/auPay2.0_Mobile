@@ -9,6 +9,7 @@ import { useStopPropagation } from "@/Hooks/StopPropagation";
 import { useState } from "react";
 
 const GetCodeBtn = (props: any) => {
+  console.log("props: ", props);
   let { operationId, btnName, module, email, username, onClick } = props;
   // 获取邮箱验证码
   function getEmailCodeI(id: number) {
@@ -52,7 +53,7 @@ const GetCodeBtn = (props: any) => {
       let params =
         module === "email"
           ? operationId
-          : module === "login"
+          : ["login", "resetpwd"].includes(module)
           ? username
           : email;
       if (!params) return;
