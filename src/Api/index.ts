@@ -1,15 +1,19 @@
 import _http from '../Https'
 let env = process.env.NODE_ENV == 'development'
-console.log('env: ', env);
 const PublicPrefix = env ? '/user' : '/api/user'
 console.log('PublicPrefix: ', PublicPrefix);
 const OperatePrefix = env ? '/operate' : '/api/operate'
 const WalletPrefix = env ? '/wallet' : '/api/wallet'
-console.log('WalletPrefix: ', WalletPrefix);
 // 获取登录加密key
 export const GetAccessKey = () => {
   return _http.getReq({
     url: `${PublicPrefix}/getAccessKey`
+  })
+}
+// 获取最近一次的IP
+export const getIPAddr =()=>{
+  return _http.getReq({
+    url:`${PublicPrefix}/getRecentLoginLog`
   })
 }
 // 登陆

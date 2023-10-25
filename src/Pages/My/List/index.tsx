@@ -1,16 +1,17 @@
 import { Avatar, Card, Popup } from "antd-mobile";
 import styleScope from "./index.module.scss";
-import { mergeClassName, removeSession } from "@/utils/base";
+import { getSession, mergeClassName, removeSession, timeFormate } from "@/utils/base";
 import whiteImg from "../Assets/images/white-menu.png";
 import appmanger from "../Assets/images/app-manger.png";
 import PublicList from "@/Components/PublicList";
 import PublicFoo from "@/Components/PublicFoo";
 import { useNavigate } from "react-router-dom";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { InfoSecurity } from "../../Enum";
-import { Logout } from "@/Api";
+import { Logout, getIPAddr } from "@/Api";
 import { replace } from "lodash";
 import PublicScroll from "@/Components/PublicScroll";
+import dayjs from "dayjs";
 const MyList = () => {
   let navigate = useNavigate();
   let listInfo = [
@@ -225,6 +226,12 @@ const MyList = () => {
       },
     },
   ];
+  let [userInfo, setUserInfo] = useState({
+    name: "",
+    loginIp: "",
+    lastLoginTime: "",
+    loginAddr:''
+  });
   function whiteMenu(e: any, crt: Object) {
     e.preventDefault();
     navigate("/my/white-list", { state: crt });
@@ -239,6 +246,18 @@ const MyList = () => {
     let path = crt?.path;
     path && navigate(`/my/${path}`);
   };
+  let getIpAddr = () => {
+    getIPAddr().then((res) => {
+      console.log("res: ", res);
+      let { username } = getSession("userInfo");
+      setUserInfo({
+        name: username,
+        loginIp: res.loginIp,
+        loginAddr: res.loginAddress ?? '未知',
+        lastLoginTime: timeFormate(res.createTime, "YYYY-MM-DD HH:mm:ss"),
+      });
+    });
+  };
   const signOut = () => {
     setPopupVisible(!popupVisible);
     Logout().then((res) => {
@@ -246,6 +265,9 @@ const MyList = () => {
       navigate("/login", { replace: true });
     });
   };
+  useEffect(() => {
+    getIpAddr();
+  }, []);
   return (
     <PublicScroll>
       <div
@@ -265,12 +287,14 @@ const MyList = () => {
             }}
           />
           <div className="flex flex-col justify-between h-[1.34rem]">
-            <p className="text-[.34rem] text-[#333] font-[700]">西尾猫的世界</p>
+            <p className="text-[.34rem] text-[#333] font-[700]">
+              {userInfo?.name}
+            </p>
             <p className="text-[.24rem] text-[#666]">
               <span>上次登录</span>
-              <span>2023-06-30 18:17:47</span>
+              <span>{userInfo.lastLoginTime}</span>
             </p>
-            <p className="text-[.24rem] text-[#666]">92.119.178.68 罗马尼亚</p>
+            <p className="text-[.24rem] text-[#666]">{userInfo.loginIp} {userInfo.loginAddr}</p>
           </div>
         </div>
         <div className="flex justify-between gap-x-[.3rem] mt-[.42rem]">
