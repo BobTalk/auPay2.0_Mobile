@@ -43,7 +43,7 @@ const Home = () => {
     let { ozBalance, list, recentAupayUserTraderRecord } =
       await GetAssetsInfo();
     let total = list.map((item: any) => {
-      return format(item.currencyId, item.realBalance);
+      return format(item.currencyId, item.availableBalance);
     });
     setAssets({
       ozBalance,

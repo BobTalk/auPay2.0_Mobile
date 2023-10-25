@@ -87,7 +87,7 @@ const PropertyComp = (props: PropertyComp) => {
             <div className={styleScope["currency_money"]}>
               <p>{thousands(item.realBalance) ?? "--"} USDT</p>
               <span>
-                ¥ {thousands(rmbConvert(item.currencyId, item.realBalance))}
+                {thousands(rmbConvert(item.currencyId, item.realBalance))}
               </span>
             </div>
           </li>

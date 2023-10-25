@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "antd-mobile": "^5.32.2",
+    "antd-mobile-icons": "^0.3.0",
     "axios": "^1.4.0",
     "bfj": "^7.0.2",
     "camelcase": "^6.2.1",
