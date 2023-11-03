@@ -25,6 +25,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { CurrencyTypeEnum, OperationIdEnum } from "../Enum";
 import PublicForm from "@/Components/PublicForm";
 import ScanQr from "./scan_qr";
+import { formatUnit } from "@/utils/base";
 const DrawContent = createContext({});
 // 弹窗属性类型
 type PopupCompType = {
@@ -36,6 +37,7 @@ type PopupCompType = {
 // 提币
 const DrawMoney = () => {
   let { state } = useLocation();
+  console.log("state: ", state);
   let headInfo = Object.assign(HeadConfig, {
     title: `提币${state.title}`,
     back: "goBack",
@@ -104,14 +106,24 @@ const DrawMoney = () => {
     assetsInfo.current = res;
     getMoneyRatio(params);
   }
+  // 提币地址选项
   async function getDrawAdrrList() {
     let { value } = await GetUserWithdrawAddress();
-    let frs = value.map((item: { address: any; id: any }) => ({
-      title: item.address,
-      id: item.id,
-      align: true,
-    }));
-    setAddrList(frs);
+    console.log("value: ", value);
+
+    let frs = value.map(
+      (item: { [x: string]: number; address: any; id: any }) => {
+        let { unit } = formatUnit(item.currencyId, item.currencyChain);
+        if (unit === state.title) {
+          return {
+            title: item.address,
+            id: item.id,
+            align: true,
+          };
+        }
+      }
+    );
+    setAddrList(frs.filter(Boolean));
   }
   useLayoutEffect(() => {
     getDrawAdrrList();
@@ -137,9 +149,8 @@ const DrawMoney = () => {
     console.log("arg0: ", arg0);
   }
   function scamQr() {
-
-    console.log('state: ', state);
-    Navigate("/scanQr", {state});
+    console.log("state: ", state);
+    Navigate("/scanQr", { state });
   }
 
   return (
@@ -160,7 +171,7 @@ const DrawMoney = () => {
           >
             {isSelect && (
               <i
-                onClick={(e) => showSelectList(e)}
+                onClick={showSelectList}
                 className="iconfont icon-zhankai text-[.26rem]"
               />
             )}

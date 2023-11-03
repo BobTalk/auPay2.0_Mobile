@@ -248,7 +248,6 @@ const MyList = () => {
   };
   let getIpAddr = () => {
     getIPAddr().then((res) => {
-      console.log("res: ", res);
       let { username } = getSession("userInfo");
       setUserInfo({
         name: username,
