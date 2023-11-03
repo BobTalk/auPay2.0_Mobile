@@ -91,7 +91,7 @@ const ResetPwd = (props: any) => {
         emailToken: emailToken.value,
       }).then((res) => {
         if (res.status) {
-          navigate("/my/security-info");
+          navigate("/my/security-info", {state:{moduleSource:'resetPwd'}});
         } else {
           Toast.show({
             content: "失败",

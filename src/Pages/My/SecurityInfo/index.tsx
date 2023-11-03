@@ -1,18 +1,33 @@
 import PublicHead from "@/Components/PublicHead";
 import PublicList from "@/Components/PublicList";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { InfoSecurity } from "../../Enum";
 import { HeadConfig } from "@/Assets/config/head";
-import { getSession } from "@/utils/base";
+import { getSession, setSession } from "@/utils/base";
+import { GetUserInfo } from "@/Api";
+import { useEffect, useState } from "react";
 
 const SecurityInfo = () => {
+  let { state } = useLocation();
+  console.log("state: ", state);
   const HeadData = Object.assign(HeadConfig, {
     title: "安全信息",
     back: "goBack",
     className:
       "p-[.32rem_.3rem] h-[auto] border-b-[1px] border-b-[rgba(197,202,208,1)]",
   });
-  const userInfo = getSession("userInfo");
+  async function updateUser() {
+    let userInfo = await GetUserInfo();
+    setSession("userInfo", userInfo);
+    setUserInfo(userInfo)
+  }
+  useEffect(() => {
+    if (state?.moduleSource === "resetPwd") {
+      updateUser();
+    }
+  }, []);
+  let [userInfo, setUserInfo] = useState(getSession("userInfo"));
+
   let listInfo = [
     {
       id: "1",
@@ -87,6 +102,7 @@ const SecurityInfo = () => {
   ];
   const Navigator = useNavigate();
   let itemClick = (crt: any) => {
+    console.log('crt: ', crt);
     if (crt.flag === 1 && crt.type == InfoSecurity["updateGoogleValidator"]) {
       Navigator("/resetpwd", {
         state: { crt, headTitle: "重置Google验证器" },

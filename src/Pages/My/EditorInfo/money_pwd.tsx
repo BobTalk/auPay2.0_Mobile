@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const MoneyPwd = (props: any, ref: any) => {
   const Navigate = useNavigate();
+  const formEl = useRef();
   const AssetsToken = useRef();
   const [formInitVal, setFormInitVal] = useState({
     newPwd: "",
@@ -26,7 +27,7 @@ const MoneyPwd = (props: any, ref: any) => {
       newPwd: "",
       confirmPwd: "",
     }),
-    []
+    [formInitVal]
   );
   function nextStep(val: string) {
     VerifyAssetsPassword({ assetsPwd: val, operationId: 491 }).then((res) => {
@@ -42,6 +43,7 @@ const MoneyPwd = (props: any, ref: any) => {
   };
   // 密码修改 确认
   function submitCb({ values }: any) {
+    console.log("values: ", values);
     UpdateAssetsPassword({
       newPassword: values.confirmPwd,
       assetsToken: AssetsToken.current,
@@ -53,6 +55,7 @@ const MoneyPwd = (props: any, ref: any) => {
     });
   }
   let checkPwd = ({ field }: any, val: any) => {
+    console.log("field: ", field);
     if (!val) {
       return Promise.reject(new Error(WarnMessage[field]));
     } else {
@@ -90,6 +93,7 @@ const MoneyPwd = (props: any, ref: any) => {
       {showUpdatePwdEl ? (
         <>
           <PublicForm
+            ref={formEl}
             style={{
               margin: "0 .3rem",
             }}
@@ -107,6 +111,7 @@ const MoneyPwd = (props: any, ref: any) => {
             }
           >
             <PublicInput
+              formRef={formEl}
               rules={[
                 {
                   required: true,
@@ -137,6 +142,7 @@ const MoneyPwd = (props: any, ref: any) => {
               inputClassName="text-[.3rem] text-[#222]"
             />
             <PublicInput
+              formRef={formEl}
               rules={[
                 {
                   required: true,
@@ -186,7 +192,6 @@ const OldPwdValid = (props: any) => {
       }
       props.onClick?.(payPwd.current.nativeElement.value);
     });
-
   }
 
   function ResetPwd(e: any) {

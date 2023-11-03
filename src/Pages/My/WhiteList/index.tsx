@@ -40,8 +40,9 @@ const WhiteList = (props: any) => {
     }, {});
     let type = Object.keys(CurrencyTypeEnum);
     let keyList = Object.assign(type, Object.keys(res));
-
-    setInfoKeyList(keyList);
+    console.log("keyList: ");
+    let unique = Array.from(new Set(keyList))?.map((item:string) => item + "");
+    setInfoKeyList(unique);
     setInfoList(res);
   }
   function refreshCb() {

@@ -57,7 +57,7 @@ const PublicForm = (props: any, ref: any) => {
             {props?.children?.map((comp: any, idx: number) =>
               comp ? (
                 <Form.Item
-                  key={comp._owner.mode + idx}
+                  key={comp?.props?.name+"_"+idx}
                   // disabled={comp.props.disabled}
                   name={comp?.props?.name}
                   rules={comp?.props?.rules}
