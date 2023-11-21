@@ -113,17 +113,19 @@ const Home = () => {
         </div>
 
         <div className="p-[0_.3rem_.3rem]">
-          <div className={styleScope["home_news"]}>
-            <p>
-              最近一笔交易记录：{assets.tradeTime}
-              {assets.tradeName}
-              {assets.type}
-            </p>
-            <i
-              className="iconfont icon-xiangyou1 text-[#666]"
-              onClick={jumpDetail}
-            />
-          </div>
+          {assets.tradeName ? (
+            <div className={styleScope["home_news"]}>
+              <p>
+                最近一笔交易记录：{assets.tradeTime}
+                {assets.tradeName}
+                {assets.type}
+              </p>
+              <i
+                className="iconfont icon-xiangyou1 text-[#666]"
+                onClick={jumpDetail}
+              />
+            </div>
+          ) : null}
 
           <div className={styleScope["home_notice"]}>
             <div className={styleScope["home_notice_top"]}>

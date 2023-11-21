@@ -8,7 +8,7 @@ declare namespace NodeJS {
     readonly PUBLIC_URL: string;
   }
 }
-
+declare module 'react-to-copy'
 declare module '*.avif' {
   const src: string;
   export default src;

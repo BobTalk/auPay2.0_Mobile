@@ -85,8 +85,17 @@ const ItemComp = ({ list }: any) =>
         </div>
         <span>
           {item.isRoll ? (
-            <Ellipsis content={item.content} rows={1} />
+            <div
+              style={{
+                width: "100%",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+              dangerouslySetInnerHTML={{ __html: item.content }}
+            ></div>
           ) : (
+            // <Ellipsis content={item.content} rows={1} />
             <span dangerouslySetInnerHTML={{ __html: item.content }}></span>
           )}
         </span>

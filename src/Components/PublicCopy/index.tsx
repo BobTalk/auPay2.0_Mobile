@@ -1,7 +1,8 @@
-import { Ellipsis } from "antd-mobile";
+import { Ellipsis, Toast } from "antd-mobile";
 import styleScope from "./index.module.scss";
 import { mergeClassName } from "@/utils/base";
 import { useCallback } from "react";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 type propsVali = {
   info: string;
   direction?: "start" | "end" | "middle";
@@ -20,10 +21,10 @@ type propsVali = {
 };
 
 const PublicCopy = (props: propsVali) => {
-  const iconClick = useCallback((e: any) => {
+  const iconClick = useCallback((value: any) => {
     // 阻止冒泡
-    e.stopPropagation();
-    props?.click?.(e);
+    // e.stopPropagation();
+    props?.click?.(value);
   }, []);
   return (
     <div
@@ -47,16 +48,28 @@ const PublicCopy = (props: propsVali) => {
           `${props.iconBoxClassName}`
         )}
         style={props.iconBox}
-        onClick={iconClick}
       >
-        {props.children ? (
-          <>{props.children}</>
-        ) : (
-          <i
-            className="iconfont icon-fuzhi"
-            style={{ fontSize: props.iconSize, color: props.iconColor }}
-          ></i>
-        )}
+        <CopyToClipboard
+          text={props.info}
+          onCopy={(_, result) => {
+            if (result) {
+              iconClick(_);
+            } else {
+              Toast.show({
+                content: `复制${_}失败!`,
+              });
+            }
+          }}
+        >
+          {props.children ? (
+            <>{props.children}</>
+          ) : (
+            <i
+              className="iconfont icon-fuzhi"
+              style={{ fontSize: props.iconSize, color: props.iconColor }}
+            ></i>
+          )}
+        </CopyToClipboard>
       </div>
     </div>
   );

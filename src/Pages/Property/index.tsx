@@ -45,15 +45,15 @@ const PropertyComp = (props: PropertyComp) => {
         if (chain === 2) unit = "USDT-ERC20";
         if (chain === 3) unit = "USDT-TRC20";
       }
-      if(id === 4){
-        if(chain === 0) unit = "TRX"
+      if (id === 4) {
+        if (chain === 0) unit = "TRX";
       }
       return unit;
     },
     []
   );
   const rmbConvert = (id: number, money: number) => {
-   return setRMBConversion(id, money)
+    return setRMBConversion(id, money);
   };
   const itemClickCb = useCallback((e: any, crt: any) => {
     e.stopPropagation();
@@ -70,7 +70,9 @@ const PropertyComp = (props: PropertyComp) => {
                 ...item,
                 flag: formatUnit(item.currencyId, item.currencyChain),
                 realM: thousands(item.availableBalance),
-                rmbM: thousands(rmbConvert(item.currencyId, item.availableBalance)),
+                rmbM: thousands(
+                  rmbConvert(item.currencyId, item.availableBalance)
+                ),
               })
             }
           >
@@ -85,7 +87,10 @@ const PropertyComp = (props: PropertyComp) => {
               <p>{formatUnit(item.currencyId, item.currencyChain)}</p>
             </div>
             <div className={styleScope["currency_money"]}>
-              <p>{thousands(item.availableBalance) ?? "--"} USDT</p>
+              <p>
+                {thousands(item.availableBalance) ?? "--"}{" "}
+                {cssIcon(item.currencyId)}
+              </p>
               <span>
                 {thousands(rmbConvert(item.currencyId, item.availableBalance))}
               </span>

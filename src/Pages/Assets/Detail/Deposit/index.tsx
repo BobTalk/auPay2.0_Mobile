@@ -11,6 +11,7 @@ import { GetRechargeInfo } from "@/Api";
 import { CurrencyTypeEnum } from "@/Pages/Enum";
 import QRCode from "qrcode.react";
 import { useStopPropagation } from "@/Hooks/StopPropagation";
+import { Toast } from "antd-mobile";
 
 const Deposit = () => {
   let { state: urlParams } = useLocation();
@@ -21,9 +22,9 @@ const Deposit = () => {
     className: "text-[#333] py-[.32rem]",
   });
   let [qrcodeInfo, setQrcodeInfo] = useState("");
-  const iconClick = (e: any) => {
-    stop(e, () => {
-      navigator.clipboard.writeText(qrcodeInfo);
+  const iconClick = (value: string) => {
+    Toast.show({
+      content: `复制${value}成功`,
     });
   };
   function getPageInfo() {
