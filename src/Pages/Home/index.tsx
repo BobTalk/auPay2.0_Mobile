@@ -158,14 +158,13 @@ const Home = () => {
                     (item: { id: string; content: string }) => {
                       return (
                         <Swiper.Item key={item.id}>
-                          <p
+                          <div
                             className={mergeClassName(
                               styleScope["home_notice_swiper_p"],
                               "text-[.24rem]"
                             )}
-                          >
-                            {item.content}
-                          </p>
+                            dangerouslySetInnerHTML={{ __html: item.content }}
+                          ></div>
                         </Swiper.Item>
                       );
                     }

@@ -21,16 +21,24 @@ const Notice = () => {
   let [notice, setNotice] = useState<any>({});
   async function InitPageInfo() {
     let notice = await ViewAnnouncement(pagination);
-    setNotice(notice);
+    setNotice((oldNotice: any) => {
+      if (!oldNotice.data) {
+        oldNotice.data = [];
+      }
+      return {
+        ...notice,
+        data: [...oldNotice.data, ...notice.data],
+      };
+    });
   }
   useEffect(() => {
-    let {height} = JHeaderRef.current.getBoundingClientRect();
+    let { height } = JHeaderRef.current.getBoundingClientRect();
     let contentH = window.innerHeight;
     setContentHeight(contentH - height);
   }, []);
   useEffect(() => {
     InitPageInfo();
-  }, []);
+  }, [pagination]);
   return (
     <PublicScroll>
       <PublicHead {...headData} ref={JHeaderRef} />
@@ -46,7 +54,7 @@ const Notice = () => {
             <InfiniteScroll
               hasMore={pagination.pageNo < notice.pageTotal}
               loadMore={(isRetry: boolean): any => {
-                if (isRetry) {
+                if (!isRetry) {
                   setPagination({
                     ...pagination,
                     pageNo: ++pagination.pageNo,
@@ -79,7 +87,7 @@ const ItemComp = ({ list }: any) =>
           {item.isRoll ? (
             <Ellipsis content={item.content} rows={1} />
           ) : (
-            <>{item.content}</>
+            <span dangerouslySetInnerHTML={{ __html: item.content }}></span>
           )}
         </span>
       </li>

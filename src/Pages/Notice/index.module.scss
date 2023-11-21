@@ -3,7 +3,9 @@
 }
 
 .notice_list {
+  height: 100%;
   padding: .2rem 0;
+  overflow-y: auto;
 
   li {
     background: #FFF;

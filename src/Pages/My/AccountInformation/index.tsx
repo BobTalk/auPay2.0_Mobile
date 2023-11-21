@@ -71,7 +71,7 @@ const AccountInformation = () => {
     if (InfoType["headSculpture"] == crt["type"]) return;
     let crtCopy = cloneDeep(crt);
     Reflect.deleteProperty(crtCopy, "extra");
-    let [code, phone] = crtCopy?.value?.split(" ");
+    let [code, phone] = crtCopy?.value?.split(" ")??[undefined, undefined];
     crt.showArrow &&
       navigator("/my/editorInfo", {
         state: {
