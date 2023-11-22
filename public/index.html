@@ -21,11 +21,17 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root" className="overflow-auto"></div>
 
 </body>
 <script>
-  document.body.querySelector("#root").style.height = '100vh'
+  console.log(window.outerHeight,"浏览器高度");
+  console.log(window.innerHeight,"浏览器内页面可用高度");
+  console.log(window.screen.availHeight,"屏幕可用高度");
+  console.log(window.screen.height,"屏幕高度");
+  console.log(document.body.offsetHeight,"body总高度");
+  console.log(document.body.clientHeight,"🙅ody展示的高度");
+  document.body.querySelector("#root").style.height = window.innerHeight+"px"
 </script>
 
 </html>
