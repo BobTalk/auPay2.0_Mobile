@@ -70,7 +70,7 @@ const WhiteList = (props: any) => {
       <main
         className="bg-[#F6F6F6] p-[.3rem] overflow-auto"
         style={{
-          height: `calc(100vh - ${headerH}px)`,
+          height: `calc(100% - ${headerH}px)`,
         }}
       >
         <Card

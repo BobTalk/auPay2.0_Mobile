@@ -9,9 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { memo, useEffect, useState } from "react";
 import { InfoSecurity } from "../../Enum";
 import { Logout, getIPAddr } from "@/Api";
-import { replace } from "lodash";
 import PublicScroll from "@/Components/PublicScroll";
-import dayjs from "dayjs";
 const MyList = () => {
   let navigate = useNavigate();
   let listInfo = [
@@ -296,9 +294,9 @@ const MyList = () => {
             <p className="text-[.24rem] text-[#666]">{userInfo.loginIp} {userInfo.loginAddr}</p>
           </div>
         </div>
-        <div className="flex justify-between gap-x-[.3rem] mt-[.42rem]">
+        <div className="flex justify-between  mt-[.42rem]">
           <Card
-            className="flex flex-1 h-[1rem] px-[.38rem]"
+            className="flex flex-1 h-[1rem] justify-center mr-[.3rem]"
             title={
               <Menu
                 onClick={(e: any) => whiteMenu(e, { headTitle: "白名单管理" })}
@@ -308,7 +306,7 @@ const MyList = () => {
             }
           ></Card>
           <Card
-            className="flex flex-1 h-[1rem] px-[.38rem]"
+            className="flex flex-1 h-[1rem] justify-center"
             title={
               <Menu
                 onClick={(e: any) => appManage(e, { headTitle: "应用管理" })}

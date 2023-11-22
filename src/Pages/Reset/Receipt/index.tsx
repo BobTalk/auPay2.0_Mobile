@@ -28,7 +28,7 @@ const Receipt = () => {
       {type === "success" ? (
         <div
           className="reset_receipt"
-          style={{ height: `calc(100vh - ${contentH}px)` }}
+          style={{ height: `calc(100% - ${contentH}px)` }}
         >
           <div className="flex flex-col items-center">
             <i className="iconfont icon-zhengque text-[#52C41A]"></i>
@@ -41,7 +41,7 @@ const Receipt = () => {
       ) : (
         <div
           className="reset_receipt"
-          style={{ height: `calc(100vh - ${contentH}px)` }}
+          style={{ height: `calc(100% - ${contentH}px)` }}
         >
           <div className="flex flex-col items-center">
             <i className="iconfont icon-cuowu text-[#E84335]"></i>
