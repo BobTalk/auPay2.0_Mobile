@@ -10,6 +10,7 @@ import {
   FindRechargeRecordList,
   FindTradeRecordList,
   FindWithdrawRecordList,
+  GetAssetsInfo,
 } from "@/Api";
 import { useRMBConversion } from "@/Hooks/RMBConversion";
 import { InfiniteScroll } from "antd-mobile";
@@ -25,12 +26,16 @@ type ExtractAndRechargeType = {
 };
 const Detail = () => {
   let location = useLocation();
-  let { currencyChain, currencyId,title } = location.state;
+  let { currencyChain, currencyId, title } = location.state;
   let [hasLoadMore, setHasLoadMore] = useState(false);
+  let [crtAssetsInfo, setCrtAssetsInfo] = useState<any>({
+    availableBalance: 0,
+  });
   let headData = Object.assign(HeadConfig, {
     title,
     back: "goBack",
-    className: "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden py-[.32rem] h-[auto] border-b-[0]",
+    className:
+      "text-[#fff] mx-[.3rem] w-[inherit] overflow-hidden py-[.32rem] h-[auto] border-b-[0]",
     // style: {
     //   padding: ".32rem 0",
     //   height: "auto",
@@ -45,7 +50,6 @@ const Detail = () => {
   ];
   let [navK, setNavK] = useState("all");
   let navigate = useNavigate();
-  let params: any = useParams();
   // 充币分页
   let [depositPagination, setDepositPagination] = useState({
     pageNo: 1,
@@ -56,11 +60,11 @@ const Detail = () => {
     pageNo: 1,
     pageSize: 10,
   });
-  // 交易记录分页
-  let [recordPagination, setRecordPagination] = useState({
-    pageNo: 1,
-    pageSize: 10,
-  });
+  // // 交易记录分页
+  // let [recordPagination, setRecordPagination] = useState({
+  //   pageNo: 1,
+  //   pageSize: 10,
+  // });
 
   // 全部分页
   let [allPagination, setAllPagination] = useState({
@@ -71,6 +75,23 @@ const Detail = () => {
 
   // 资产数据
   let [capital, setCapital] = useState<any>([]);
+  let [, setRMBConversion] = useRMBConversion();
+  const rmbConvert = (id: number, money: number) => {
+    return setRMBConversion(id, money);
+  };
+
+  const GetAssetsMoney = () => {
+    GetAssetsInfo().then((res) => {
+      console.log("res: ", res.list);
+      console.log(currencyChain, currencyId);
+      let filterObj = res?.list?.find(
+        (item: { currencyChain: any; currencyId: any }) =>
+          item.currencyChain == currencyChain && item.currencyId == currencyId
+      );
+      setCrtAssetsInfo(filterObj);
+      console.log("filterObj: ", filterObj);
+    });
+  };
   // 充币
   const DepositFn = (): any => {
     setDepositPagination({
@@ -116,10 +137,10 @@ const Detail = () => {
     return setNavK(k);
   };
   const toDeposit = () => {
-    navigate(location.pathname + "/deposit",{state:{title}});
+    navigate(location.pathname + "/deposit", { state: { title } });
   };
   const toDraw = () => {
-    navigate("/draw",{state:{title}});
+    navigate("/draw", { state: { title } });
   };
   //充币函数
   async function getDepositInfo(obj: {
@@ -179,6 +200,9 @@ const Detail = () => {
       });
     }
   }, [drawPagination]);
+  useEffect(() => {
+    GetAssetsMoney();
+  }, []);
   // 全部
   useEffect(() => {
     let params = {
@@ -231,8 +255,16 @@ const Detail = () => {
           <div className={styleScope["assets_detail_banner_top"]}>
             <i className={styleScope["icon"] + " iconfont icon-BTC"}></i>
             <div className={styleScope["assets_detail_banner_top_txt"]}>
-              <p className="text-[.62rem]">{location.state.realM}</p>
-              <span className="text-[.32rem]">≈ ¥{location.state.rmbM}</span>
+              <p className="text-[.62rem]">
+                {thousands(crtAssetsInfo.availableBalance)}
+              </p>
+              <span className="text-[.32rem]">
+                ≈ ¥
+                {rmbConvert(
+                  crtAssetsInfo.currencyId,
+                  crtAssetsInfo.availableBalance
+                )}
+              </span>
             </div>
           </div>
           <div className={styleScope["assets_detail_banner_foo"]}>
@@ -275,7 +307,7 @@ const OrderItem = (props: any) => {
   const location = useLocation();
   let [, setRMBConversion] = useRMBConversion();
   const toInfo = (crt: ExtractAndRechargeType) => {
-    let type = encrypt(crt.recordType+"");
+    let type = encrypt(crt.recordType + "");
     let currency = encrypt(crt.currency ?? "USDT");
     navigate(location.pathname + `/info`, {
       state: { ...crt, module: type, currency },

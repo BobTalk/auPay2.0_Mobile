@@ -15,6 +15,7 @@ import { GetAssetsInfo, GetUserInfo, ViewAnnouncement } from "@/Api";
 import PropertyComp from "../Property";
 import PublicScroll from "@/Components/PublicScroll";
 import { useRMBConversion } from "@/Hooks/RMBConversion";
+import { EyeFill, EyeInvisibleFill } from "antd-mobile-icons";
 
 const Home = () => {
   let [hide, setHide] = useState(false);
@@ -94,20 +95,24 @@ const Home = () => {
           </div>
           <ul className={styleScope["home_banner_assets"]}>
             <li>
-              <p>
-                auPay资产(USDT)
-                <i
-                  onClick={hideMoney}
-                  className={
-                    !hide ? "iconfont icon-chakan" : "iconfont icon-biyan"
-                  }
-                ></i>
-              </p>
-              <span>{hide ? "-" : assets.total}</span>
+              <div className="flex items-center">
+                <label className="mr-[.1rem] !text-[.24rem] text-[#333]">
+                  auPay资产(USDT)
+                </label>
+                {!hide ? (
+                  <EyeInvisibleFill
+                    onClick={hideMoney}
+                    className="text-[.28rem]"
+                  />
+                ) : (
+                  <EyeFill className="text-[.28rem]" onClick={hideMoney} />
+                )}
+              </div>
+              <span>{hide ? "***" : assets.total}</span>
             </li>
             <li>
               <p>Oz资产(OZC)</p>
-              <span>{hide ? "-" : assets.ozBalance}</span>
+              <span>{hide ? "***" : assets.ozBalance}</span>
             </li>
           </ul>
         </div>

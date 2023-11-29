@@ -78,7 +78,7 @@ function removeSession(name: string) {
  * 
  * @returns 移除全部session
  */
-function clearSession(){
+function clearSession() {
   return SessionStorage.clear()
 }
 
@@ -116,6 +116,7 @@ const getQueryObject = (url: string): object => {
 }
 // 日期处理
 const timeFormate = (time: string, format: string = 'YYYY-MM-DD'): string => {
+  if (!time) return "--"
   return dayjs(time).format(format)
 }
 // 单位处理
