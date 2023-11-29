@@ -1,182 +1,45 @@
 ._register {
   .register_form {
-    .adm-form-item-child-inner {
-      flex-wrap: wrap;
-      padding: .3rem 0 .24rem;
+    .adm-list-body {
+      border: 0;
     }
 
-    .login_form_label {
-      width: 100%;
-      margin-bottom: .32rem;
+    .adm-form-item-child {
+      height: .7rem;
+      padding-bottom: .24rem;
+      border-bottom: 1px solid rgba(197, 202, 208, 1);
     }
-
-    .register_form_flex {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-}
-
-.login_wrap_ {
-  .logo {
-    width: 3rem;
-    display: block;
-    margin: .8rem auto .4rem;
-  }
-
-  .login_form {
-    --border-top: none !important;
-    --border-bottom: none !important;
 
     .adm-list-item {
-      position: relative;
       padding-left: 0;
-
-      &:nth-last-child(1) {
-        .adm-form-item-child-inner {
-          border: none;
-        }
-      }
-
-      .adm-list-item-content {
-        border-top: none;
-        padding: 0;
-
-        .adm-list-item-content-main {
-          padding: 0;
-        }
-      }
     }
 
-    .login_form_item {
-      .adm-form-item-child-inner {
-        border: none;
+    .adm-list-item-content {
+      padding-right: 0;
+      border-top: 0;
+    }
+
+    .adm-list-item-content-main {
+      padding: 0;
+    }
+
+    .adm-form-item-required-asterisk {
+      display: none;
+    }
+
+    .last-item {
+      .adm-form-item-child {
+        padding-bottom: 0;
+        border-bottom: 0;
       }
-
-      .adm-checkbox {
-        font-size: .3rem;
-
-        .adm-checkbox-icon {
-          width: .26rem;
-          height: .26rem;
-          border: 1px solid #657087;
-          border-radius: .04rem;
-        }
-
-        .adm-checkbox-content {
-          font-size: .3rem;
-        }
+      .adm-list-item-description{
+        display: none;
       }
     }
-
-    .adm-form-item-child-inner {
-      display: flex;
-      align-items: center;
-      padding: .46rem 0 .24rem;
-      border-bottom: 1px solid #C5CAD0;
-    }
-
-    .login_form_label {
-      width: 1.6rem;
-      font-size: .32rem;
-      color: #333333;
-      margin-right: .3rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    .login_form_label_max {
-      width: 100% !important;
-    }
-
-    .login_form_label_max_plus {
-      width: 2.24rem !important;
-    }
-
-    .login_form_close {
-      width: .32rem;
-      height: .32rem;
-      margin-left: .2rem;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    .login_form_forget {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: .2rem;
-
-      p {
-        font-size: .3rem;
-        color: #999999;
-      }
-    }
-
-    .login_form_get_code {
-      font-size: .3rem;
-      color: #1C63FF;
-      margin-left: .2rem;
-      width: 1.5rem;
-      text-align: right;
-      flex-grow: 0;
-      flex-shrink: 0;
-    }
-
-    .login_form_input {
-      width: 100%;
-
-      input {
-        font-size: .32rem;
-      }
-    }
-
-    .login_form_btn {
-      background: #1C63FF;
-      border-radius: .16rem;
-      width: 100%;
-      height: .92rem;
-      font-size: .34rem;
-      color: #FFFFFF;
-      // margin-top: -3px;
-    }
-
-    .adm-list-item-description {
-      position: absolute;
-      z-index: 2;
-      left: 0;
-      // bottom: -17px;
-    }
-  }
-
-  .adm-form-footer {
-    padding: .2rem 0;
-  }
-
-
-  .foo_tips {
-    font-size: .3rem;
-    color: #999999;
-    text-align: center;
-
-    a {
-      color: #1C63FF !important;
-    }
-  }
-
-  .reset_tit {
-    font-family: PingFangSC-Medium-oz;
-    font-size: .44rem;
-    font-weight: 500;
-    color: #333333;
-    margin: .8rem 0 1rem;
-    text-align: center;
-  }
-
-  .reset_form {
-    .login_form_label {
-      width: 1.7rem !important;
+    .adm-form-footer{
+      padding-inline: 0;
+      padding-block-start: .2rem;
+      padding-block-end: .24rem;
     }
   }
 }

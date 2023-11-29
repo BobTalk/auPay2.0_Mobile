@@ -20,7 +20,7 @@ const Login = () => {
   let JHeader: any = useRef();
   let headData = Object.assign(HeadConfig, {
     title: "auPay用户登录",
-    back: "/",
+    back: '',
     className: "p-[.32rem_.3rem] h-auto",
   });
   const navigate = useNavigate();
