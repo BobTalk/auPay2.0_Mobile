@@ -79,8 +79,7 @@ const Register = () => {
             ref={formRef}
             footer={
               <Button
-                block
-                className="bg-[#1C63FF] text-[.34rem] h-[.92rem]"
+                className="bg-[#1C63FF] w-full text-[.34rem] h-[.92rem]"
                 type="submit"
                 color="primary"
               >
